@@ -1,0 +1,12 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET     /hello							controllers.Application.witam()
+GET		/witaj							controllers.Application.powitanie(imie:String)
+POST	/witaj  						controllers.Application.powitaniePost()
+GET		/newton							controllers.Application.podzbiory(n:Int, k:Int)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /webjars/*file              controllers.WebJarAssets.at(file)
