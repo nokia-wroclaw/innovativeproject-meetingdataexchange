@@ -5,5 +5,12 @@ URUCHOMIENIE SERWERA
 ----------------------------------------
 1. Przechodzimy w konsoli do katalogu meetingDataExchangeServer
 2. Wpisujemy activator
-3. Odpalenie serwera bazy danych poleceniem h2-browser. Baza posiada graficzne GUI pod adresem localhost:8082. Login i hasło to "admin". Uwaga: Jednocześnie do bazy może być zalogowany tylko jeden użytkownik
+3. Odpalenie serwera bazy danych poleceniem h2-browser. Baza posiada graficzne GUI pod adresem localhost:8082. 
+
+Klasa sterownika: org.h2.Driver
+JDBC URL: jdbc:h2:data/db
+Uzytkownik: admin
+Haslo: admin
+
+Uwaga: Jednocześnie do bazy może być zalogowany tylko jeden użytkownik (tzn. będąc zalogowanym w web GUI DB aplikacja MDE nie zaloguje się do bazy i na odwrót)
 4. Odpalenie aplikacji webowej poleceniem start 9000 (taki numer portu ustalamy)
