@@ -1,0 +1,366 @@
+04-01 23:35:56 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "CREATE DATABASE[*] MDE "; oczekiwano "OR, FORCE, VIEW, ALIAS, SEQUENCE, USER, TRIGGER, ROLE, SCHEMA, CONSTANT, DOMAIN, TYPE, DATATYPE, AGGREGATE, LINKED, MEMORY, CACHED, LOCAL, GLOBAL, TEMP, TEMPORARY, TABLE, PRIMARY, UNIQUE, HASH, SPATIAL, INDEX"
+Syntax error in SQL statement "CREATE DATABASE[*] MDE "; expected "OR, FORCE, VIEW, ALIAS, SEQUENCE, USER, TRIGGER, ROLE, SCHEMA, CONSTANT, DOMAIN, TYPE, DATATYPE, AGGREGATE, LINKED, MEMORY, CACHED, LOCAL, GLOBAL, TEMP, TEMPORARY, TABLE, PRIMARY, UNIQUE, HASH, SPATIAL, INDEX"; SQL statement:
+CREATE DATABASE mde [42001-175]
+04-01 23:38:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "CREATE DATABASE[*] MDE
+
+CREATE TABLE MEETING (
+	ID INT PRIMARY KEY,
+	TITLE VARCHAR(255) NOT NULL,
+	TOPIC VARCHAR(255) NOT NULL,
+	STARTTIME TIMESTAMP NOT NULL,
+	ENDTIME TIMESTAMP DEFAULT NULL,
+	ABILITYTOSENDFILES BOOLEAN DEFAULT FALSE,
+	AUTHORID INT
+	) "; oczekiwano "OR, FORCE, VIEW, ALIAS, SEQUENCE, USER, TRIGGER, ROLE, SCHEMA, CONSTANT, DOMAIN, TYPE, DATATYPE, AGGREGATE, LINKED, MEMORY, CACHED, LOCAL, GLOBAL, TEMP, TEMPORARY, TABLE, PRIMARY, UNIQUE, HASH, SPATIAL, INDEX"
+Syntax error in SQL statement "CREATE DATABASE[*] MDE
+
+CREATE TABLE MEETING (
+	ID INT PRIMARY KEY,
+	TITLE VARCHAR(255) NOT NULL,
+	TOPIC VARCHAR(255) NOT NULL,
+	STARTTIME TIMESTAMP NOT NULL,
+	ENDTIME TIMESTAMP DEFAULT NULL,
+	ABILITYTOSENDFILES BOOLEAN DEFAULT FALSE,
+	AUTHORID INT
+	) "; expected "OR, FORCE, VIEW, ALIAS, SEQUENCE, USER, TRIGGER, ROLE, SCHEMA, CONSTANT, DOMAIN, TYPE, DATATYPE, AGGREGATE, LINKED, MEMORY, CACHED, LOCAL, GLOBAL, TEMP, TEMPORARY, TABLE, PRIMARY, UNIQUE, HASH, SPATIAL, INDEX"; SQL statement:
+CREATE DATABASE mde
+
+CREATE TABLE Meeting (
+	id int PRIMARY KEY,
+	title varchar(255) NOT NULL,
+	topic varchar(255) NOT NULL,
+	startTime timestamp NOT NULL,
+	endTime timestamp DEFAULT NULL,
+	abilityToSendFiles boolean DEFAULT FALSE,
+	authorId int
+	) [42001-175]
+04-02 02:26:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Funkcja "SECURERAND" nie istnieje
+Function "SECURERAND" not found; SQL statement:
+SELECT SECURERAND(100) [90022-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.command.Parser.readJavaFunction(Parser.java:2254)
+	at org.h2.command.Parser.readFunction(Parser.java:2306)
+	at org.h2.command.Parser.readTerm(Parser.java:2625)
+	at org.h2.command.Parser.readFactor(Parser.java:2178)
+	at org.h2.command.Parser.readSum(Parser.java:2165)
+	at org.h2.command.Parser.readConcat(Parser.java:2138)
+	at org.h2.command.Parser.readCondition(Parser.java:2003)
+	at org.h2.command.Parser.readAnd(Parser.java:1976)
+	at org.h2.command.Parser.readExpression(Parser.java:1968)
+	at org.h2.command.Parser.parseSelectSimpleSelectPart(Parser.java:1881)
+	at org.h2.command.Parser.parseSelectSimple(Parser.java:1913)
+	at org.h2.command.Parser.parseSelectSub(Parser.java:1807)
+	at org.h2.command.Parser.parseSelectUnion(Parser.java:1631)
+	at org.h2.command.Parser.parseSelect(Parser.java:1619)
+	at org.h2.command.Parser.parsePrepared(Parser.java:426)
+	at org.h2.command.Parser.parse(Parser.java:298)
+	at org.h2.command.Parser.parse(Parser.java:270)
+	at org.h2.command.Parser.prepareCommand(Parser.java:235)
+	at org.h2.engine.Session.prepareLocal(Session.java:436)
+	at org.h2.engine.Session.prepareCommand(Session.java:379)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1138)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:168)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:156)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1321)
+	at org.h2.server.web.WebApp.query(WebApp.java:1010)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:972)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:959)
+	at org.h2.server.web.WebThread.process(WebThread.java:167)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Thread.java:744)
+04-02 02:27:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad konwersji danych "b6c39284151c5d4fd4ce2cb34af10d0d2e06a1245a0185cbd3717ab014dfc5a03f539df96ec7cae943072585c3ebc356a5b520463399f07c3713e6d5d5dc6e820de9b2d43e1c7d81f3eb3c93b55a460422caa2848095948885f846bc28c4a1b8f83b2759"
+Data conversion error converting "b6c39284151c5d4fd4ce2cb34af10d0d2e06a1245a0185cbd3717ab014dfc5a03f539df96ec7cae943072585c3ebc356a5b520463399f07c3713e6d5d5dc6e820de9b2d43e1c7d81f3eb3c93b55a460422caa2848095948885f846bc28c4a1b8f83b2759"; SQL statement:
+SELECT CAST(SECURE_RAND(100) AS INT) [22018-175]
+04-02 02:28:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad konwersji danych "fe46501626b016f266d68ee17b531411e58a142e52673c40bf404a882f02ae555eb8cafc0b784cc1c6b995f36723e58de24ac305b1498b7cec2c41d5a129f80c0c51df4eb32bdea8cdf7696186581319adcfc48817c7d9b0000705ae20b208ef914a8dfe"
+Data conversion error converting "fe46501626b016f266d68ee17b531411e58a142e52673c40bf404a882f02ae555eb8cafc0b784cc1c6b995f36723e58de24ac305b1498b7cec2c41d5a129f80c0c51df4eb32bdea8cdf7696186581319adcfc48817c7d9b0000705ae20b208ef914a8dfe"; SQL statement:
+SELECT CONVERT(SECURE_RAND(100), INT) [22018-175]
+04-02 02:28:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad konwersji danych "34a11503291b137dfebf73d2ded6af0f8a0f61091ef8f9da1d7ddd27477f1c89781ec9eff99f26ac4549b12e2d0c19d3e9d2d7a5808fd38a0508ab16293e3e291dd39970909265b1c6a7a7ce5a4995fba94400024f26a381a33fa9daf113d3d25ed9cfbe"
+Data conversion error converting "34a11503291b137dfebf73d2ded6af0f8a0f61091ef8f9da1d7ddd27477f1c89781ec9eff99f26ac4549b12e2d0c19d3e9d2d7a5808fd38a0508ab16293e3e291dd39970909265b1c6a7a7ce5a4995fba94400024f26a381a33fa9daf113d3d25ed9cfbe"; SQL statement:
+SELECT CONVERT(SECURE_RAND(100), INT) [22018-175]
+04-02 02:28:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad konwersji danych "556f3551e202c63f0217ceb888d1c6418aa839cc682e15ca22c5315e7f2a06262ce400ada17234cacbe4a1402c057a2abfd4ed816e5fee2fd29b44309d75c826c5a32aa9f6dac6a8d330b29c737555f6ec5b66949164d61f4a9481f3ecc81b36caceec0f"
+Data conversion error converting "556f3551e202c63f0217ceb888d1c6418aa839cc682e15ca22c5315e7f2a06262ce400ada17234cacbe4a1402c057a2abfd4ed816e5fee2fd29b44309d75c826c5a32aa9f6dac6a8d330b29c737555f6ec5b66949164d61f4a9481f3ecc81b36caceec0f"; SQL statement:
+SELECT CONVERT(SECURE_RAND(100), INT) [22018-175]
+04-02 02:28:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad konwersji danych "52e7b6befea810f4abeb2db111258ab0ce2d4ca085e51e00993499cc6d798b5a654538710ebc51b571b852e610ab6c2fa2e1d26ec4817b27e662059322734c49f92c864a81ee9678bfa0871662f427dad9ff6b6bb80535c1f1c27c36889053ca7c4b3552"
+Data conversion error converting "52e7b6befea810f4abeb2db111258ab0ce2d4ca085e51e00993499cc6d798b5a654538710ebc51b571b852e610ab6c2fa2e1d26ec4817b27e662059322734c49f92c864a81ee9678bfa0871662f427dad9ff6b6bb80535c1f1c27c36889053ca7c4b3552"; SQL statement:
+SELECT CONVERT(SECURE_RAND(100), INT) [22018-175]
+04-02 02:28:11 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad konwersji danych "38a1881a4ba9c4deb689bc169713b57060d0d638cb31b2b77ac96305dd8fc13fc2a1e5032988a69bc2c0fbc4162752194008ef8cf6108a0e5d95d66af736882ebf3e882071cac312227592511f251e07f47adf835e466cd6c98f2ae75362369dcd006f81"
+Data conversion error converting "38a1881a4ba9c4deb689bc169713b57060d0d638cb31b2b77ac96305dd8fc13fc2a1e5032988a69bc2c0fbc4162752194008ef8cf6108a0e5d95d66af736882ebf3e882071cac312227592511f251e07f47adf835e466cd6c98f2ae75362369dcd006f81"; SQL statement:
+SELECT CONVERT(SECURE_RAND(100), INT) [22018-175]
+04-02 02:28:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad konwersji danych "73f06e2e20f5c4921b05834601a5156da63f069433ce2a38090a4b55a3fb35f1d266ae6e3577bd846a84ebb45d9bdca9e42a1fd65da070c9b0a9fb65547a1aa5e69caf1a4a027b8021d2aa3d165225f1ebf92f8834150358c53631b295954b60076a3c64"
+Data conversion error converting "73f06e2e20f5c4921b05834601a5156da63f069433ce2a38090a4b55a3fb35f1d266ae6e3577bd846a84ebb45d9bdca9e42a1fd65da070c9b0a9fb65547a1aa5e69caf1a4a027b8021d2aa3d165225f1ebf92f8834150358c53631b295954b60076a3c64"; SQL statement:
+SELECT CONVERT(SECURE_RAND(100), INT) [22018-175]
+04-02 02:28:12 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad konwersji danych "9bddaea81810f9457f4f025323e12b93a03a1e3642ef0a774010a015ce8b18c3c7f0a7141062aae3d03be0e4be94be52fabef061c664893e90ebe530eac83a67df58a120f75e7e9e8832c05bfa4edb16de931a05cd393bb546cfe37ed795fbc61370451d"
+Data conversion error converting "9bddaea81810f9457f4f025323e12b93a03a1e3642ef0a774010a015ce8b18c3c7f0a7141062aae3d03be0e4be94be52fabef061c664893e90ebe530eac83a67df58a120f75e7e9e8832c05bfa4edb16de931a05cd393bb546cfe37ed795fbc61370451d"; SQL statement:
+SELECT CONVERT(SECURE_RAND(100), INT) [22018-175]
+04-02 02:45:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Funkcja "MD5" nie istnieje
+Function "MD5" not found; SQL statement:
+SELECT MD5('aaa') [90022-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.command.Parser.readJavaFunction(Parser.java:2254)
+	at org.h2.command.Parser.readFunction(Parser.java:2306)
+	at org.h2.command.Parser.readTerm(Parser.java:2625)
+	at org.h2.command.Parser.readFactor(Parser.java:2178)
+	at org.h2.command.Parser.readSum(Parser.java:2165)
+	at org.h2.command.Parser.readConcat(Parser.java:2138)
+	at org.h2.command.Parser.readCondition(Parser.java:2003)
+	at org.h2.command.Parser.readAnd(Parser.java:1976)
+	at org.h2.command.Parser.readExpression(Parser.java:1968)
+	at org.h2.command.Parser.parseSelectSimpleSelectPart(Parser.java:1881)
+	at org.h2.command.Parser.parseSelectSimple(Parser.java:1913)
+	at org.h2.command.Parser.parseSelectSub(Parser.java:1807)
+	at org.h2.command.Parser.parseSelectUnion(Parser.java:1631)
+	at org.h2.command.Parser.parseSelect(Parser.java:1619)
+	at org.h2.command.Parser.parsePrepared(Parser.java:426)
+	at org.h2.command.Parser.parse(Parser.java:298)
+	at org.h2.command.Parser.parse(Parser.java:270)
+	at org.h2.command.Parser.prepareCommand(Parser.java:235)
+	at org.h2.engine.Session.prepareLocal(Session.java:436)
+	at org.h2.engine.Session.prepareCommand(Session.java:379)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1138)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:168)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:156)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1321)
+	at org.h2.server.web.WebApp.query(WebApp.java:1010)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:972)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:959)
+	at org.h2.server.web.WebThread.process(WebThread.java:167)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Thread.java:744)
+04-02 02:49:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "CREATE TABLE MEETING2 (
+	ID INT PRIMARY KEY AUTOINCREMENT[*],
+	TITLE VARCHAR(255) NOT NULL,
+	TOPIC VARCHAR(255) NOT NULL,
+	STARTTIME TIMESTAMP NOT NULL,
+	ENDTIME TIMESTAMP DEFAULT NULL,
+	ABILITYTOSENDFILES BOOLEAN DEFAULT FALSE,
+	AUTHORID INT NOT NULL
+	) "; oczekiwano "HASH, AUTO_INCREMENT, NOT, NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE MEETING2 (
+	ID INT PRIMARY KEY AUTOINCREMENT[*],
+	TITLE VARCHAR(255) NOT NULL,
+	TOPIC VARCHAR(255) NOT NULL,
+	STARTTIME TIMESTAMP NOT NULL,
+	ENDTIME TIMESTAMP DEFAULT NULL,
+	ABILITYTOSENDFILES BOOLEAN DEFAULT FALSE,
+	AUTHORID INT NOT NULL
+	) "; expected "HASH, AUTO_INCREMENT, NOT, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE Meeting2 (
+	id int PRIMARY KEY AUTOINCREMENT,
+	title varchar(255) NOT NULL,
+	topic varchar(255) NOT NULL,
+	startTime timestamp NOT NULL,
+	endTime timestamp DEFAULT NULL,
+	abilityToSendFiles boolean DEFAULT FALSE,
+	authorId int NOT NULL
+	) [42001-175]
+04-02 02:49:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "CREATE TABLE MEETING2 (
+	ID INT PRIMARY KEY AUTO[*] INCREMENT,
+	TITLE VARCHAR(255) NOT NULL,
+	TOPIC VARCHAR(255) NOT NULL,
+	STARTTIME TIMESTAMP NOT NULL,
+	ENDTIME TIMESTAMP DEFAULT NULL,
+	ABILITYTOSENDFILES BOOLEAN DEFAULT FALSE,
+	AUTHORID INT NOT NULL
+	) "; oczekiwano "HASH, AUTO_INCREMENT, NOT, NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE MEETING2 (
+	ID INT PRIMARY KEY AUTO[*] INCREMENT,
+	TITLE VARCHAR(255) NOT NULL,
+	TOPIC VARCHAR(255) NOT NULL,
+	STARTTIME TIMESTAMP NOT NULL,
+	ENDTIME TIMESTAMP DEFAULT NULL,
+	ABILITYTOSENDFILES BOOLEAN DEFAULT FALSE,
+	AUTHORID INT NOT NULL
+	) "; expected "HASH, AUTO_INCREMENT, NOT, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE Meeting2 (
+	id int PRIMARY KEY AUTO INCREMENT,
+	title varchar(255) NOT NULL,
+	topic varchar(255) NOT NULL,
+	startTime timestamp NOT NULL,
+	endTime timestamp DEFAULT NULL,
+	abilityToSendFiles boolean DEFAULT FALSE,
+	authorId int NOT NULL
+	) [42001-175]
+04-02 02:52:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "DROP TABLE *"; oczekiwano "identifier"
+Syntax error in SQL statement "DROP TABLE *"; expected "identifier"; SQL statement:
+DROP TABLE * [42001-175]
+04-02 02:53:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "CREATE DATABASE[*] MDE "; oczekiwano "OR, FORCE, VIEW, ALIAS, SEQUENCE, USER, TRIGGER, ROLE, SCHEMA, CONSTANT, DOMAIN, TYPE, DATATYPE, AGGREGATE, LINKED, MEMORY, CACHED, LOCAL, GLOBAL, TEMP, TEMPORARY, TABLE, PRIMARY, UNIQUE, HASH, SPATIAL, INDEX"
+Syntax error in SQL statement "CREATE DATABASE[*] MDE "; expected "OR, FORCE, VIEW, ALIAS, SEQUENCE, USER, TRIGGER, ROLE, SCHEMA, CONSTANT, DOMAIN, TYPE, DATATYPE, AGGREGATE, LINKED, MEMORY, CACHED, LOCAL, GLOBAL, TEMP, TEMPORARY, TABLE, PRIMARY, UNIQUE, HASH, SPATIAL, INDEX"; SQL statement:
+CREATE DATABASE mde [42001-175]
+04-02 18:12:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "CREATE TABLE MEETINGUSER (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	MEETINGID INT NOT NULL,
+	USERID INT NOT NULL,
+	JOINTIME TIMESTAMP NOT NULL
+	CODE[*] VARCHAR(255) NOT NULL
+	) "; oczekiwano "AS, DEFAULT, GENERATED, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE MEETINGUSER (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	MEETINGID INT NOT NULL,
+	USERID INT NOT NULL,
+	JOINTIME TIMESTAMP NOT NULL
+	CODE[*] VARCHAR(255) NOT NULL
+	) "; expected "AS, DEFAULT, GENERATED, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE MeetingUser (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	meetingId int NOT NULL,
+	userId int NOT NULL,
+	joinTime timestamp NOT NULL
+	code varchar(255) NOT NULL
+	) [42001-175]
+04-02 18:13:48 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "CREATE TABLE MEETINGUSER (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	MEETINGID INT NOT NULL,
+	USERID INT NOT NULL,
+	JOINTIME TIMESTAMP NOT NULL
+	HASH[*] VARCHAR(255) NOT NULL
+	) "; oczekiwano "AS, DEFAULT, GENERATED, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE MEETINGUSER (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	MEETINGID INT NOT NULL,
+	USERID INT NOT NULL,
+	JOINTIME TIMESTAMP NOT NULL
+	HASH[*] VARCHAR(255) NOT NULL
+	) "; expected "AS, DEFAULT, GENERATED, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE MeetingUser (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	meetingId int NOT NULL,
+	userId int NOT NULL,
+	joinTime timestamp NOT NULL
+	hash varchar(255) NOT NULL
+	) [42001-175]
+04-02 18:37:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "INFORMATION_SCHEMA[*].CATALOGS"; oczekiwano "INSERT, {"
+Syntax error in SQL statement "INFORMATION_SCHEMA[*].CATALOGS"; expected "INSERT, {"; SQL statement:
+INFORMATION_SCHEMA.CATALOGS [42001-175]
+04-02 18:37:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Kolumna "INFORMATION_SCHEMA.CATALOGS" nie istnieje
+Column "INFORMATION_SCHEMA.CATALOGS" not found; SQL statement:
+SELECT INFORMATION_SCHEMA.CATALOGS [42122-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:144)
+	at org.h2.command.dml.Select.prepare(Select.java:810)
+	at org.h2.command.Parser.prepareCommand(Parser.java:240)
+	at org.h2.engine.Session.prepareLocal(Session.java:436)
+	at org.h2.engine.Session.prepareCommand(Session.java:379)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1138)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:168)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:156)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1321)
+	at org.h2.server.web.WebApp.query(WebApp.java:1010)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:972)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:959)
+	at org.h2.server.web.WebThread.process(WebThread.java:167)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Thread.java:744)
+04-02 18:43:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "CREATE TABLE MEETINGUSER (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	MEETINGID INT NOT NULL,
+	USERID INT NOT NULL,
+	JOINTIME TIMESTAMP NOT NULL
+	HASH[*] VARCHAR(255) NOT NULL
+	) "; oczekiwano "AS, DEFAULT, GENERATED, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"
+Syntax error in SQL statement "CREATE TABLE MEETINGUSER (
+	ID INT PRIMARY KEY AUTO_INCREMENT,
+	MEETINGID INT NOT NULL,
+	USERID INT NOT NULL,
+	JOINTIME TIMESTAMP NOT NULL
+	HASH[*] VARCHAR(255) NOT NULL
+	) "; expected "AS, DEFAULT, GENERATED, NOT, NULL, AUTO_INCREMENT, BIGSERIAL, SERIAL, IDENTITY, NULL_TO_DEFAULT, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, PRIMARY, UNIQUE, NOT, NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE MeetingUser (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	meetingId int NOT NULL,
+	userId int NOT NULL,
+	joinTime timestamp NOT NULL
+	hash varchar(255) NOT NULL
+	) [42001-175]
+04-02 20:46:55 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "DROP ALL TABLE"; oczekiwano "OBJECTS"
+Syntax error in SQL statement "DROP ALL TABLE"; expected "OBJECTS"; SQL statement:
+DROP ALL TABLE [42001-175]
+04-02 20:47:00 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "DROP TABLE *"; oczekiwano "identifier"
+Syntax error in SQL statement "DROP TABLE *"; expected "identifier"; SQL statement:
+DROP TABLE * [42001-175]
+04-02 21:08:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "MEETING" juz istnieje
+Table "MEETING" already exists; SQL statement:
+CREATE TABLE Meeting (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	title varchar(255) NOT NULL,
+	topic varchar(255) NOT NULL,
+	startTime timestamp NOT NULL,
+	endTime timestamp DEFAULT NULL,
+	abilityToSendFiles boolean DEFAULT FALSE,
+	authorId int NOT NULL
+	) [42101-175]
+04-02 21:08:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "USER" juz istnieje
+Table "USER" already exists; SQL statement:
+CREATE TABLE User (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	name varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	password varchar(255) NOT NULL
+	) [42101-175]
+04-02 21:08:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "MEETINGUSER" juz istnieje
+Table "MEETINGUSER" already exists; SQL statement:
+CREATE TABLE MeetingUser (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	meetingId int NOT NULL,
+	userId int NOT NULL,
+	joinTime timestamp NOT NULL,
+	) [42101-175]
+04-02 21:08:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "FILE" juz istnieje
+Table "FILE" already exists; SQL statement:
+CREATE TABLE File (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	meetingUserId int NOT NULL,
+	name varchar(255) NOT NULL,
+	typeFileId int NOT NULL,
+	size int NOT NULL,
+	addedTie timestamp
+	) [42101-175]
+04-02 21:08:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "TYPEFILE" juz istnieje
+Table "TYPEFILE" already exists; SQL statement:
+CREATE TABLE TypeFile (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	name varchar(255) NOT NULL
+	) [42101-175]
+04-02 21:08:35 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Tablela "COMMENT" juz istnieje
+Table "COMMENT" already exists; SQL statement:
+CREATE TABLE Comment (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	fileId int NOT NULL,
+	userId int NOT NULL,
+	date timestamp NOT NULL,
+	content longvarchar NOT NULL
+	) [42101-175]

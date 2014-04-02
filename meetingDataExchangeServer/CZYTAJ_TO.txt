@@ -5,32 +5,5 @@ URUCHOMIENIE SERWERA
 ----------------------------------------
 1. Przechodzimy w konsoli do katalogu meetingDataExchangeServer
 2. Wpisujemy activator
-3. Odpalenie serwera bazy danych poleceniem h2-browser
-4. Odpalenie aplikacji webowej poleceniem start NUMERPORTU np. start 9000
-
-----------------------------------------
-BANALNE PRZYKŁADY
-----------------------------------------
-PRZYKŁAD 0:
-http://localhost:9000/hello
-Wyświetla stały komunikat
-
-PRZYKŁAD 1:
-http://localhost:9000/witaj?imie=Ania
-Wyświetla imię przekazane metodą GET
-
-PRZYKŁAD 1.5:
-Można również przesłać formularz metodą POST do adresu
-http://localhost:9000/witaj
-
-Ważne jest by content type był ustawiony jako:
-application/x-www-form-urlencoded
-
-Wysyłamy również parametr 'imie'
-
-PRZYKŁAD 2:
-http://localhost:9000/newton?n=50&k=33
-Liczy naiwnie symbol newtona $n\choose k$
-
-
-Jutro (oby!) przykłady z json'ami i plikami. Do przeglądania wynikow zwrotnych po wysłaniu danych metodą GET/POST polecam dodatek do firefoxa o nazwie HttpRequester - wszystko ładnie widać.
+3. Odpalenie serwera bazy danych poleceniem h2-browser. Baza posiada graficzne GUI pod adresem localhost:8082. Login i hasło to "admin". Uwaga: Jednocześnie do bazy może być zalogowany tylko jeden użytkownik
+4. Odpalenie aplikacji webowej poleceniem start 9000 (taki numer portu ustalamy)

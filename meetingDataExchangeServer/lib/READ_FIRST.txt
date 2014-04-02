@@ -1,3 +1,4 @@
-Pobierz do tego folderu nastêpuj¹ce pliki:
-http://repo2.maven.org/maven2/com/h2database/h2/1.3.175/h2-1.3.175.jar
-https://github.com/downloads/mandubian/siena/siena-1.0.0-b6.jar
+W tym folderze powinny siê znajdowaæ wszystkie poni¿sze jary:
+https://www.dropbox.com/sh/9klj5ht2q6oek20/-R0oM9Vf3w
+
+Je¿eli jakichœ nie ma to pobierz je z linku powy¿ej.
