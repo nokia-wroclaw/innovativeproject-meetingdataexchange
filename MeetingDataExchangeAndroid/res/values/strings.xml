@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MeetingDataExchangeAndroid</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="new_meeting">Nowe spotkanie</string>
+    <string name="join_meeting">Dołącz</string>
+    <string name="meetings">Spotkania</string>
+    <string name="setting">Ustawienia</string>
+    <string name="main_act_name">MeetingDataExchange</string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="title_activity_add_new_item">Add_new_itemActivity</string>
+    <string name="add_item_ac_meeting_progress_button">Przebieg spotkania</string>
+    <string name="add_item_ac_meeting_desc_button">Opis</string>
+    <string name="add_item_ac_meeting_add_button">Dodaj</string>
+    <string name="add_item_ac_meeting_add_photo_button">Dodaj zdjęcie</string>
+    <string name="add_item_ac_meeting_add_file_button">Dodaj plik</string>
+    <string name="add_item_ac_meeting_add_note_button">Dodaj notatke</string>
+    <string name="add_item_ac_meeting_add_user_button">Dodaj użytkowników</string>
+    <string name="title_activity_meeting_details">MeetingDetails</string>
+
+</resources>

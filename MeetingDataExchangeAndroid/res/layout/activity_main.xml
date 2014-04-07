@@ -1,0 +1,77 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_margin="0dp"
+    android:padding="0dp" >
+
+    	<Button
+    	    android:id="@+id/new_meeting_button"
+    	    android:layout_width="match_parent"
+    	     android:layout_height="0dp"
+    	    android:layout_weight="0.2"
+    	 	android:drawableRight="@android:drawable/sym_action_email"
+    	    android:drawableBottom="@drawable/line"
+    	    android:background="#cbcac9"
+    	    android:enabled="false"
+    	    android:text="@string/main_act_name"
+    	    android:gravity="center_vertical"
+    	    
+    	    
+    	    	/>
+    	<Button
+    		    android:id="@+id/join_meeting_button"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="0dp"
+    		    android:layout_weight="0.3"
+    		   android:background="#f1f1f1"
+    	    	android:drawableRight="@android:drawable/sym_action_email"
+    	    	android:drawableBottom="@drawable/line"
+    		    android:text="@string/new_meeting"
+    		   
+    		    android:gravity="center_vertical"
+    		 />
+    	<Button
+    		    android:id="@+id/meetings_button"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="0dp"
+    		     android:layout_weight="0.3"
+    		    android:background="#f1f1f1"
+    	    	android:drawableRight="@android:drawable/sym_action_email"
+    	    	android:drawableBottom="@drawable/line"
+    		    android:text="@string/join_meeting"
+    		 
+    		    android:gravity="center_vertical"/>
+    	<Button
+    		    android:id="@+id/button4"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="0dp"
+    		     android:layout_weight="0.3"
+    		    android:background="#f1f1f1"
+    	    	android:drawableRight="@android:drawable/sym_action_email"
+    	    	android:drawableBottom="@drawable/line"
+    		    android:text="@string/meetings"
+    		   
+    		    android:gravity="center_vertical"/>
+    	<Button
+    		    android:id="@+id/button5"
+    		    android:layout_width="match_parent"
+    		    android:layout_height="0dp"
+    		     android:layout_weight="0.3"
+    		    android:background="#f1f1f1"
+    	    	android:drawableRight="@android:drawable/sym_action_email"
+    	    	android:drawableBottom="@drawable/line"
+    	    	
+    	    	android:gravity="center_vertical"
+    		    android:text="@string/setting"/>
+    	<Button
+    		
+    		    android:layout_width="match_parent"
+    		    android:layout_height="0dp"
+    		     android:layout_weight="0.3"
+    	    	android:visibility="invisible"
+    	    	android:enabled="false"
+    		    />
+    	
+
+</LinearLayout>
