@@ -3,6 +3,8 @@
 # ~~~~
 
 POST	/account/register				controllers.Accounts.register()
+POST	/account/login					controllers.Accounts.login()
+POST	/account/logoff					controllers.Accounts.logoff()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -11,7 +11,7 @@ package models.public_.tables;
 @java.lang.SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class User extends org.jooq.impl.TableImpl<models.public_.tables.records.UserRecord> {
 
-	private static final long serialVersionUID = 864242546;
+	private static final long serialVersionUID = 12383822;
 
 	/**
 	 * The singleton instance of <code>PUBLIC.USER</code>
@@ -45,6 +45,11 @@ public class User extends org.jooq.impl.TableImpl<models.public_.tables.records.
 	 * The column <code>PUBLIC.USER.PASSWORD</code>. 
 	 */
 	public final org.jooq.TableField<models.public_.tables.records.UserRecord, java.lang.String> PASSWORD = createField("PASSWORD", org.jooq.impl.SQLDataType.VARCHAR.length(255), this);
+
+	/**
+	 * The column <code>PUBLIC.USER.SESSIONHASH</code>. 
+	 */
+	public final org.jooq.TableField<models.public_.tables.records.UserRecord, java.lang.String> SESSIONHASH = createField("SESSIONHASH", org.jooq.impl.SQLDataType.VARCHAR.length(255), this);
 
 	/**
 	 * Create a <code>PUBLIC.USER</code> table reference

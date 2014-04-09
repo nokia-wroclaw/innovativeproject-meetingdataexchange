@@ -364,3 +364,11 @@ CREATE TABLE Comment (
 	date timestamp NOT NULL,
 	content longvarchar NOT NULL
 	) [42101-175]
+04-09 02:38:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "DROP *[*] FROM USER"; oczekiwano "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, VIEW, ROLE, ALIAS, SCHEMA, ALL, DOMAIN, TYPE, DATATYPE, AGGREGATE"
+Syntax error in SQL statement "DROP *[*] FROM USER"; expected "TABLE, INDEX, USER, SEQUENCE, CONSTANT, TRIGGER, VIEW, ROLE, ALIAS, SCHEMA, ALL, DOMAIN, TYPE, DATATYPE, AGGREGATE"; SQL statement:
+DROP * FROM USER [42001-175]
+04-09 02:38:18 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Blad skladniowy w wyrazeniu SQL "DELETE *[*] FROM USER"; oczekiwano "identifier"
+Syntax error in SQL statement "DELETE *[*] FROM USER"; expected "identifier"; SQL statement:
+DELETE * FROM USER [42001-175]

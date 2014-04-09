@@ -1,5 +1,7 @@
 package controllers;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,20 +23,61 @@ public class Accounts extends Controller {
 	public static Result register(){
 		JsonNode json = request().body().asJson();
 		if(json == null)
-			return registerErrorResult("json excepted");
+			return accountsErrorResult("json excepted");
 		else{
 			String name = json.findPath("name").textValue();
 			String email = json.findPath("email").textValue();
 			String password = json.findPath("password").textValue();
 			
 			if(!checkEmail(email) || email == null)
-				return registerErrorResult("incorrect email");
+				return accountsErrorResult("incorrect email");
 			if(name == null)
-				return registerErrorResult("incorrect name");
+				return accountsErrorResult("incorrect name");
 			if(password == null)
-				return registerErrorResult("incorrect password");
+				return accountsErrorResult("incorrect password");
 			return registerTryResult(name, email, password);
 		}
+	}
+	
+	public static Result login(){
+		JsonNode json = request().body().asJson();
+		if(json == null)
+			return accountsErrorResult("json excepted");
+		else{
+			String login = json.findPath("login").textValue();
+			String password = json.findPath("password").textValue();
+			if(login == null || password == null)
+				return accountsErrorResult("incorrect data");
+			return loginTryResult(login, password);
+		}
+	}
+	
+	public static Result logoff(){
+		JsonNode json = request().body().asJson();
+		if(json == null)
+			return accountsErrorResult("json excepted");
+		else{
+			String login = json.findPath("login").textValue();
+			String sid = json.findPath("sid").textValue();
+			if(login == null || sid == null)
+				return accountsErrorResult("incorrect data");
+			return logoffTryResult(login, sid);
+		}
+	}
+
+	private static Result logoffTryResult(String login, String sid) {
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
+				.and(USER.SESSIONHASH.equal(sid)).fetch();
+				if(record.isNotEmpty()){
+					//stop current session
+					DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, "").where(USER.ID.equal(new Integer(login))).execute();
+					
+					ObjectNode result = Json.newObject();
+					result.put("status", "ok");
+					return ok(result);
+				}
+				else
+					return accountsErrorResult("incorrect sid");
 	}
 
 	private static Result registerTryResult(String name, String email,
@@ -45,17 +88,17 @@ public class Accounts extends Controller {
 		.values(name, email, MD5Checksum.MD5(password))
 		.returning(USER.ID)
 		.fetchOne();
-		return loginResult(record.getValue(USER.ID));
+		return registerResult(record.getValue(USER.ID));
 	}
 
-	private static Result loginResult(int idUser) {
+	private static Result registerResult(int idUser) {
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
 		result.put("login", idUser);
 		return ok(result);
 	}
 
-	private static Result registerErrorResult(String msg) {
+	private static Result accountsErrorResult(String msg) {
 		ObjectNode result = Json.newObject();
 		result.put("status", "failed");
 		result.put("reason", msg);
@@ -69,6 +112,26 @@ public class Accounts extends Controller {
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
 	}
-	
+
+	private static Result loginTryResult(String login, String password) {
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
+		.and(USER.PASSWORD.equal(MD5Checksum.MD5(password))).fetch();
+		if(record.isNotEmpty())
+				return loginResult(new Integer(login));
+		else
+			return accountsErrorResult("incorrect data");
+	}
+
+	private static Result loginResult(int login) {
+		String hash = new BigInteger(130, new SecureRandom()).toString(32);
+		
+		//register new session
+		DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, hash).where(USER.ID.equal(login)).execute();
+		
+		ObjectNode result = Json.newObject();
+		result.put("status", "ok");
+		result.put("sid", hash);
+		return ok(result);
+	}
 	
 }
