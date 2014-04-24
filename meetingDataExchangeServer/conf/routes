@@ -2,9 +2,13 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-POST	/account/register				controllers.Accounts.register()
-POST	/account/login					controllers.Accounts.login()
-POST	/account/logoff					controllers.Accounts.logoff()
+POST	/api/account/register				controllers.Accounts.register()
+POST	/api/account/login					controllers.Accounts.login()
+POST	/api/account/logoff					controllers.Accounts.logoff()
+GET		/api/account/getdata				controllers.Accounts.getData()
+POST	/api/account/setdata				controllers.Accounts.setData()
+POST	/api/meeting/new					controllers.Meetings.createNew()
+POST	/api/meeting/stop					controllers.Meetings.stop()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
