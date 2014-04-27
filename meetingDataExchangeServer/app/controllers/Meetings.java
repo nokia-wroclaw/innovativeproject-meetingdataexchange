@@ -52,8 +52,17 @@ public class Meetings extends Controller {
 				.returning(MEETING.ID)
 				.fetchOne();
 		
+		int meetingId = record.getValue(MEETING.ID);
+		
+		DbSingleton.getInstance().getDsl()
+				.insertInto(MEETINGUSER,
+						MEETINGUSER.MEETINGID, MEETINGUSER.USERID, MEETINGUSER.JOINTIME)
+				.values(meetingId, Integer.parseInt(login), new Timestamp(date.getTime()))
+				.execute();
+		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
+		result.put("meetingid", meetingId);
 		
 		return ok(result);
 	}
@@ -175,13 +184,13 @@ public class Meetings extends Controller {
 		return ok(result);
 	}
 	
-	public static Result getList(){
-		JsonNode json = request().body().asJson();
-		if(json == null)
-			return errorResult("json excepted");
-
-		String login = json.findPath("login").textValue();
-		String sid = json.findPath("sid").textValue();
+	public static Result getList(String login, String sid){
+//		JsonNode json = request().body().asJson();
+//		if(json == null)
+//			return errorResult("json excepted");
+//
+//		String login = json.findPath("login").textValue();
+//		String sid = json.findPath("sid").textValue();
 		if(login==null || sid==null)
 			return errorResult("incorrect data");
 		if(!checkIsSidCorrect(login, sid))
@@ -197,7 +206,8 @@ public class Meetings extends Controller {
 				.from(MEETING)
 				.join(MEETINGUSER)
 				.on(MEETING.ID.equal(MEETINGUSER.MEETINGID))
-				.where(MEETINGUSER.USERID.equal(Integer.parseInt(login))).fetch();
+				.where(MEETINGUSER.USERID.equal(Integer.parseInt(login)))
+				.orderBy(MEETING.STARTTIME.desc()).fetch();
 		
 		int count = record.size();
 		
@@ -231,7 +241,7 @@ public class Meetings extends Controller {
 			
 			meeting.put("members", recordMembers.size());
 			boolean upl = record.getValue(i, MEETING.ABILITYTOSENDFILES);
-			if(login.equals(record.getValue(i, MEETING.AUTHORID)))
+			if(login.equals(Integer.toString(record.getValue(i, MEETING.AUTHORID))))
 				meeting.put("permissions", "host");
 			else if(upl)
 				meeting.put("permissions", "memberUpload");

@@ -66,14 +66,14 @@ public class Accounts extends Controller {
 		}
 	}
 	
-	public static Result getData(){
-		JsonNode json = request().body().asJson();
-		if(json == null)
-			return errorResult("json excepted");
-		
-		String login = json.findPath("login").textValue();
-		String sid = json.findPath("sid").textValue();
-		
+	public static Result getData(String login, String sid){
+//		JsonNode json = request().body().asJson();
+//		if(json == null)
+//			return errorResult("json excepted");
+//		
+//		String login = json.findPath("login").textValue();
+//		String sid = json.findPath("sid").textValue();
+//		
 		if(login==null || sid==null)
 			return errorResult("incorrect data");
 		if(!checkIsSidCorrect(login, sid))

@@ -5,13 +5,13 @@
 POST	/api/account/register				controllers.Accounts.register()
 POST	/api/account/login					controllers.Accounts.login()
 POST	/api/account/logoff					controllers.Accounts.logoff()
-GET		/api/account/getdata				controllers.Accounts.getData()
+GET		/api/account/getdata/:login/:sid	controllers.Accounts.getData(login: String, sid: String)
 POST	/api/account/setdata				controllers.Accounts.setData()
 POST	/api/meeting/new					controllers.Meetings.createNew()
 POST	/api/meeting/stop					controllers.Meetings.stop()
 POST	/api/meeting/edit					controllers.Meetings.edit()
 POST	/api/meeting/adduser				controllers.Meetings.adduser()
-GET		/api/meeting/list					controllers.Meetings.getList()
+GET		/api/meeting/list/:login/:sid		controllers.Meetings.getList(login: String, sid: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
