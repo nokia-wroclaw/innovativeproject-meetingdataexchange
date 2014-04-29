@@ -31,18 +31,22 @@ public class Meetings extends Controller {
 		String topic = json.findPath("topic").textValue();
 		String abilityToSendFiles = json.findPath("abilityToSendFiles").textValue();
 		
+		return ok(web_createNew(login, sid, title, topic, abilityToSendFiles));
+	}
+	
+	public static ObjectNode web_createNew(String login, String sid, String title, String topic, String abilityToSendFiles){
 		if(login==null || title==null || topic==null || abilityToSendFiles==null || sid==null)
-			return errorResult("incorrect data");
+			return errorObject("incorrect data");
 		
 		boolean permit;
 		if(!abilityToSendFiles.equals("true") && !abilityToSendFiles.equals("false"))
-			return errorResult("incorrect data");
+			return errorObject("incorrect data");
 		else if (abilityToSendFiles.equals("true"))
 			permit = true;
 		else
 			permit = false;
 		if(!checkIsSidCorrect(login, sid))
-			return errorResult("incorrect sid");
+			return errorObject("incorrect sid");
 		
 		java.util.Date date= new java.util.Date();
 		Record record = DbSingleton.getInstance().getDsl()
@@ -63,8 +67,7 @@ public class Meetings extends Controller {
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
 		result.put("meetingid", meetingId);
-		
-		return ok(result);
+		return result;
 	}
 	
 	public static Result stop(){
@@ -76,17 +79,21 @@ public class Meetings extends Controller {
 		String sid = json.findPath("sid").textValue();
 		String meetingId = json.findPath("meetingid").textValue();
 		
+		return ok(web_stop(login, sid, meetingId));
+	}
+	
+	public static ObjectNode web_stop(String login, String sid, String meetingId){
 		if(login==null || meetingId==null || sid==null)
-			return errorResult("incorrect data");
+			return errorObject("incorrect data");
 		
 		if(!checkIsSidCorrect(login, sid))
-			return errorResult("incorrect sid");
+			return errorObject("incorrect sid");
 		
 		if(!userIsA_Host(login, meetingId))
-			return errorResult("access denied");
+			return errorObject("access denied");
 		
 		if(meetingIsAlreadyFinish(meetingId))
-			return errorResult("already finished");
+			return errorObject("already finished");
 		
 		java.util.Date date= new java.util.Date();
 		
@@ -97,8 +104,7 @@ public class Meetings extends Controller {
 		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
-		
-		return ok(result);
+		return result;
 	}
 	
 	public static Result edit(){
@@ -109,20 +115,27 @@ public class Meetings extends Controller {
 		String login = json.findPath("login").textValue();
 		String sid = json.findPath("sid").textValue();
 		String meetingId = json.findPath("meetingid").textValue();
+		String abilityToSendFiles = json.findPath("abilityToSendFiles").textValue();
+		String title = json.findPath("title").textValue();
+		String topic = json.findPath("topic").textValue();
 		
+		return ok(web_edit(login, sid, meetingId, abilityToSendFiles, title, topic));
+	}
+	
+	public static ObjectNode web_edit(String login, String sid, String meetingId, String abilityToSendFiles, String title, String topic){
 		if(login==null || sid==null || meetingId==null)
-			return errorResult("incorrect data");
+			return errorObject("incorrect data");
 		if(!checkIsSidCorrect(login, sid))
-			return errorResult("incorrect sid");
+			return errorObject("incorrect sid");
 		
 		if(!userIsA_Host(login, meetingId))
-			return errorResult("access denied");
+			return errorObject("access denied");
 		
-		String abilityToSendFiles = json.findPath("abilityToSendFiles").textValue();
+		//String abilityToSendFiles = json.findPath("abilityToSendFiles").textValue();
 		if(abilityToSendFiles!=null){
 			boolean permit;
 			if(!abilityToSendFiles.equals("true") && !abilityToSendFiles.equals("false"))
-				return errorResult("incorrect data");
+				return errorObject("incorrect data");
 			else if (abilityToSendFiles.equals("true"))
 				permit = true;
 			else
@@ -132,14 +145,14 @@ public class Meetings extends Controller {
 			.where(MEETING.ID.equal(Integer.parseInt(meetingId))).execute();
 		}
 		
-		String title = json.findPath("title").textValue();
+		//String title = json.findPath("title").textValue();
 		if(title!=null){
 			DbSingleton.getInstance().getDsl().update(MEETING)
 			.set(MEETING.TITLE, title)
 			.where(MEETING.ID.equal(Integer.parseInt(meetingId))).execute();
 		}
 		
-		String topic = json.findPath("topic").textValue();
+		//String topic = json.findPath("topic").textValue();
 		if(topic!=null){
 			DbSingleton.getInstance().getDsl().update(MEETING)
 			.set(MEETING.TOPIC, topic)
@@ -148,8 +161,7 @@ public class Meetings extends Controller {
 		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
-		
-		return ok(result);
+		return result;
 	}
 	
 	public static Result adduser(){
@@ -161,14 +173,18 @@ public class Meetings extends Controller {
 		String sid = json.findPath("sid").textValue();
 		String meetingId = json.findPath("meetingid").textValue();
 		
+		return ok(web_addUser(login, sid, meetingId));
+	}
+	
+	public static ObjectNode web_addUser(String login, String sid, String meetingId){
 		if(login==null || sid==null || meetingId==null)
-			return errorResult("incorrect data");
+			return errorObject("incorrect data");
 		if(!checkIsSidCorrect(login, sid))
-			return errorResult("incorrect sid");
+			return errorObject("incorrect sid");
 		if(userIsA_MemberOfMeeting(login, meetingId))
-			return errorResult("you are a member");
+			return errorObject("you are a member");
 		if(meetingIsAlreadyFinish(meetingId))
-			return errorResult("meeting finished");
+			return errorObject("meeting finished");
 		
 		java.util.Date date= new java.util.Date();
 		Record record = DbSingleton.getInstance().getDsl()
@@ -180,21 +196,18 @@ public class Meetings extends Controller {
 		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
-		
-		return ok(result);
+		return result;
 	}
 	
 	public static Result getList(String login, String sid){
-//		JsonNode json = request().body().asJson();
-//		if(json == null)
-//			return errorResult("json excepted");
-//
-//		String login = json.findPath("login").textValue();
-//		String sid = json.findPath("sid").textValue();
+		return ok(web_getList(login, sid));
+	}
+	
+	public static ObjectNode web_getList(String login, String sid){
 		if(login==null || sid==null)
-			return errorResult("incorrect data");
+			return errorObject("incorrect data");
 		if(!checkIsSidCorrect(login, sid))
-			return errorResult("incorrect sid");
+			return errorObject("incorrect sid");
 		
 		ObjectNode result = Json.newObject();
 		ArrayNode array = Json.newObject().arrayNode();
@@ -251,7 +264,7 @@ public class Meetings extends Controller {
 		}
 		
 		result.put("users", array);
-		return ok(result);
+		return result;
 	}
 	
 	private static boolean userIsA_MemberOfMeeting(String login,
@@ -305,9 +318,13 @@ public class Meetings extends Controller {
 	
 
 	private static Result errorResult(String msg) {
+		return ok(errorObject(msg));
+	}
+	
+	private static ObjectNode errorObject(String msg){
 		ObjectNode result = Json.newObject();
 		result.put("status", "failed");
 		result.put("reason", msg);
-		return ok(result);
+		return result;
 	}
 }

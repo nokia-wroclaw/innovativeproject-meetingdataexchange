@@ -1,7 +1,6 @@
 package controllers;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -13,12 +12,7 @@ import play.mvc.Result;
 
 public class GeneralStuff extends Controller{
 	public static Result getName() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader("server.config"));
-		String line = br.readLine();
-		ObjectNode result = Json.newObject();
-		result.put("servername", line);
-		
-		return ok(result);
+		return ok(web_getName());
 	}
 	
 	public static ObjectNode web_getName() throws IOException{
