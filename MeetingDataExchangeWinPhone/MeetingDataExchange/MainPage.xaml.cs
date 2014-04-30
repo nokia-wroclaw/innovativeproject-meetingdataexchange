@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using MeetingDataExchange.Server;
 //using MeetingDataExchange.Resources;
 
 namespace MeetingDataExchange
@@ -37,5 +38,10 @@ namespace MeetingDataExchange
         //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
         //    ApplicationBar.MenuItems.Add(appBarMenuItem);
         //}
+
+        private void GetServerName(object sender, RoutedEventArgs e)
+        {
+            new ServerSession(new IPEndPoint(IPAddress.Parse("192.168.1.117"),9000));
+        }
     }
 }

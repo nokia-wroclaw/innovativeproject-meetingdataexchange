@@ -208,6 +208,7 @@ namespace MeetingDataExchange
         }
         private void ShutterButton_Click(object sender, RoutedEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("ShutterButton_Click");
             if (cam != null)
             {
                 try
