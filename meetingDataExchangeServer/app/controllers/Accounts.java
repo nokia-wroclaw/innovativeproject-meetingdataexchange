@@ -30,54 +30,97 @@ public class Accounts extends Controller {
 			String email = json.findPath("email").textValue();
 			String password = json.findPath("password").textValue();
 			
-			if(!checkEmail(email) || email == null)
-				return errorResult("incorrect email");
-			if(name == null)
-				return errorResult("incorrect name");
-			if(password == null)
-				return errorResult("incorrect password");
-			return registerTryResult(name, email, password);
+			
+			return ok(web_register(name, email, password));
 		}
+	}
+	
+	public static ObjectNode web_register(String name, String email, String password){
+		if(!checkEmail(email) || email == null)
+			return errorObject("incorrect email");
+		if(name == null)
+			return errorObject("incorrect name");
+		if(password == null)
+			return errorObject("incorrect password");
+		
+		Record record = DbSingleton.getInstance().getDsl()
+				.insertInto(USER,
+						USER.NAME, USER.EMAIL, USER.PASSWORD)
+				.values(name, email, MD5Checksum.MD5(password))
+				.returning(USER.ID)
+				.fetchOne();
+
+		ObjectNode result = Json.newObject();
+		result.put("status", "ok");
+		result.put("login", record.getValue(USER.ID));
+		return result;
 	}
 	
 	public static Result login(){
 		JsonNode json = request().body().asJson();
 		if(json == null)
 			return errorResult("json excepted");
-		else{
-			String login = json.findPath("login").textValue();
-			String password = json.findPath("password").textValue();
-			if(login == null || password == null)
-				return errorResult("incorrect data");
-			return loginTryResult(login, password);
+
+		String login = json.findPath("login").textValue();
+		String password = json.findPath("password").textValue();
+		return ok(web_login(login, password));
+	}
+	
+	public static ObjectNode web_login(String login, String password){
+		if(login == null || password == null)
+			return errorObject("incorrect data");
+
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
+				.and(USER.PASSWORD.equal(MD5Checksum.MD5(password))).fetch();
+		if(record.isNotEmpty()){
+			String hash = new BigInteger(130, new SecureRandom()).toString(32);
+			
+			DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, hash).where(USER.ID.equal(new Integer(login))).execute();
+			
+			ObjectNode result = Json.newObject();
+			result.put("status", "ok");
+			result.put("sid", hash);
+			return result;
 		}
+		else
+			return errorObject("incorrect data");
 	}
 	
 	public static Result logoff(){
 		JsonNode json = request().body().asJson();
 		if(json == null)
 			return errorResult("json excepted");
-		else{
-			String login = json.findPath("login").textValue();
-			String sid = json.findPath("sid").textValue();
-			if(login == null || sid == null)
-				return errorResult("incorrect data");
-			return logoffTryResult(login, sid);
-		}
-	}
-	
-	public static Result getData(){
-		JsonNode json = request().body().asJson();
-		if(json == null)
-			return errorResult("json excepted");
-		
 		String login = json.findPath("login").textValue();
 		String sid = json.findPath("sid").textValue();
+		return ok(web_logoff(login, sid));
+	}
+	
+	public static ObjectNode web_logoff(String login, String sid){
+		if(login == null || sid == null)
+			return errorObject("incorrect data");
 		
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
+				.and(USER.SESSIONHASH.equal(sid)).fetch();
+		if(record.isNotEmpty()){
+			DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, "").where(USER.ID.equal(new Integer(login))).execute();
+			
+			ObjectNode result = Json.newObject();
+			result.put("status", "ok");
+			return result;
+		}
+		else
+			return errorObject("incorrect sid");
+	}
+	
+	public static Result getData(String login, String sid){
+		return ok(web_getData(login,sid));
+	}
+	
+	public static ObjectNode web_getData(String login, String sid){
 		if(login==null || sid==null)
-			return errorResult("incorrect data");
+			return errorObject("incorrect data");
 		if(!checkIsSidCorrect(login, sid))
-			return errorResult("incorrect sid");
+			return errorObject("incorrect sid");
 		
 		org.jooq.Result<Record2<String, String>> record = DbSingleton.getInstance().getDsl()
 				.select(USER.NAME, USER.EMAIL)
@@ -89,7 +132,7 @@ public class Accounts extends Controller {
 		result.put("name", record.getValue(0, USER.NAME));
 		result.put("email", record.getValue(0, USER.EMAIL));
 		
-		return ok(result);
+		return result;
 	}
 	
 	public static Result setData(){
@@ -99,30 +142,34 @@ public class Accounts extends Controller {
 		
 		String login = json.findPath("login").textValue();
 		String sid = json.findPath("sid").textValue();
-		
-		if(login==null || sid==null)
-			return errorResult("incorrect data");
-		if(!checkIsSidCorrect(login, sid))
-			return errorResult("incorrect sid");
-		
 		String email = json.findPath("email").textValue();
+		String name = json.findPath("name").textValue();
+		String password = json.findPath("password").textValue();
+		
+		return ok(web_setData(login,sid, email, name, password));
+	}
+	
+	public static ObjectNode web_setData(String login, String sid, String email, String name, String password){
+		if(login==null || sid==null)
+			return errorObject("incorrect data");
+		if(!checkIsSidCorrect(login, sid))
+			return errorObject("incorrect sid");
+		
 		if(email != null){
 			if(!checkEmail(email))
-				return errorResult("incorrect email");
+				return errorObject("incorrect email");
 			
 			DbSingleton.getInstance().getDsl().update(USER)
 				.set(USER.EMAIL, email)
 				.where(USER.ID.equal(Integer.parseInt(login))).execute();
 		}
 		
-		String name = json.findPath("name").textValue();
 		if(name != null){
 			DbSingleton.getInstance().getDsl().update(USER)
 				.set(USER.NAME, name)
 				.where(USER.ID.equal(Integer.parseInt(login))).execute();
 		}
 		
-		String password = json.findPath("password").textValue();
 		if(password != null){
 			DbSingleton.getInstance().getDsl().update(USER)
 				.set(USER.PASSWORD, MD5Checksum.MD5(password))
@@ -131,48 +178,19 @@ public class Accounts extends Controller {
 		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
-		
-		return ok(result);
+		return result;
 	}
 
-	private static Result logoffTryResult(String login, String sid) {
-		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
-				.and(USER.SESSIONHASH.equal(sid)).fetch();
-				if(record.isNotEmpty()){
-					//stop current session
-					DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, "").where(USER.ID.equal(new Integer(login))).execute();
-					
-					ObjectNode result = Json.newObject();
-					result.put("status", "ok");
-					return ok(result);
-				}
-				else
-					return errorResult("incorrect sid");
-	}
-
-	private static Result registerTryResult(String name, String email,
-			String password) {
-		Record record = DbSingleton.getInstance().getDsl()
-		.insertInto(USER,
-				USER.NAME, USER.EMAIL, USER.PASSWORD)
-		.values(name, email, MD5Checksum.MD5(password))
-		.returning(USER.ID)
-		.fetchOne();
-		return registerResult(record.getValue(USER.ID));
-	}
-
-	private static Result registerResult(int idUser) {
-		ObjectNode result = Json.newObject();
-		result.put("status", "ok");
-		result.put("login", idUser);
-		return ok(result);
-	}
-
+	
 	private static Result errorResult(String msg) {
+		return ok(errorObject(msg));
+	}
+	
+	private static ObjectNode errorObject(String msg){
 		ObjectNode result = Json.newObject();
 		result.put("status", "failed");
 		result.put("reason", msg);
-		return ok(result);
+		return result;
 	}
 	
 	private static boolean checkEmail(String email) {
@@ -183,27 +201,6 @@ public class Accounts extends Controller {
 		return matcher.matches();
 	}
 
-	private static Result loginTryResult(String login, String password) {
-		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
-		.and(USER.PASSWORD.equal(MD5Checksum.MD5(password))).fetch();
-		if(record.isNotEmpty())
-				return loginResult(new Integer(login));
-		else
-			return errorResult("incorrect data");
-	}
-
-	private static Result loginResult(int login) {
-		String hash = new BigInteger(130, new SecureRandom()).toString(32);
-		
-		//register new session
-		DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, hash).where(USER.ID.equal(login)).execute();
-		
-		ObjectNode result = Json.newObject();
-		result.put("status", "ok");
-		result.put("sid", hash);
-		return ok(result);
-	}
-	
 	private static boolean checkIsSidCorrect(String login, String sid) {
 		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
 				.and(USER.SESSIONHASH.equal(sid)).fetch();
