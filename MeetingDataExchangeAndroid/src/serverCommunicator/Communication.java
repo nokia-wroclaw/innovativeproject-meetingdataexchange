@@ -25,6 +25,9 @@ public class Communication
 	private String input;
 	private String address;
 	private Context context;
+	String name="michal";//temporary
+	String email="michal.blach92@gmail.com";//temporary
+	String password="2345fgdsh434";//temporary
 	final static String log="Communication";
 	public Communication(String input,Context contex)
 	{
@@ -52,9 +55,7 @@ public class Communication
 	private JSONObject makeJSON2Reg()
 	{
 		
-		String name="michal";
-		String email="michal.blach92@gmail.com";
-		String password="2345fgdsh434";
+		
 		JSONObject json= new JSONObject();
 		try {
 			json.accumulate("name", name);
@@ -97,17 +98,28 @@ public class Communication
 		try {
 			
 			JSONObject jsonRes=new HttpPostRequest
-			("http://192.168.1.117:9000/api/account/register")
+			("http://"+address+"/api/account/register")
 			.execute(json).get();
+			String result=jsonRes.getString("status");
 			Log.i(log,jsonRes.getString("status"));
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			if(result.contains("ok"))
+			{
+				ServerEntity entity= new ServerEntity();//temporary
+				entity.setName(name);
+				entity.setAddress(address);
+				entity.setLogin(jsonRes.getString("login"));
+				entity.setNick("");
+				entity.setEmail(email);
+				entity.setPassword(password);
+				new DataBaseHelper(context).insertServerEntity(entity);
+				
+			}
+			else
+			{
+				
+			}
+		} catch (Exception e)
+		{
 			e.printStackTrace();
 		}
     	

@@ -1,5 +1,6 @@
 package dataBase;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -86,4 +87,23 @@ public class DataBaseHelper extends SQLiteOpenHelper
     				
     	return null;
     }
+    public void insertServerEntity(ServerEntity entity)
+	{
+
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(SERVER_NAME,entity.getName());
+		values.put(SERVER_ADDRESS, entity.getAddress());
+		values.put(SERVER_LOGIN, entity.getLogin());
+		values.put(SERVER_NICK, entity.getNick());
+		values.put(SERVER_MAIL, entity.getEmail());
+		values.put(SERVER_PASSWORD, entity.getPassword());
+
+		 db.insert(SERVER_TABLE_NAME, null, values);
+		 Log.i(log, "ServerEntity added");
+
+
+
+	}
 }
