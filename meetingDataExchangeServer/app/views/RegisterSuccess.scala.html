@@ -1,9 +1,11 @@
+@(id: String)
 <!DOCTYPE html>
 <html>
   <head>
         <title>Meeting Data Exchange</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/warning.css")">
         <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
     </head>
   <body>
@@ -14,6 +16,9 @@
                     
                 </div>
             </div>
+  </div>
+  <div class = "container">
+  		<div class="success"> Użytkownik został zarejestrowany pomyślnie, twoje id to @id</div>
   </div>
   <div class="container">
 		<div class="content">
@@ -36,7 +41,7 @@
    			 	</table>
       			<!-- submit button -->
       			<input type="submit" class = "btn">
-      			<!-- back to main page button-->
+      			<!-- back to main page button -->
       			<a href="@routes.Application.index" class="btn">Back</a>
     		</form>
     	</div>
