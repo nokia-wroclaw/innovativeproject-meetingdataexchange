@@ -26,11 +26,10 @@ GET     /                           controllers.Application.index
 
 #login activities
 GET	    /login				            controllers.LogIn.loginMain()
+POST     /login                         controllers.LogIn.submit()
 #POST	/account/logoff					controllers.Accounts.logoff()
 
 #register activities
 GET     /register                       controllers.Register.registerMain()
+POST     /register                       controllers.Register.submit()
 
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
-GET     /webjars/*file              controllers.WebJarAssets.at(file)
