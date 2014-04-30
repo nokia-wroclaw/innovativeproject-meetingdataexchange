@@ -3,6 +3,7 @@ package serverCommunicator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
@@ -39,12 +40,32 @@ public class Communication
 		.getServerEntity(name);
 		if(ent==null)
 		{
+			register2Server();
 			
 		}
 		else
 		{
 			
 		}
+		
+	}
+	private JSONObject makeJSON2Reg()
+	{
+		
+		String name="michal";
+		String email="michal.blach92@gmail.com";
+		String password="2345fgdsh434";
+		JSONObject json= new JSONObject();
+		try {
+			json.accumulate("name", name);
+			json.accumulate("email", email);
+			json.accumulate("password", password);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
+		
 		
 	}
 	private String getServerName()
@@ -71,6 +92,24 @@ public class Communication
 	}
     private void register2Server()
     {
+    	
+    	JSONObject json=makeJSON2Reg();
+		try {
+			
+			JSONObject jsonRes=new HttpPostRequest
+			("http://192.168.1.117:9000/api/account/register")
+			.execute(json).get();
+			Log.i(log,jsonRes.getString("status"));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     }
 	

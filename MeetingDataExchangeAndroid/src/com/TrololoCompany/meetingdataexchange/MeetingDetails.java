@@ -71,10 +71,7 @@ public class MeetingDetails extends FragmentActivity
     }
     public void add_photo_Button(View v) 
     {
-    	
-
 		//dialog.show();
-    	
        Log.i("dzial", "dziala");
        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
        
@@ -84,8 +81,6 @@ public class MeetingDetails extends FragmentActivity
     	   Log.i("info","test");
     	   startActivityForResult(takePictureIntent, 1);
        }
-      
-       
     }
      @Override
      protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -16,8 +16,7 @@
     	    android:enabled="false"
     	    android:text="@string/main_act_name"
     	    android:gravity="center_vertical"
-    	    
-    	    
+    	 
     	    	/>
     	<Button
     		    android:id="@+id/join_meeting_button"
@@ -28,8 +27,9 @@
     	    	android:drawableRight="@android:drawable/sym_action_email"
     	    	android:drawableBottom="@drawable/line"
     		    android:text="@string/new_meeting"
-    		   
     		    android:gravity="center_vertical"
+    		       android:onClick="create_new_meeting"
+    		    
     		 />
     	<Button
     		    android:id="@+id/meetings_button"
@@ -40,8 +40,9 @@
     	    	android:drawableRight="@android:drawable/sym_action_email"
     	    	android:drawableBottom="@drawable/line"
     		    android:text="@string/join_meeting"
-    		 
-    		    android:gravity="center_vertical"/>
+    		    android:gravity="center_vertical"
+    		    android:onClick="join_meeting"
+    		    />
     	<Button
     		    android:id="@+id/button4"
     		    android:layout_width="match_parent"
@@ -51,8 +52,8 @@
     	    	android:drawableRight="@android:drawable/sym_action_email"
     	    	android:drawableBottom="@drawable/line"
     		    android:text="@string/meetings"
-    		   
-    		    android:gravity="center_vertical"/>
+    		    android:gravity="center_vertical"
+    		    android:onClick="show_meetings"/>
     	<Button
     		    android:id="@+id/button5"
     		    android:layout_width="match_parent"
@@ -61,9 +62,9 @@
     		    android:background="#f1f1f1"
     	    	android:drawableRight="@android:drawable/sym_action_email"
     	    	android:drawableBottom="@drawable/line"
-    	    	
     	    	android:gravity="center_vertical"
-    		    android:text="@string/setting"/>
+    		    android:text="@string/setting"
+    		    android:onClick="show_settings"/>
     	<Button
     		
     		    android:layout_width="match_parent"
