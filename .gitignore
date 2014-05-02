@@ -1,7 +1,8 @@
 *.class
 
+*.db
+
 # Package Files #
 *.war
 *.ear
-meetingDataExchangeServer/data/db.lock.db
-meetingDataExchangeServer/data/db.h2.db
+

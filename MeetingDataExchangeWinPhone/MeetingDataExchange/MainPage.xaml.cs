@@ -41,7 +41,7 @@ namespace MeetingDataExchange
 
         private void GetServerName(object sender, RoutedEventArgs e)
         {
-            new ServerSession(new IPEndPoint(IPAddress.Parse("192.168.1.117"),9000));
+            new ServerSession(new IPEndPoint(IPAddress.Parse("156.17.230.172"),9000));
         }
     }
 }
