@@ -267,7 +267,7 @@ public class Meetings extends Controller {
 		return result;
 	}
 	
-	private static boolean userIsA_MemberOfMeeting(String login,
+	public static boolean userIsA_MemberOfMeeting(String login,
 			String meetingId) {
 		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl()
 				.select()
