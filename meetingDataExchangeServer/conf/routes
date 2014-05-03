@@ -22,15 +22,4 @@ GET     /webjars/*file              controllers.WebJarAssets.at(file)
 
 #Milena :
 
-#main page, log in or register
-GET     /                           controllers.Application.index
-
-#login activities
-GET	    /login				            controllers.LogIn.loginMain()
-POST     /login                         controllers.LogIn.submit()
-#POST	/account/logoff					controllers.Accounts.logoff()
-
-#register activities
-GET     /register                       controllers.Register.registerMain()
-POST     /register                       controllers.Register.submit()
 

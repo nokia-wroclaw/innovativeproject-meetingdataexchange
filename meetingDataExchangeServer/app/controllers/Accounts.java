@@ -9,7 +9,7 @@ import org.jooq.Record;
 import org.jooq.Record2;
 
 import models.DbSingleton;
-import static models.public_.Tables.*;
+import static models.Tables.*;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -26,16 +26,19 @@ public class Accounts extends Controller {
 		if(json == null)
 			return errorResult("json excepted");
 		else{
+			String login = json.findPath("login").textValue();
 			String name = json.findPath("name").textValue();
 			String email = json.findPath("email").textValue();
 			String password = json.findPath("password").textValue();
 			
 			
-			return ok(web_register(name, email, password));
+			return ok(web_register(login, name, email, password));
 		}
 	}
 	
-	public static ObjectNode web_register(String name, String email, String password){
+	public static ObjectNode web_register(String login, String name, String email, String password){
+		if(login == null)
+			return errorObject("incorrect login");
 		if(!checkEmail(email) || email == null)
 			return errorObject("incorrect email");
 		if(name == null)
@@ -43,16 +46,22 @@ public class Accounts extends Controller {
 		if(password == null)
 			return errorObject("incorrect password");
 		
-		Record record = DbSingleton.getInstance().getDsl()
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER)
+							.where(USER.LOGIN.equal(login)).fetch();
+		
+		if(record.isNotEmpty())
+			return errorObject("Login already exists");
+		
+		/*Record record = */ DbSingleton.getInstance().getDsl()
 				.insertInto(USER,
-						USER.NAME, USER.EMAIL, USER.PASSWORD)
-				.values(name, email, MD5Checksum.MD5(password))
-				.returning(USER.ID)
-				.fetchOne();
+						USER.LOGIN, USER.NAME, USER.EMAIL, USER.PASSWORD)
+				.values(login, name, email, MD5Checksum.MD5(password)).execute();
+//				.returning(USER.ID)
+//				.fetchOne();
 
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
-		result.put("login", record.getValue(USER.ID));
+		//result.put("login", record.getValue(USER.ID));
 		return result;
 	}
 	
@@ -70,13 +79,15 @@ public class Accounts extends Controller {
 		if(login == null || password == null)
 			return errorObject("incorrect data");
 
-		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.LOGIN.equal(login))
 				.and(USER.PASSWORD.equal(MD5Checksum.MD5(password))).fetch();
 		if(record.isNotEmpty()){
 			String hash = new BigInteger(130, new SecureRandom()).toString(32);
 			
-			DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, hash).where(USER.ID.equal(new Integer(login))).execute();
-			
+			//DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, hash).where(USER.ID.equal(new Integer(login))).execute();
+			DbSingleton.getInstance().getDsl().insertInto(SESSION,
+					SESSION.USERLOGIN, SESSION.SID)
+					.values(login, hash);
 			ObjectNode result = Json.newObject();
 			result.put("status", "ok");
 			result.put("sid", hash);
@@ -99,11 +110,13 @@ public class Accounts extends Controller {
 		if(login == null || sid == null)
 			return errorObject("incorrect data");
 		
-		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
-				.and(USER.SESSIONHASH.equal(sid)).fetch();
+		//org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
+		//		.and(USER.SESSIONHASH.equal(sid)).fetch();
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(SESSION)
+				.where(SESSION.USERLOGIN.equal(login)).and(SESSION.SID.equal(sid)).fetch();
 		if(record.isNotEmpty()){
-			DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, "").where(USER.ID.equal(new Integer(login))).execute();
-			
+			//DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, "").where(USER.ID.equal(new Integer(login))).execute();
+			DbSingleton.getInstance().getDsl().delete(SESSION).where(SESSION.USERLOGIN.equal(login)).and(SESSION.SID.equal(sid)).execute();
 			ObjectNode result = Json.newObject();
 			result.put("status", "ok");
 			return result;
@@ -125,7 +138,7 @@ public class Accounts extends Controller {
 		org.jooq.Result<Record2<String, String>> record = DbSingleton.getInstance().getDsl()
 				.select(USER.NAME, USER.EMAIL)
 				.from(USER)
-				.where(USER.ID.equal(Integer.parseInt(login))).fetch();
+				.where(USER.LOGIN.equal(login)).fetch();
 		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
@@ -161,19 +174,19 @@ public class Accounts extends Controller {
 			
 			DbSingleton.getInstance().getDsl().update(USER)
 				.set(USER.EMAIL, email)
-				.where(USER.ID.equal(Integer.parseInt(login))).execute();
+				.where(USER.LOGIN.equal(login)).execute();
 		}
 		
 		if(name != null){
 			DbSingleton.getInstance().getDsl().update(USER)
 				.set(USER.NAME, name)
-				.where(USER.ID.equal(Integer.parseInt(login))).execute();
+				.where(USER.LOGIN.equal(login)).execute();
 		}
 		
 		if(password != null){
 			DbSingleton.getInstance().getDsl().update(USER)
 				.set(USER.PASSWORD, MD5Checksum.MD5(password))
-				.where(USER.ID.equal(Integer.parseInt(login))).execute();
+				.where(USER.LOGIN.equal(login)).execute();
 		}
 		
 		ObjectNode result = Json.newObject();
@@ -202,8 +215,10 @@ public class Accounts extends Controller {
 	}
 
 	private static boolean checkIsSidCorrect(String login, String sid) {
-		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
-				.and(USER.SESSIONHASH.equal(sid)).fetch();
+//		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
+//				.and(USER.SESSIONHASH.equal(sid)).fetch();
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(SESSION)
+				.where(SESSION.USERLOGIN.equal(login)).and(SESSION.SID.equal(sid)).fetch();
 				if(record.isNotEmpty())
 					return true;	
 				else
