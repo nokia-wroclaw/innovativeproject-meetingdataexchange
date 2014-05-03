@@ -1,6 +1,6 @@
 *.class
 
-*.db
+
 
 # Package Files #
 *.war
