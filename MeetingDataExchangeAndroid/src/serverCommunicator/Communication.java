@@ -53,9 +53,7 @@ public class Communication
 		
 	}
 	private JSONObject makeJSON2Reg()
-	{
-		
-		
+	{	
 		JSONObject json= new JSONObject();
 		try {
 			json.accumulate("name", name);
@@ -65,9 +63,7 @@ public class Communication
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return json;
-		
-		
+		return json;	
 	}
 	private String getServerName()
 	{
@@ -96,7 +92,6 @@ public class Communication
     	
     	JSONObject json=makeJSON2Reg();
 		try {
-			
 			JSONObject jsonRes=new HttpPostRequest
 			("http://"+address+"/api/account/register")
 			.execute(json).get();

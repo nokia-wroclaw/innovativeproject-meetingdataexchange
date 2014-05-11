@@ -1,13 +1,13 @@
 package com.TrololoCompany.meetingdataexchange;
 
-import dataBase.DataBaseHelper;
-import dataBase.ServerEntity;
 import serverCommunicator.Communication;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
+import dataBase.DataBaseHelper;
 
 public class MainActivity extends Activity {
 
@@ -17,8 +17,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		DataBaseHelper base = new DataBaseHelper(getApplicationContext());
-		
-		//Log.i("is read",base.getReadableDatabase()+"");
 	}
 
 	@Override
@@ -32,9 +30,16 @@ public class MainActivity extends Activity {
 	public void join_meeting(View v) 
 	{
 		//temporary string format IP:Port;MeetingId
-		String temp="192.168.1.117:9000;MeetingId";
+		String temp="156.17.230.172:9000;MeetingId";
 		Communication communication = new Communication(temp,getApplicationContext());
 		communication.join2Meeting();
+		
+		
+	}
+	public void manage_servers(View v)
+	{
+			Intent intent = new Intent(this, ServerManageActivity.class);
+		    startActivity(intent);
 		
 		
 	}

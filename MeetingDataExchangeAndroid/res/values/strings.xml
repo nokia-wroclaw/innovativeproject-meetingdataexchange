@@ -6,8 +6,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="new_meeting">Nowe spotkanie</string>
     <string name="join_meeting">Dołącz</string>
+    <string name="add_new_server">Dodaj nowy serwer</string>
     <string name="meetings">Spotkania</string>
-    <string name="setting">Ustawienia</string>
+    <string name="setting">Zarządanie serwerami</string>
     <string name="main_act_name">MeetingDataExchange</string>
     <string name="title_activity_camera">CameraActivity</string>
     <string name="title_activity_add_new_item">Add_new_itemActivity</string>
@@ -19,5 +20,12 @@
     <string name="add_item_ac_meeting_add_note_button">Dodaj notatke</string>
     <string name="add_item_ac_meeting_add_user_button">Dodaj użytkowników</string>
     <string name="title_activity_meeting_details">MeetingDetails</string>
+    <string name="title_activity_server_manager">ServerManagerActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_server_manage">ServerManageActivity</string>
+    <string name="title_activity_add_server">AddServerActivity</string>
+    <string name="title_activity_add_server_activity_fail">AddServerActivityFail</string>
+    <string name="title_activity_add_server_activity_success">AddServerActivitySuccess</string>
 
 </resources>

@@ -23,12 +23,12 @@
     		    android:layout_width="match_parent"
     		    android:layout_height="0dp"
     		    android:layout_weight="0.3"
-    		   android:background="#f1f1f1"
+    		    android:background="#f1f1f1"
     	    	android:drawableRight="@android:drawable/sym_action_email"
     	    	android:drawableBottom="@drawable/line"
     		    android:text="@string/new_meeting"
     		    android:gravity="center_vertical"
-    		       android:onClick="create_new_meeting"
+    		    android:onClick="create_new_meeting"
     		    
     		 />
     	<Button
@@ -64,7 +64,7 @@
     	    	android:drawableBottom="@drawable/line"
     	    	android:gravity="center_vertical"
     		    android:text="@string/setting"
-    		    android:onClick="show_settings"/>
+    		    android:onClick="manage_servers"/>
     	<Button
     		
     		    android:layout_width="match_parent"
