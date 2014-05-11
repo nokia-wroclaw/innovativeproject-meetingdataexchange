@@ -10,9 +10,9 @@ import org.jooq.impl.DSL;
 public class DbSingleton {
 	private final static DbSingleton instance = new DbSingleton();
 	
-	private final String url = "jdbc:h2:data//db";
-	private final String userName = "admin";
-	private final String password = "admin";
+	private final String url = "jdbc:sqlite:data/mde.db";
+	//private final String userName = "admin";
+	//private final String password = "admin";
 	
 	private static Connection conn;
 	private static DSLContext dsl;
@@ -46,9 +46,9 @@ public class DbSingleton {
 	
     private void connect(){
         try {
-        	Class.forName("org.h2.Driver");
-            conn = DriverManager.getConnection(url, userName, password);
-            dsl = DSL.using(conn, SQLDialect.H2);
+        	Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection(url);
+            dsl = DSL.using(conn, SQLDialect.SQLITE);
         } catch (ClassNotFoundException ex) {
         	
         } catch (SQLException ex) {

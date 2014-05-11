@@ -13,6 +13,7 @@ POST	/api/meeting/edit					controllers.Meetings.edit()
 POST	/api/meeting/adduser				controllers.Meetings.adduser()
 GET		/api/meeting/list/:login/:sid		controllers.Meetings.getList(login: String, sid: String)
 GET		/api/general/getname				controllers.GeneralStuff.getName()
+PUT		/api/upload/:meetingid/:filename	controllers.FilesManagement.upload(meetingid: String, filename: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
@@ -21,15 +22,4 @@ GET     /webjars/*file              controllers.WebJarAssets.at(file)
 
 #Milena :
 
-#main page, log in or register
-GET     /                           controllers.Application.index
-
-#login activities
-GET	    /login				            controllers.LogIn.loginMain()
-POST     /login                         controllers.LogIn.submit()
-#POST	/account/logoff					controllers.Accounts.logoff()
-
-#register activities
-GET     /register                       controllers.Register.registerMain()
-POST     /register                       controllers.Register.submit()
 

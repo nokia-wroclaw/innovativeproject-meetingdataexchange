@@ -2,7 +2,9 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+
 import org.jooq.Record1;
+import org.jooq.exception.DataAccessException;
 
 import models.DbSingleton;
 
@@ -12,11 +14,12 @@ import com.google.common.io.Files;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import static models.public_.Tables.*;
+import tools.MD5Checksum;
+import static models.Tables.*;
 
 public class FilesManagement extends Controller {
 	
-	public static Result upload(String meetingid, String filename) throws IOException {
+	public static Result upload(String meetingid, String filename) throws DataAccessException, Exception {
 		String login = session("id");
 		String sid = session("sid");
 		if(login==null || sid==null)
@@ -28,9 +31,9 @@ public class FilesManagement extends Controller {
 		org.jooq.Result<Record1<Integer>> record = DbSingleton.getInstance().getDsl().select(MEETINGUSER.ID)
 				.from(MEETING)
 				.join(MEETINGUSER).on(MEETINGUSER.MEETINGID.equal(Integer.parseInt(meetingid)))
-					.and(MEETINGUSER.USERID.equal(Integer.parseInt(login)))
+					.and(MEETINGUSER.USERLOGIN.equal(login))
 				.where(MEETING.ID.equal(Integer.parseInt(meetingid)))
-				.and(MEETING.ABILITYTOSENDFILES.isTrue().or(MEETING.AUTHORID.equal(Integer.parseInt(login)))).fetch();
+				.and(MEETING.ABILITYTOSENDFILES.isTrue().or(MEETING.AUTHORLOGIN.equal(login))).fetch();
 		
 		int meetinguserid;
 		
@@ -52,8 +55,10 @@ public class FilesManagement extends Controller {
 		
 		DbSingleton.getInstance().getDsl()
 				.insertInto(FILE,
-						FILE.MEETINGUSERID, FILE.NAME, FILE.TYPEFILEID, FILE.SIZE, FILE.ADDEDTIE)
-				.values(meetinguserid, filename, 0, new Integer((int) (newFile.length()/1024.0)), new Timestamp(date.getTime()))
+						FILE.MEETINGUSERID, FILE.NAME, FILE.SIZEKB, FILE.ADDEDTIME, FILE.HASHMD5)
+				.values(meetinguserid, filename, 
+						new Integer((int) (newFile.length()/1024.0)), new Timestamp(date.getTime()),
+						MD5Checksum.getMD5Checksum(System.getProperty("user.dir")+"/upload/"+meetingid+"/"+filename))
 				.execute();
 		
 		ObjectNode result = Json.newObject();

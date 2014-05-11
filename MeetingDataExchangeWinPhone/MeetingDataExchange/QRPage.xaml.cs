@@ -8,124 +8,81 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Devices;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows.Threading;
 using System.Windows.Media.Imaging;
+using ZXing;
+using ZXing.QrCode;
+using ZXing.Common;
+
 namespace MeetingDataExchange
 {
     public partial class QRPage : PhoneApplicationPage
     {
-        private PhotoCamera camera;
-        private bool capturing = false;
+        private readonly DispatcherTimer _timer;
+        private readonly ObservableCollection<string> _matches;
+
+        private PhotoCameraLuminanceSource _luminance;
+        private QRCodeReader _reader;
+        private PhotoCamera _photoCamera;
         public QRPage()
         {
             InitializeComponent();
+            _matches = new ObservableCollection<string>();
+            qrMatchesList.ItemsSource = _matches;
+
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(250);
+            _timer.Tick += (o, arg) => ScanPreviewBuffer();
         }
 
-/*        protected override void OnNavigatedTo(
-           System.Windows.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (null == camera)
-            {
-                camera = new PhotoCamera();
-                // filred when the camera is initialised
-                camera.Initialized += camera_Initialised;
-                // fired when the button is fully pressed
-                CameraButtons.ShutterKeyPressed += camera_ButtonFullPress;
-                // fired when an image is available.
-                camera.CaptureImageAvailable += camera_CaptureImageAvailable;
-                // set the VideoBrush source to the camera output
-                videoRotateTransform.CenterX = videoRectangle.Width / 2;
-                videoRotateTransform.CenterY = videoRectangle.Height / 2;
-                videoRotateTransform.Angle = 90;
-                viewfinderBrush.SetSource(camera);
-            }
+            _photoCamera = new PhotoCamera();
+            _photoCamera.Initialized += OnPhotoCameraInitialized;
+            qrPreviewVideo.SetSource(_photoCamera);
+
+            CameraButtons.ShutterKeyHalfPressed += (o, arg) => _photoCamera.Focus();
+
             base.OnNavigatedTo(e);
         }
 
-        // user navigated away from page
-        protected override void OnNavigatedFrom(
-                   System.Windows.Navigation.NavigationEventArgs e)
+        private void OnPhotoCameraInitialized(object sender, CameraOperationCompletedEventArgs e)
         {
-            if (camera != null)
-            {
-                // unhook the event handlers
-                CameraButtons.ShutterKeyPressed -= camera_ButtonFullPress;
-                camera.CaptureImageAvailable -= camera_CaptureImageAvailable;
-                camera.Initialized -= camera_Initialised;
-                // dispose of the camera object
-                camera.Dispose();
-            }
-            base.OnNavigatedFrom(e);
-        }
-
-        private void camera_Initialised(object sender, CameraOperationCompletedEventArgs e)
-        {
-            // set the camera resolution
-            if (e.Succeeded)
-            {
-                var res = from resolution in camera.AvailableResolutions
-                          where resolution.Width == 640
-                          select resolution;
-                camera.Resolution = res.First();
-            }
-        }
-        // user has pressed the camera button
-
-        private void camera_ButtonFullPress(object sender, EventArgs e)
-        {
-            if (capturing) return;
-            capturing = true;
-            camera.CaptureImage();
-        }
-
-        private void camera_CaptureImageAvailable(
-            object sender,
-            ContentReadyEventArgs e)
-        {
-           capturing = false;
-            
-            Stream imageStream = (Stream)e.ImageStream;
-            //BarcodeDecoder barcodeDecoder = new BarcodeDecoder();
-            QRCodeImageReader qrreader = new QRCodeImageReader();
-            Dictionary<DecodeOptions, object> decodingOptions =
-                                new Dictionary<DecodeOptions, object>();
-            List<BarcodeFormat> possibleFormats = new List<BarcodeFormat>(1);
-            Result result;
+            int width = Convert.ToInt32(_photoCamera.PreviewResolution.Width);
+            int height = Convert.ToInt32(_photoCamera.PreviewResolution.Height);
+            _luminance = new PhotoCameraLuminanceSource(width, height);
+            _reader = new QRCodeReader();
 
             Dispatcher.BeginInvoke(() =>
             {
-                WriteableBitmap qrImage = new WriteableBitmap(
-                                                (int)camera.Resolution.Width,
-                                                (int)camera.Resolution.Height);
-                imageStream.Position = 0;
-                qrImage.LoadJpeg(imageStream);
-
-                possibleFormats.Add(BarcodeFormat.QRCode);
-                decodingOptions.Add(
-                    DecodeOptions.PossibleFormats,
-                    possibleFormats);
-                try
-                {
-                    result = barcodeDecoder.Decode(qrImage, decodingOptions);
-                    resultText.Text = result.Text;
-                }
-
-                catch (NotFoundException)
-                {
-                    // this is expected if the image does not contain a valid
-                    // code, Or is too distorted to read
-                    resultText.Text = "<nothing to display>";
-                }
-
-                catch (Exception ex)
-                {
-                    // something else went wrong, so alert the user
-                    MessageBox.Show(
-                        ex.Message,
-                        "Error Decoding Image",
-                        MessageBoxButton.OK);
-                }
+                qrPreviewTransform.Rotation = _photoCamera.Orientation;
+                _timer.Start();
             });
-        }*/
+        }
+
+        private void ScanPreviewBuffer()
+        {
+            try
+            {
+                _photoCamera.GetPreviewBufferY(_luminance.PreviewBufferY);
+                var binarizer = new HybridBinarizer(_luminance);
+                var binBitmap = new BinaryBitmap(binarizer);
+                var result = _reader.decode(binBitmap);
+                if(result!=null)
+                    Dispatcher.BeginInvoke(() => DisplayResult(result.Text));
+            }
+            catch
+            {
+            }
+        }
+
+        private void DisplayResult(string text)
+        {
+//            if(text!= null)
+            if (!_matches.Contains(text))
+                _matches.Add(text);
+        }
     }
 }

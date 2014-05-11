@@ -1,14 +1,16 @@
 package controllers;
 
-import static models.public_.Tables.*;
+import static models.Tables.*;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 
 import models.DbSingleton;
 
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record7;
+import org.jooq.Record8;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -49,10 +51,13 @@ public class Meetings extends Controller {
 			return errorObject("incorrect sid");
 		
 		java.util.Date date= new java.util.Date();
+		String hash = new BigInteger(130, new SecureRandom()).toString(32);
+		hash = hash.substring(1,6);
 		Record record = DbSingleton.getInstance().getDsl()
 				.insertInto(MEETING,
-						MEETING.TITLE, MEETING.TOPIC, MEETING.STARTTIME, MEETING.ABILITYTOSENDFILES, MEETING.AUTHORID)
-				.values(title, topic, new Timestamp(date.getTime()), permit, Integer.parseInt(login))
+						MEETING.TITLE, MEETING.TOPIC, MEETING.STARTTIME, MEETING.ABILITYTOSENDFILES, 
+						MEETING.AUTHORLOGIN, MEETING.ACCESSCODE)
+				.values(title, topic, new Timestamp(date.getTime()), permit, login, hash)
 				.returning(MEETING.ID)
 				.fetchOne();
 		
@@ -60,8 +65,8 @@ public class Meetings extends Controller {
 		
 		DbSingleton.getInstance().getDsl()
 				.insertInto(MEETINGUSER,
-						MEETINGUSER.MEETINGID, MEETINGUSER.USERID, MEETINGUSER.JOINTIME)
-				.values(meetingId, Integer.parseInt(login), new Timestamp(date.getTime()))
+						MEETINGUSER.MEETINGID, MEETINGUSER.USERLOGIN, MEETINGUSER.JOINTIME)
+				.values(meetingId, login, new Timestamp(date.getTime()))
 				.execute();
 		
 		ObjectNode result = Json.newObject();
@@ -172,15 +177,18 @@ public class Meetings extends Controller {
 		String login = json.findPath("login").textValue();
 		String sid = json.findPath("sid").textValue();
 		String meetingId = json.findPath("meetingid").textValue();
+		String accessCode = json.findPath("accessCode").textValue();
 		
-		return ok(web_addUser(login, sid, meetingId));
+		return ok(web_addUser(login, sid, meetingId, accessCode));
 	}
 	
-	public static ObjectNode web_addUser(String login, String sid, String meetingId){
-		if(login==null || sid==null || meetingId==null)
+	public static ObjectNode web_addUser(String login, String sid, String meetingId, String accessCode){
+		if(login==null || sid==null || meetingId==null || accessCode==null)
 			return errorObject("incorrect data");
 		if(!checkIsSidCorrect(login, sid))
 			return errorObject("incorrect sid");
+		if(codeIsWrong(login, meetingId, accessCode))
+			return errorObject("incorrect accessCode");
 		if(userIsA_MemberOfMeeting(login, meetingId))
 			return errorObject("you are a member");
 		if(meetingIsAlreadyFinish(meetingId))
@@ -189,8 +197,8 @@ public class Meetings extends Controller {
 		java.util.Date date= new java.util.Date();
 		Record record = DbSingleton.getInstance().getDsl()
 				.insertInto(MEETINGUSER,
-						MEETINGUSER.MEETINGID, MEETINGUSER.USERID, MEETINGUSER.JOINTIME)
-				.values(Integer.parseInt(meetingId), Integer.parseInt(login), new Timestamp(date.getTime()))
+						MEETINGUSER.MEETINGID, MEETINGUSER.USERLOGIN, MEETINGUSER.JOINTIME)
+				.values(Integer.parseInt(meetingId), login, new Timestamp(date.getTime()))
 				.returning(MEETINGUSER.ID)
 				.fetchOne();
 		
@@ -198,7 +206,7 @@ public class Meetings extends Controller {
 		result.put("status", "ok");
 		return result;
 	}
-	
+
 	public static Result getList(String login, String sid){
 		return ok(web_getList(login, sid));
 	}
@@ -212,14 +220,14 @@ public class Meetings extends Controller {
 		ObjectNode result = Json.newObject();
 		ArrayNode array = Json.newObject().arrayNode();
 		
-		org.jooq.Result<Record7<Integer, String, String, Timestamp, Timestamp, Boolean, Integer>> record = 
+		org.jooq.Result<Record8<Integer, String, String, Timestamp, Timestamp, Boolean, String, String>> record = 
 				DbSingleton.getInstance().getDsl()
 				.select(MEETING.ID, MEETING.TITLE, MEETING.TOPIC, MEETING.STARTTIME, 
-						MEETING.ENDTIME, MEETING.ABILITYTOSENDFILES, MEETING.AUTHORID)
+						MEETING.ENDTIME, MEETING.ABILITYTOSENDFILES, MEETING.AUTHORLOGIN, MEETING.ACCESSCODE)
 				.from(MEETING)
 				.join(MEETINGUSER)
 				.on(MEETING.ID.equal(MEETINGUSER.MEETINGID))
-				.where(MEETINGUSER.USERID.equal(Integer.parseInt(login)))
+				.where(MEETINGUSER.USERLOGIN.equal(login))
 				.orderBy(MEETING.STARTTIME.desc()).fetch();
 		
 		int count = record.size();
@@ -235,7 +243,7 @@ public class Meetings extends Controller {
 					DbSingleton.getInstance().getDsl()
 					.select(USER.NAME)
 					.from(USER)
-					.where(USER.ID.equal(record.getValue(i, MEETING.AUTHORID))).fetch();
+					.where(USER.LOGIN.equal(record.getValue(i, MEETING.AUTHORLOGIN))).fetch();
 			
 			meeting.put("hostname", recordHost.getValue(0, USER.NAME));
 			meeting.put("starttime", record.getValue(i, MEETING.STARTTIME).toString());
@@ -254,12 +262,13 @@ public class Meetings extends Controller {
 			
 			meeting.put("members", recordMembers.size());
 			boolean upl = record.getValue(i, MEETING.ABILITYTOSENDFILES);
-			if(login.equals(Integer.toString(record.getValue(i, MEETING.AUTHORID))))
+			if(login.equals(record.getValue(i, MEETING.AUTHORLOGIN)))
 				meeting.put("permissions", "host");
 			else if(upl)
 				meeting.put("permissions", "memberUpload");
 			else
 				meeting.put("permissions", "member");
+			meeting.put("accessCode", record.getValue(i, MEETING.ACCESSCODE));
 			array.add(meeting);
 		}
 		
@@ -267,13 +276,13 @@ public class Meetings extends Controller {
 		return result;
 	}
 	
-	private static boolean userIsA_MemberOfMeeting(String login,
+	public static boolean userIsA_MemberOfMeeting(String login,
 			String meetingId) {
 		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl()
 				.select()
 				.from(MEETINGUSER)
 				.where(MEETINGUSER.MEETINGID.equal(Integer.parseInt(meetingId)))
-				.and(MEETINGUSER.USERID.equal(Integer.parseInt(login))).fetch();
+				.and(MEETINGUSER.USERLOGIN.equal(login)).fetch();
 				if(record.isNotEmpty())
 					return true;	
 				else
@@ -281,8 +290,10 @@ public class Meetings extends Controller {
 	}
 
 	private static boolean checkIsSidCorrect(String login, String sid) {
-		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
-				.and(USER.SESSIONHASH.equal(sid)).fetch();
+//		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(USER).where(USER.ID.equal(new Integer(login)))
+//				.and(USER.SESSIONHASH.equal(sid)).fetch();
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl().select().from(SESSION)
+				.where(SESSION.USERLOGIN.equal(login)).and(SESSION.SID.equal(sid)).fetch();
 				if(record.isNotEmpty())
 					return true;	
 				else
@@ -294,7 +305,7 @@ public class Meetings extends Controller {
 					.select()
 					.from(MEETING)
 					.where(MEETING.ID.equal(Integer.parseInt(meetingId)))
-					.and(MEETING.AUTHORID.equal(Integer.parseInt(login)))
+					.and(MEETING.AUTHORLOGIN.equal(login))
 				    .fetch();
 				if(record.isNotEmpty())
 					return true;	
@@ -315,6 +326,19 @@ public class Meetings extends Controller {
 					return false;
 	}
 	
+	private static boolean codeIsWrong(String login, String meetingId,
+			String accessCode) {
+		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl()
+				.select()
+				.from(MEETING)
+				.where(MEETING.ID.equal(Integer.parseInt(meetingId)))
+				.and(MEETING.ACCESSCODE.equal(accessCode))
+			    .fetch();
+		if(record.isEmpty())
+			return true;	
+		else
+			return false;
+	}
 	
 
 	private static Result errorResult(String msg) {

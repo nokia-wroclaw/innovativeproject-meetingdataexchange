@@ -105,6 +105,16 @@
                     </Grid>
                 </Viewbox>
             </Button>
+            <Button Grid.Row="1" Grid.Column="0" Click="GetServerName" Margin="-5,-5,-5,-5" BorderThickness="0">
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                </Button.Background>
+                <Viewbox>
+                    <Grid>
+                        <TextBlock Text="GetServerName" TextAlignment="Center" Margin="0,0,0,0" />
+                    </Grid>
+                </Viewbox>
+            </Button>
 
         </Grid>
 

@@ -29,23 +29,27 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <!-- rectangle which acts as the 'camera window' -->
 
-            <Rectangle Height="300" HorizontalAlignment="Left" Margin="82,61,0,0"
+            <Rectangle Height="400" HorizontalAlignment="center" Margin="0"
                 Name="videoRectangle" Stroke="White" StrokeThickness="5"
                 VerticalAlignment="Top" Width="300">
-                <Rectangle.RenderTransform>
-                    <RotateTransform x:Name="videoRotateTransform"/>
-                </Rectangle.RenderTransform>
                 <Rectangle.Fill>
-                    <VideoBrush x:Name="viewfinderBrush"/>
+                    <VideoBrush x:Name="qrPreviewVideo">
+                        <VideoBrush.RelativeTransform>
+                            <CompositeTransform
+                                x:Name="qrPreviewTransform" CenterX=".5" CenterY=".5" />
+                        </VideoBrush.RelativeTransform>
+                    </VideoBrush>
                 </Rectangle.Fill>
             </Rectangle>
 
             <!-- Textblock which will hold the output of the QR Code -->
 
-            <TextBlock Height="171" HorizontalAlignment="Left" Margin="31,406,0,0"
+            <TextBlock Height="30" HorizontalAlignment="Left" Margin="31,406,0,0"
                 Name="resultText" Text="&lt;nothing to display&gt;"
                 VerticalAlignment="Top" Width="399" TextWrapping="Wrap"
                 TextAlignment="Center" />
+
+            <ListBox x:Name="qrMatchesList" FontSize="30" Margin="31,446,0,0" FontWeight="ExtraBold" />
         </Grid>
     </Grid>
 
