@@ -31,10 +31,11 @@ public class Communication
 	{
 	}
 	
-	private JSONObject makeJSON2Reg()
+	private JSONObject makeJSON2Reg(String login,String nick,String email,String password)
 	{	
 		JSONObject json= new JSONObject();
 		try {
+			json.accumulate("logn", login);
 			json.accumulate("name", name);
 			json.accumulate("email", email);
 			json.accumulate("password", password);
@@ -44,23 +45,7 @@ public class Communication
 		}
 		return json;
 	}
-public String getServerName(String address)
-	{
-		HttpResponse response;
-		String name = null;
-		try {
-			response = new HttpGetRequest().execute("http://"+address+"/api/general/getname").get();
-			String result = EntityUtils.toString(response.getEntity());
-	        JSONObject obj= new JSONObject(result);
-	         name=(String) obj.get("servername");
-	        Log.i("get login",name);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return name;
 
-	}
 /*
     private void register2Server()
     {

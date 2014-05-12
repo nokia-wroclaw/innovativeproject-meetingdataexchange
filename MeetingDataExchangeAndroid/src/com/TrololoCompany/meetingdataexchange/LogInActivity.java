@@ -2,14 +2,18 @@ package com.TrololoCompany.meetingdataexchange;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 
 public class LogInActivity extends Activity {
 
+	private String name;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_log_in);
+		Intent intent = getIntent();
+		name=intent.getStringExtra("name");
 	}
 
 	@Override

@@ -2,27 +2,29 @@ package com.TrololoCompany.meetingdataexchange;
 
 import java.util.ArrayList;
 
-import com.TrololoCompany.meetingdataexchangeAdapters.ServerAdapter;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
-import dataBase.Server;
+
+import com.TrololoCompany.meetingdataexchangeAdapters.ServerAdapter;
+
+import dataBase.DataBaseHelper;
+import dataBase.ServerEntity;
 
 public class ServerManageActivity extends Activity 
 {
-	private ArrayList<Server> arrayOfServers;
+	private ArrayList<ServerEntity> arrayOfServers;
 	private ServerAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_server_manage);
-		// Construct the data source
-		this.arrayOfServers = new ArrayList<Server>();
+		this.arrayOfServers = new DataBaseHelper(getApplicationContext())
+							.getServerEntities();
 		// Create the adapter to convert the array to views
 		this.adapter = new ServerAdapter(this, arrayOfServers);
 		// Attach the adapter to a ListView

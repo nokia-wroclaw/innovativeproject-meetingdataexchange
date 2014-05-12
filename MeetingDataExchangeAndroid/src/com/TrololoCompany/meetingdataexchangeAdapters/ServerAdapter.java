@@ -11,18 +11,18 @@ import android.widget.TextView;
 
 import com.TrololoCompany.meetingdataexchange.R;
 
-import dataBase.Server;
+import dataBase.ServerEntity;
 
-public class ServerAdapter extends ArrayAdapter<Server> 
+public class ServerAdapter extends ArrayAdapter<ServerEntity> 
 {
-	public ServerAdapter(Context context, ArrayList<Server> users) 
+	public ServerAdapter(Context context, ArrayList<ServerEntity> users) 
 	{
 	       super(context, R.layout.item_server, users);
 	 }
 	 @Override
 	    public View getView(int position, View convertView, ViewGroup parent) {
 	       // Get the data item for this position
-	       Server server = getItem(position);    
+		 ServerEntity server = getItem(position);    
 	       // Check if an existing view is being reused, otherwise inflate the view
 	       if (convertView == null) {
 	          convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_server, parent, false);
@@ -31,8 +31,8 @@ public class ServerAdapter extends ArrayAdapter<Server>
 	       TextView serverName = (TextView) convertView.findViewById(R.id.serverName);
 	       TextView introduceName = (TextView) convertView.findViewById(R.id.introduceName);
 	       // Populate the data into the template view using the data object
-	       serverName.setText(server.getName());
-	       introduceName.setText(server.getIntroduceName());
+	       serverName.setText(server.getServerName());
+	       introduceName.setText(server.getAddress());
 	       // Return the completed view to render on screen
 	       return convertView;
 	   }

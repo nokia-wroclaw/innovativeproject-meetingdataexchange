@@ -2,17 +2,19 @@ package dataBase;
 
 public class ServerEntity 
 {
-	private String name;
+	private long Id;
 	private String address;
+	private String serverName;
 	private String login;
-	private String nick;
+	private String yourName;
 	private String email;
-	private String password;
-	public String getName() {
-		return name;
+	private String passwd;
+	private String sid;
+	public long getId() {
+		return Id;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setId(long id) {
+		Id = id;
 	}
 	public String getAddress() {
 		return address;
@@ -20,17 +22,23 @@ public class ServerEntity
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public String getServerName() {
+		return serverName;
+	}
+	public void setServerName(String serverName) {
+		this.serverName = serverName;
+	}
 	public String getLogin() {
 		return login;
 	}
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	public String getNick() {
-		return nick;
+	public String getYourName() {
+		return yourName;
 	}
-	public void setNick(String nick) {
-		this.nick = nick;
+	public void setYourName(String yourName) {
+		this.yourName = yourName;
 	}
 	public String getEmail() {
 		return email;
@@ -38,11 +46,17 @@ public class ServerEntity
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPassword() {
-		return password;
+	public String getPasswd() {
+		return passwd;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPasswd(String passwd) {
+		this.passwd = passwd;
+	}
+	public String getSid() {
+		return sid;
+	}
+	public void setSid(String sid) {
+		this.sid = sid;
 	}
 	
 

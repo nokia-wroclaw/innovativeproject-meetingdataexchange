@@ -2,14 +2,25 @@ package com.TrololoCompany.meetingdataexchange;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class AddServerActivitySuccess extends Activity {
 
+	private String name;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_server_activity_success);
+		Intent intent = getIntent();
+		name=intent.getStringExtra("name");
+		TextView ed=(TextView) findViewById(R.id.add_new_server_succ_text3);
+		ed.setText(ed.getText()+": "+name);
+		
+		
 	}
 
 	@Override
@@ -18,5 +29,17 @@ public class AddServerActivitySuccess extends Activity {
 		getMenuInflater().inflate(R.menu.add_server_activity_success, menu);
 		return true;
 	}
-
+	public void log_in(View v)
+	{
+		Intent intent = new Intent(this, LogInActivity.class);
+		intent.putExtra("name", name);
+	    startActivity(intent);
+	
+	}
+	public void sign_up(View v)
+	{
+		Intent intent = new Intent(this, SignUpActivity.class);
+		intent.putExtra("name", name);
+	    startActivity(intent);
+	}
 }
