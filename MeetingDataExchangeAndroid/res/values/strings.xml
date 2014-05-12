@@ -27,5 +27,7 @@
     <string name="title_activity_add_server">AddServerActivity</string>
     <string name="title_activity_add_server_activity_fail">AddServerActivityFail</string>
     <string name="title_activity_add_server_activity_success">AddServerActivitySuccess</string>
+    <string name="title_activity_log_in">LogInActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
 
 </resources>

@@ -22,36 +22,15 @@ import android.util.Log;
 
 public class Communication 
 {
-	private String input;
-	private String address;
-	private Context context;
+
 	String name="michal";//temporary
 	String email="michal.blach92@gmail.com";//temporary
 	String password="2345fgdsh434";//temporary
 	final static String log="Communication";
-	public Communication(String input,Context contex)
+	public Communication()
 	{
-		this.input=input;
-		this.context=contex;
-		divideInput();
 	}
-	public void join2Meeting()
-	{
-		String name=getServerName();
-		Log.i(log,name);
-		ServerEntity ent=new DataBaseHelper(context)
-		.getServerEntity(name);
-		if(ent==null)
-		{
-			register2Server();
-			
-		}
-		else
-		{
-			
-		}
-		
-	}
+	
 	private JSONObject makeJSON2Reg()
 	{	
 		JSONObject json= new JSONObject();
@@ -63,9 +42,9 @@ public class Communication
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return json;	
+		return json;
 	}
-	private String getServerName()
+public String getServerName(String address)
 	{
 		HttpResponse response;
 		String name = null;
@@ -82,11 +61,7 @@ public class Communication
 		return name;
 
 	}
-	private void divideInput()
-	{
-		address=input.substring(0, input.indexOf(";"));
-		Log.i(log,"address "+address);
-	}
+/*
     private void register2Server()
     {
     	
@@ -119,7 +94,7 @@ public class Communication
 		}
     	
     }
-	
+	*/
 }
 	
 

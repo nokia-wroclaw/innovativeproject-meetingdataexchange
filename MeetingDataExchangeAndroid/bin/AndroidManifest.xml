@@ -58,6 +58,14 @@
             android:name="com.TrololoCompany.meetingdataexchange.AddServerActivitySuccess"
             android:label="@string/title_activity_add_server_activity_success" >
         </activity>
+        <activity
+            android:name="com.TrololoCompany.meetingdataexchange.LogInActivity"
+            android:label="@string/title_activity_log_in" >
+        </activity>
+        <activity
+            android:name="com.TrololoCompany.meetingdataexchange.SignUpActivity"
+            android:label="@string/title_activity_sign_up" >
+        </activity>
     </application>
 
 </manifest>

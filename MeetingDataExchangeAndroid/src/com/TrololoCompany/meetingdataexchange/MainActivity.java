@@ -29,10 +29,7 @@ public class MainActivity extends Activity {
 
 	public void join_meeting(View v) 
 	{
-		//temporary string format IP:Port;MeetingId
-		String temp="156.17.230.172:9000;MeetingId";
-		Communication communication = new Communication(temp,getApplicationContext());
-		communication.join2Meeting();
+		
 		
 		
 	}
