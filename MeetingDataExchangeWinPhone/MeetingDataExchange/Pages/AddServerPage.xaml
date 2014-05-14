@@ -1,0 +1,100 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="MeetingDataExchange.Pages.AddServerPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:phonePrimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:tools="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the appliaction and page title-->
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="{Binding Path=AppResources.addServer, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+       <!--     <Popup IsOpen="True" VerticalOffset="60" HorizontalOffset="25">
+                <Border Background="Black" BorderBrush="White" BorderThickness="5" Width="{Binding ActualWidth, ElementName=LayoutRoot}">
+                    <StackPanel>
+                        <TextBlock Text="Null text" TextWrapping="Wrap" VerticalAlignment="Center" TextAlignment="Center" Margin="0" FontSize="36"/>
+                        <Button></Button>
+                    </StackPanel>
+                </Border>
+            </Popup>-->
+        </StackPanel>
+        <!--ContentPanel - place additional content here-->
+        <ScrollViewer Grid.Row="1" Margin="12,0,12,0">
+            <StackPanel x:Name="ContentPanel" >
+
+                <TextBlock Text="{Binding Path=AppResources.serverAddress, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBox Name="serverAddressBox" Text="156.17.230.172:9000" Width="311"/>
+                    <Button Click="connect">
+                        <TextBlock Text="{Binding Path=AppResources.connect, Source={StaticResource LocalizedStrings}}" />
+                    </Button>
+                </StackPanel>
+
+                <ProgressBar x:Name="connectProgressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
+                <TextBlock Text="{Binding Path=AppResources.serverName, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                <TextBox x:Name="serverNameBox" IsEnabled="False"/>
+                <StackPanel x:Name="connectedPanel" Visibility="Collapsed">
+                    <tools:ToggleSwitch Content="No" IsChecked="false" Name="tglSwitch" Header="{Binding Path=AppResources.accountQuestion, Source={StaticResource LocalizedStrings}}"  Checked="tglSwitch_Checked"
+Unchecked="tglSwitch_Unchecked" >
+                    </tools:ToggleSwitch>
+
+                    <StackPanel x:Name="loginPanel">
+                        <TextBlock Text="{Binding Path=AppResources.login, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBox x:Name="loginBox"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="namePanel">
+                        <TextBlock Text="{Binding Path=AppResources.name, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBox x:Name="nameBox"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="mailPanel">
+                        <TextBlock Text="{Binding Path=AppResources.mail, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBox x:Name="mailBox"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="passwordPanel">
+                        <TextBlock Text="{Binding Path=AppResources.password, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <PasswordBox x:Name="passwordBox"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="repPasswordPanel">
+                        <TextBlock Text="{Binding Path=AppResources.repPassword, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <PasswordBox x:Name="repPasswordBox"/>
+                    </StackPanel>
+
+<!--                    <TextBlock Name="nameBlock" Text="{Binding Path=AppResources.name, Source={StaticResource LocalizedStrings}}"/>
+                    <TextBox Name="nameBox" />
+
+                    <TextBlock Name="mailBlock" Text="{Binding Path=AppResources.mail, Source={StaticResource LocalizedStrings}}"/>
+                    <TextBox Name="mailBox" />
+
+                    <TextBlock Name="passwordBlock" Text="{Binding Path=AppResources.password, Source={StaticResource LocalizedStrings}}"/>
+                    <PasswordBox Name="passwordBox" />
+
+                    <TextBlock Name="repPasswordBlock" Text="{Binding Path=AppResources.repPassword, Source={StaticResource LocalizedStrings}}"/>
+                    <PasswordBox Name="repPasswordBox" />-->
+                    <Button x:Name="button" Content="Register" Click="button_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+
+</phone:PhoneApplicationPage>

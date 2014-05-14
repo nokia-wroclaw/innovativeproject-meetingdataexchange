@@ -6,18 +6,25 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace MeetingDataExchange.Server
+namespace MeetingDataExchange.ServerCommunication
 {
     class HttpGetRequest<T>
     {
         public delegate void Delegate(T t);
-        Delegate del;
-        public HttpGetRequest (string url,Delegate del)
+        Delegate delegat;
+        public HttpGetRequest (string url,Delegate delegat)
         {
-            this.del = del;
-            var httpWebRequest = HttpWebRequest.Create(url);
-            httpWebRequest.Method = "GET";
-            httpWebRequest.BeginGetResponse(ResponseCallback, httpWebRequest);
+            try
+            {
+                this.delegat = delegat;
+                var httpWebRequest = HttpWebRequest.Create(url);
+                httpWebRequest.Method = "GET";
+                httpWebRequest.BeginGetResponse(ResponseCallback, httpWebRequest);
+            }
+            catch(Exception)
+            {
+                delegat(JsonConvert.DeserializeObject<T>(""));
+            }
         }
 
         void ResponseCallback(IAsyncResult result)
@@ -31,12 +38,12 @@ namespace MeetingDataExchange.Server
                     using (var streamReader = new StreamReader(response.GetResponseStream()))
                     {
                         var responseText = streamReader.ReadToEnd();
-                       del(JsonConvert.DeserializeObject<T>(responseText));
+                       delegat(JsonConvert.DeserializeObject<T>(responseText));
                     }
                 }
-                catch (WebException e)
+                catch (WebException)
                 {
-                    del(JsonConvert.DeserializeObject<T>(""));
+                    delegat(JsonConvert.DeserializeObject<T>(""));
                 }
 
             }

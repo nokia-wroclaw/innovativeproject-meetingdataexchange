@@ -7,7 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using MeetingDataExchange.Server;
+using MeetingDataExchange.ServerCommunication;
+using MeetingDataExchange.Model;
 //using MeetingDataExchange.Resources;
 
 namespace MeetingDataExchange
@@ -41,7 +42,24 @@ namespace MeetingDataExchange
 
         private void GetServerName(object sender, RoutedEventArgs e)
         {
-            new ServerSession(new IPEndPoint(IPAddress.Parse("156.17.230.172"),9000));
+            /*var servers = from Server s in MDEDB.Servers where s.ServerName == serverNameBox.Text select s;
+            using (MDEDataContext MDEDB = new MDEDataContext())
+            {
+                Server server = new Server
+                 {
+                     address = "http://156.17.230.172:9000",
+                     serverName = "lol",
+                     login = "zamro",
+                     name = "placek",
+                     email = "ja@gmail.com",
+                     pass = "xyz"
+                 };
+
+                MDEDB.Servers.InsertOnSubmit(server);
+                MDEDB.SubmitChanges();
+                           
+            }*/
+            new ServerSession(new IPEndPoint(IPAddress.Parse("156.17.230.172"), 9000));
         }
     }
 }

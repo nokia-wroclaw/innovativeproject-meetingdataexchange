@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace MeetingDataExchange.Server
+namespace MeetingDataExchange.ServerCommunication
 {
     class HttpPostRequest<U, T>
     {

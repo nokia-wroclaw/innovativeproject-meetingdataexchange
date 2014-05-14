@@ -6,39 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace MeetingDataExchange.Server
+namespace MeetingDataExchange.ServerCommunication
 {
-    public class ServerName
-    {
-        public string servername { get; set; }
-    }
-
-    public class LoginInput
-    {
-        private string p1;
-        private string p2;
-
-        public LoginInput(string login, string password)
-        {
-            this.login = login;
-            this.password = password;
-        }
-        public string login { get; set; }
-        public string password { get; set; }
-    }
-
-    public class LoginOutput
-    {
-        public string status { get; set; }
-        public string sid { get; set; }
-        public string reason { get; set; }
-    }
-
     class ServerSession
     {
         public ServerSession(IPEndPoint ipEndPoint)
         {
             string url = "http://" + ipEndPoint.ToString() + "/api/general/getname";
+
             new HttpGetRequest<ServerName>(url, next);
 
             url = "http://" + ipEndPoint.ToString() + "/api/account/login";

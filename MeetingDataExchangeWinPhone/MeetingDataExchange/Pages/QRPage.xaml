@@ -42,13 +42,6 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <!-- Textblock which will hold the output of the QR Code -->
-
-            <TextBlock Height="30" HorizontalAlignment="Left" Margin="31,406,0,0"
-                Name="resultText" Text="&lt;nothing to display&gt;"
-                VerticalAlignment="Top" Width="399" TextWrapping="Wrap"
-                TextAlignment="Center" />
-
             <ListBox x:Name="qrMatchesList" FontSize="30" Margin="31,446,0,0" FontWeight="ExtraBold" />
         </Grid>
     </Grid>
