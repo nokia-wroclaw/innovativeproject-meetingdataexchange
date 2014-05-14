@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddServerActivity" >
+ 
+
+ <TextView
+     android:id="@+id/add_new_server_text_view1"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignParentLeft="true"
+     android:layout_alignParentTop="true"
+     android:layout_marginTop="36dp"
+     android:text="@string/add_new_server_text_view1"
+     android:textAppearance="?android:attr/textAppearanceLarge" />
+
+ <TextView
+     android:id="@+id/add_new_server_text_view2"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignParentLeft="true"
+     android:layout_below="@+id/add_new_server_text_view1"
+     android:layout_marginTop="26dp"
+     android:text="@string/add_new_server_text_view2"/>
+
+ <EditText
+     android:id="@+id/server_address_edit_text"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignParentLeft="true"
+     android:layout_below="@+id/add_new_server_text_view2"
+     android:layout_marginTop="17dp"
+     android:text="156.17.230.172:9000"
+     android:ems="10" >
+
+     <requestFocus />
+ </EditText>
+ <Button
+        android:id="@+id/sign_up_button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:onClick="connect_2_server"
+        android:text="@string/add_new_server_button"/>
+
+</RelativeLayout>

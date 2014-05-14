@@ -22,42 +22,20 @@ import android.util.Log;
 
 public class Communication 
 {
-	private String input;
-	private String address;
-	private Context context;
+
 	String name="michal";//temporary
 	String email="michal.blach92@gmail.com";//temporary
 	String password="2345fgdsh434";//temporary
 	final static String log="Communication";
-	public Communication(String input,Context contex)
+	public Communication()
 	{
-		this.input=input;
-		this.context=contex;
-		divideInput();
 	}
-	public void join2Meeting()
-	{
-		String name=getServerName();
-		Log.i(log,name);
-		ServerEntity ent=new DataBaseHelper(context)
-		.getServerEntity(name);
-		if(ent==null)
-		{
-			register2Server();
-			
-		}
-		else
-		{
-			
-		}
-		
-	}
-	private JSONObject makeJSON2Reg()
-	{
-		
-		
+	
+	private JSONObject makeJSON2Reg(String login,String nick,String email,String password)
+	{	
 		JSONObject json= new JSONObject();
 		try {
+			json.accumulate("logn", login);
 			json.accumulate("name", name);
 			json.accumulate("email", email);
 			json.accumulate("password", password);
@@ -66,37 +44,14 @@ public class Communication
 			e.printStackTrace();
 		}
 		return json;
-		
-		
 	}
-	private String getServerName()
-	{
-		HttpResponse response;
-		String name = null;
-		try {
-			response = new HttpGetRequest().execute("http://"+address+"/api/general/getname").get();
-			String result = EntityUtils.toString(response.getEntity());
-	        JSONObject obj= new JSONObject(result);
-	         name=(String) obj.get("servername");
-	        Log.i("get login",name);
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return name;
 
-	}
-	private void divideInput()
-	{
-		address=input.substring(0, input.indexOf(";"));
-		Log.i(log,"address "+address);
-	}
+/*
     private void register2Server()
     {
     	
     	JSONObject json=makeJSON2Reg();
 		try {
-			
 			JSONObject jsonRes=new HttpPostRequest
 			("http://"+address+"/api/account/register")
 			.execute(json).get();
@@ -124,7 +79,7 @@ public class Communication
 		}
     	
     }
-	
+	*/
 }
 	
 
