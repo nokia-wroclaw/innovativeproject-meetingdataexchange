@@ -271,7 +271,7 @@ public class Meetings extends Controller {
 			meeting.put("accessCode", record.getValue(i, MEETING.ACCESSCODE));
 			array.add(meeting);
 		}
-		
+		result.put("status", "ok");
 		result.put("meetings", array);
 		return result;
 	}
