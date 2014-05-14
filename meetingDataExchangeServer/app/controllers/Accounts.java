@@ -87,7 +87,7 @@ public class Accounts extends Controller {
 			//DbSingleton.getInstance().getDsl().update(USER).set(USER.SESSIONHASH, hash).where(USER.ID.equal(new Integer(login))).execute();
 			DbSingleton.getInstance().getDsl().insertInto(SESSION,
 					SESSION.USERLOGIN, SESSION.SID)
-					.values(login, hash);
+					.values(login, hash).execute();
 			ObjectNode result = Json.newObject();
 			result.put("status", "ok");
 			result.put("sid", hash);
