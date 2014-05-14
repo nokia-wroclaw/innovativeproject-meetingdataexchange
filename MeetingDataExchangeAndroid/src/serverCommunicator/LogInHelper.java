@@ -38,7 +38,7 @@ public class LogInHelper
 			else if (status.contains("ok"))
 			{
 				result[1]=json.getString("sid");
-				Log.i(LOG,""+result[1]);
+				Log.i(LOG,result[1]);
 			}
 					
 		} 

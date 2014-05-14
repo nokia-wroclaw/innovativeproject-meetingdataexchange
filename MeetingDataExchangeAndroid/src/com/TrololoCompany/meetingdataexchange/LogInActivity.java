@@ -33,7 +33,7 @@ public class LogInActivity extends Activity {
 		EditText logEd=(EditText) findViewById(R.id.log_in_login_ed);
 		EditText passwdEd=(EditText) findViewById(R.id.logIn_passwd_ed);
 		String login=logEd.getText().toString();
-		String passwd=logEd.getText().toString();
+		String passwd=passwdEd.getText().toString();
 		/*should check here is that server already exists ??*/
 		new HttpPostRequestLogIn(this).execute(address,name,login,passwd);
 		
@@ -43,6 +43,13 @@ public class LogInActivity extends Activity {
 		Toast toast = Toast.makeText(getApplicationContext(), 
 				message, Toast.LENGTH_LONG);
 		toast.show();
+	}
+	public void finishAndGoToList()
+	{
+		displayMessage("meetings downloaded");
+		Intent intent = new Intent(this, ServerManageActivity.class);
+		finish();
+	    startActivity(intent);
 	}
 	
 

@@ -12,7 +12,7 @@ public class GetPersonalDataHelper
 		String email=null;
         JSONObject obj= new JSONObject(input);
         nick=(String) obj.get("name");
-        email=(String) obj.get("e-mail");
+        email=(String) obj.get("email");
         if(nick==null||email==null)throw new NullPointerException();
         result[0]=nick;
         result[1]=email;

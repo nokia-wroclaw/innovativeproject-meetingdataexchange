@@ -95,7 +95,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     	MEETING_END_TIME+" TIMESTAMP ,"+
     	MEETING_CODE+" VARCHAR(255) , "+
     	MEETING_NUMBER_OF_MEMBERS+" INT ,"+
-    	MEETING_PERMISSION+" INT ,"+
+    	MEETING_PERMISSION+" VARCHAR(255) ,"+
     	"FOREIGN KEY ("+MEETING_SERVERID+") REFERENCES "+
     	SERVER_TABLE_NAME+"("+SERVER_ID+")"+
     	" );";
@@ -168,6 +168,21 @@ public class DataBaseHelper extends SQLiteOpenHelper
     	return makeServerEntityList(cursor);
     	
     }
+    public long getServerId(String name,String login)
+    {
+    	long result=-1;
+    		SQLiteDatabase db =this.getReadableDatabase();
+    		String cond=SERVER_NAME+" = '"+name+"' AND "+SERVER_LOGIN+" = '"+login+"'";
+   			Cursor cursor= db.query(SERVER_TABLE_NAME,null,cond,
+   						null,null,null,null);
+   			
+   			if(cursor.moveToFirst())
+   				result=cursor.getLong(0);
+    		
+    	//db.close();
+    	return result;
+    	
+    }
     private ArrayList<ServerEntity> makeServerEntityList(Cursor cursor)
     {
     	ArrayList<ServerEntity> result=null;
@@ -213,6 +228,25 @@ public class DataBaseHelper extends SQLiteOpenHelper
 		values.put(SERVER_SID,entity.getSid());
 		
 		db.insert(SERVER_TABLE_NAME, null, values);
+		Log.i(log, "ServerEntity added");
+		//db.close();
+	}
+    public void insertMeetingEntity(MeetingEntity entity)
+	{
+		SQLiteDatabase db = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(MEETING_SERVERID,entity.getServerId());
+		values.put(MEETING_SERVER_MEETING_ID,entity.getServerMeetingID());
+		values.put(MEETING_TITLE,entity.getTitle());
+		values.put(MEETING_TOPIC,entity.getTopic());
+		values.put(MEETING_HOST_NAME,entity.getHostName());
+		values.put(MEETING_START_TIME,entity.getStartTime());
+		values.put(MEETING_END_TIME,entity.getEndTime());
+		values.put(MEETING_CODE,entity.getCode());
+		values.put(MEETING_NUMBER_OF_MEMBERS,entity.getNumberOfMembers());
+		values.put(MEETING_PERMISSION,entity.getPermission());
+		
+		db.insert(MEETING_TABLE_NAME, null, values);
 		Log.i(log, "ServerEntity added");
 		//db.close();
 	}

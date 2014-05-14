@@ -1,41 +1,40 @@
 package asynctasks;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.apache.http.client.ClientProtocolException;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.TrololoCompany.meetingdataexchange.LogInActivity;
-import com.TrololoCompany.meetingdataexchange.SignUpActivity;
 
 import dataBase.DataBaseHelper;
-import dataBase.ServerEntity;
+import dataBase.MeetingEntity;
 
 import serverCommunicator.CommunicationHelper;
-import serverCommunicator.GetPersonalDataHelper;
+import serverCommunicator.GetMeetingListHelper;
 
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class HttpGetPersonalData extends AsyncTask<String, Void, Void>
+public class HttpGetListMeetings extends AsyncTask<String, Void, Void>
 {
-	private LogInActivity activity;
+	private static final String LOG="HttpGetListMeetings";
 	private String address;
 	private String name;
 	private String login;
 	private String password;
-	private String nick;
-	private String email;
 	private String sid;
+	private LogInActivity activity;
 	
-	public HttpGetPersonalData(LogInActivity activity)
+	public HttpGetListMeetings(LogInActivity activity)
 	{
 		this.activity=activity;
-
 	}
+	
 	@Override
-	protected Void doInBackground(String... arg0) 
+	protected Void doInBackground(String... arg0)
 	{
 		//arg0[0] -address
 		//arg0[1] -name
@@ -48,20 +47,20 @@ public class HttpGetPersonalData extends AsyncTask<String, Void, Void>
 		password=arg0[3];
 		sid=arg0[4];
 		CommunicationHelper communication = new CommunicationHelper();
-		GetPersonalDataHelper helper= new GetPersonalDataHelper();
+		GetMeetingListHelper helper= new GetMeetingListHelper();
 		try {
-			String respond=communication.
-			getHttpGetRequest("http://"+address+"/api/account/getdata/"
-								+login+"/"+sid);
-			Log.i("debug",respond);
-			String [] result=helper.parseJSONRespondGetServerName(respond);
-			nick=result[0];
-			email=result[1];
-			ServerEntity entity=communication.
-					makeServerEntity
-					(address, name, login, nick, email, password, sid);
-			new DataBaseHelper(activity.getApplicationContext()).
-			insertServerEntity(entity);
+			Log.i(LOG,"http://"+address+"/api/meeting/list/"+login+"+/"+sid);
+			String respond=communication.getHttpGetRequest("http://"+address+"/api/meeting/list/"+login+"/"+sid);
+			long serverId = new DataBaseHelper(activity.getApplicationContext()).getServerId(name, login);
+			Log.i(LOG,"found server with ID "+serverId);
+			ArrayList<MeetingEntity> result=helper.parseJSONRespondGetMeetings(respond,serverId);
+			Log.i(LOG,"array size "+result.size());
+			for(int i=0;i<result.size();i++)
+			{
+				new DataBaseHelper(activity.getApplicationContext()).
+				insertMeetingEntity(result.get(i));
+				Log.i(LOG,"meeting  "+i+" added");
+			}
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,23 +73,18 @@ public class HttpGetPersonalData extends AsyncTask<String, Void, Void>
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return null;
 	}
 	@Override
 	protected void onPostExecute(Void result) 
 	{
-		if(email!=null)
-		{
-			activity.
-			displayMessage("Personal data downloaded ,downloading meetings");
-			new HttpGetListMeetings(activity).execute(address,name,login,password,sid);
-		}
-		else
-		{
-			activity.
-			displayMessage("Something went wrong ");
-		}
+		
+		activity.finishAndGoToList();
+		
 	}
 
 }
