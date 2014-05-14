@@ -272,7 +272,7 @@ public class Meetings extends Controller {
 			array.add(meeting);
 		}
 		
-		result.put("users", array);
+		result.put("meetings", array);
 		return result;
 	}
 	
