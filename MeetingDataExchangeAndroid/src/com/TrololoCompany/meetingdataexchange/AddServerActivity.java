@@ -1,7 +1,6 @@
 package com.TrololoCompany.meetingdataexchange;
 
-import serverCommunicator.CheckIsServerExists;
-import serverCommunicator.Communication;
+import serverCommunicator.CommunicationHelper;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -11,10 +10,12 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import asynctasks.HttpGetServerName;
 
 
 public class AddServerActivity extends Activity {
 	 private static final String  TAG="AddServerActivity";
+	 private String address;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +37,15 @@ public class AddServerActivity extends Activity {
 					"log in procesing!", Toast.LENGTH_SHORT);
 			toast.show();
 			Log.i("CheckIsServerExists","connection failed");
-			new CheckIsServerExists(this).
-			execute(ed.getText().toString());
+			this.address=ed.getText().toString();
+			new HttpGetServerName(this).
+			execute(address);
 	}
 	public void connection_succes(String name)
 	{
 		Intent intent = new Intent(this, AddServerActivitySuccess.class);
 		intent.putExtra("name", name);
+		intent.putExtra("address", address);
 	    startActivity(intent);
 		
 	}

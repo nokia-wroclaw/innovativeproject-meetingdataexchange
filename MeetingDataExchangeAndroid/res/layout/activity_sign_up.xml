@@ -53,20 +53,12 @@
         android:text="@string/sign_up_text4" />
 
     <EditText
-        android:id="@+id/log_in_pass_ed"
+        android:id="@+id/sign_up_nick_ed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView4"
         android:ems="10" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/log_in_pass_ed"
-        android:text="@string/sign_up_text5"/>
 
     <EditText
         android:id="@+id/sign_up_email_ed"
@@ -84,36 +76,46 @@
         android:layout_centerVertical="true"
         android:text="@string/sign_up_text6" />
 
+    <Button
+        android:id="@+id/sign_up_button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:onClick="sign_up"
+        android:text="@string/sign_up_button1" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sign_up_nick_ed"
+        android:layout_below="@+id/sign_up_nick_ed"
+        android:text="@string/sign_up_text5" />
+
     <EditText
-        android:id="@+id/sign_up_pass_ed"
+        android:id="@+id/sign_up_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView6"
-        android:ems="10" />
+        android:ems="10"
+        android:inputType="textPassword" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/sign_up_pass_ed"
+        android:layout_below="@+id/sign_up_pass"
         android:text="@string/sign_up_text7" />
 
     <EditText
-        android:id="@+id/sign_up_pass_rep_ed"
+        android:id="@+id/sign_up_pass_rep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView7"
-        android:ems="10" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/sign_up_pass_rep_ed"
-        android:layout_alignParentBottom="true"
-        android:text="@string/sign_up_button1"/>
+        android:ems="10"
+        android:inputType="textPassword" />
 
 </RelativeLayout>

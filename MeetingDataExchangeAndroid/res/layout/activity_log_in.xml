@@ -52,23 +52,23 @@
         android:layout_below="@+id/log_in_login_ed"
         android:text="@string/log_in_text4" />
 
-    <EditText
-        android:id="@+id/log_in_pass_ed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView4"
-        android:ems="10" />
-
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/sign_up_button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:onClick="logIn"
         android:text="@string/log_in_button1" />
 
-    
+    <EditText
+        android:id="@+id/logIn_passwd_ed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView4"
+        android:ems="10"
+        android:inputType="textPassword" />
 
 </RelativeLayout>

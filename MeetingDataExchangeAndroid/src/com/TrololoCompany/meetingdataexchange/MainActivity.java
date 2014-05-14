@@ -1,6 +1,6 @@
 package com.TrololoCompany.meetingdataexchange;
 
-import serverCommunicator.Communication;
+import serverCommunicator.CommunicationHelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

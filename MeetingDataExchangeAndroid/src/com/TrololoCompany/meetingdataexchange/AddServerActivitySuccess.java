@@ -11,12 +11,14 @@ import android.widget.TextView;
 public class AddServerActivitySuccess extends Activity {
 
 	private String name;
+	private String address;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_server_activity_success);
 		Intent intent = getIntent();
-		name=intent.getStringExtra("name");
+		this.name=intent.getStringExtra("name");
+		this.address=intent.getStringExtra("address");
 		TextView ed=(TextView) findViewById(R.id.add_new_server_succ_text3);
 		ed.setText(ed.getText()+": "+name);
 		
@@ -32,7 +34,9 @@ public class AddServerActivitySuccess extends Activity {
 	public void log_in(View v)
 	{
 		Intent intent = new Intent(this, LogInActivity.class);
+		
 		intent.putExtra("name", name);
+		intent.putExtra("address", address);
 	    startActivity(intent);
 	
 	}
@@ -40,6 +44,7 @@ public class AddServerActivitySuccess extends Activity {
 	{
 		Intent intent = new Intent(this, SignUpActivity.class);
 		intent.putExtra("name", name);
+		intent.putExtra("address", address);
 	    startActivity(intent);
 	}
 }
