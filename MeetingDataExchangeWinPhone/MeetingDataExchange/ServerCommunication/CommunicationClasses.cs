@@ -45,4 +45,15 @@ namespace MeetingDataExchange.ServerCommunication
         public string reason { get; set; }
     }
 
+    public class LogoutInput
+    {
+        public LogoutInput(string login, string sid)
+        {
+            this.login = login;
+            this.sid = sid;
+        }
+        public string login { get; set; }
+        public string sid { get; set; }
+    }
+
 }

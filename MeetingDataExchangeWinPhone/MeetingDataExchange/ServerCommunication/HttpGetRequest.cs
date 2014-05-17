@@ -38,11 +38,13 @@ namespace MeetingDataExchange.ServerCommunication
                     using (var streamReader = new StreamReader(response.GetResponseStream()))
                     {
                         var responseText = streamReader.ReadToEnd();
+                        System.Diagnostics.Debug.WriteLine("JSON received:\n" + responseText);
                        delegat(JsonConvert.DeserializeObject<T>(responseText));
                     }
                 }
                 catch (WebException)
                 {
+                    System.Diagnostics.Debug.WriteLine("WebException!");
                     delegat(JsonConvert.DeserializeObject<T>(""));
                 }
 

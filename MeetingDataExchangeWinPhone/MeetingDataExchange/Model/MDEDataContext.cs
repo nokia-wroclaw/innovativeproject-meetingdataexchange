@@ -246,7 +246,27 @@ namespace MeetingDataExchange.Model
     [Table]
     public class Meeting
     {
+        public Meeting()
+        {
+            _files = new EntitySet<File>(
+                new Action<File>(this.attach_file),
+                new Action<File>(this.detach_file)
+                );
+        }
 
+        // Called during an add operation
+        private void attach_file(File file)
+        {
+            NotifyPropertyChanging("file");
+            file.meeting = this;
+        }
+
+        // Called during a remove operation
+        private void detach_file(File file)
+        {
+            NotifyPropertyChanging("file");
+            file.meeting = null;
+        }
         #region ID
         private int _ID;
 
@@ -463,6 +483,17 @@ namespace MeetingDataExchange.Model
         }
         #endregion
 
+        #region files
+        private EntitySet<File> _files;
+
+        [Association(Storage = "files", OtherKey = "_meetingID", ThisKey = "ID")]
+        public EntitySet<File> files
+        {
+            get { return this._files; }
+            set { this._files.Assign(value); }
+        }
+        #endregion
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -515,7 +546,139 @@ namespace MeetingDataExchange.Model
             }
         }
         #endregion
-        
+
+        #region meeting
+
+        [Column]
+        internal int _meetingID;
+
+        private EntityRef<Meeting> _meeting;
+
+        [Association(Storage = "_meeting", ThisKey = "_meetingID", OtherKey = "ID", IsForeignKey = true)]
+        public Meeting meeting
+        {
+            get { return _meeting.Entity; }
+            set
+            {
+                NotifyPropertyChanging("meeting");
+                _meeting.Entity = value;
+
+                if (value != null)
+                {
+                    _meetingID = value.ID;
+                }
+
+                NotifyPropertyChanging("meeting");
+            }
+        }
+        #endregion
+
+        #region serverFileID
+        private int _serverFileID;
+
+        [Column]
+        public int serverFileID
+        {
+            get { return _serverFileID; }
+            set
+            {
+                if (_serverFileID != value)
+                {
+                    NotifyPropertyChanging("serverFileID");
+                    _serverFileID = value;
+                    NotifyPropertyChanged("serverFileID");
+                }
+            }
+        }
+        #endregion
+
+        #region fileName
+        private string _fileName;
+
+        [Column]
+        public string fileName
+        {
+            get { return _fileName; }
+            set
+            {
+                if (_fileName != value)
+                {
+                    NotifyPropertyChanging("fileName");
+                    _fileName = value;
+                    NotifyPropertyChanged("fileName");
+                }
+            }
+        }
+        #endregion
+
+        #region authorName
+        private string _authorName;
+
+        [Column]
+        public string authorName
+        {
+            get { return _authorName; }
+            set
+            {
+                if (_authorName != value)
+                {
+                    NotifyPropertyChanging("authorName");
+                    _authorName = value;
+                    NotifyPropertyChanged("authorName");
+                }
+            }
+        }
+        #endregion
+
+        #region addTime
+        private DateTime _addTime;
+
+        [Column]
+        public DateTime addTime
+        {
+            get { return _addTime; }
+            set
+            {
+                if (_addTime != value)
+                {
+                    NotifyPropertyChanging("addTime");
+                    _addTime = value;
+                    NotifyPropertyChanged("addTime");
+                }
+            }
+        }
+        #endregion
+
+        #region hash
+        private string _hash;
+
+        [Column]
+        public string hash
+        {
+            get { return _hash; }
+            set
+            {
+                if (_hash != value)
+                {
+                    NotifyPropertyChanging("hash");
+                    _hash = value;
+                    NotifyPropertyChanged("hash");
+                }
+            }
+        }
+        #endregion
+
+        #region comments
+        private EntitySet<Comment> _comments;
+
+        [Association(Storage = "comments", OtherKey = "_fileID", ThisKey = "ID")]
+        public EntitySet<Comment> comments
+        {
+            get { return this._comments; }
+            set { this._comments.Assign(value); }
+        }
+        #endregion
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -568,7 +731,109 @@ namespace MeetingDataExchange.Model
             }
         }
         #endregion
-        
+
+        #region file
+
+        [Column]
+        internal int _fileID;
+
+        private EntityRef<File> _file;
+
+        [Association(Storage = "_file", ThisKey = "_fileID", OtherKey = "ID", IsForeignKey = true)]
+        public File file
+        {
+            get { return _file.Entity; }
+            set
+            {
+                NotifyPropertyChanging("file");
+                _file.Entity = value;
+
+                if (value != null)
+                {
+                    _fileID = value.ID;
+                }
+
+                NotifyPropertyChanging("file");
+            }
+        }
+        #endregion
+
+        #region serverCommentID
+        private int _serverCommentID;
+
+        [Column]
+        public int serverCommentID
+        {
+            get { return _serverCommentID; }
+            set
+            {
+                if (_serverCommentID != value)
+                {
+                    NotifyPropertyChanging("serverCommentID");
+                    _serverCommentID = value;
+                    NotifyPropertyChanged("serverCommentID");
+                }
+            }
+        }
+        #endregion
+
+        #region authorName
+        private string _authorName;
+
+        [Column]
+        public string authorName
+        {
+            get { return _authorName; }
+            set
+            {
+                if (_authorName != value)
+                {
+                    NotifyPropertyChanging("authorName");
+                    _authorName = value;
+                    NotifyPropertyChanged("authorName");
+                }
+            }
+        }
+        #endregion
+
+        #region addTime
+        private DateTime _addTime;
+
+        [Column]
+        public DateTime addTime
+        {
+            get { return _addTime; }
+            set
+            {
+                if (_addTime != value)
+                {
+                    NotifyPropertyChanging("addTime");
+                    _addTime = value;
+                    NotifyPropertyChanged("addTime");
+                }
+            }
+        }
+        #endregion
+
+        #region content
+        private string _content;
+
+        [Column]
+        public string content
+        {
+            get { return _content; }
+            set
+            {
+                if (_content != value)
+                {
+                    NotifyPropertyChanging("content");
+                    _content = value;
+                    NotifyPropertyChanged("content");
+                }
+            }
+        }
+        #endregion
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;

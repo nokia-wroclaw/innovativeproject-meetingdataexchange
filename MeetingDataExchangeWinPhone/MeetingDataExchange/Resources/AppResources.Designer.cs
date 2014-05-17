@@ -79,6 +79,15 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Meeting Data Exchange.
+        /// </summary>
+        public static string appName {
+            get {
+                return ResourceManager.GetString("appName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string connect {
@@ -88,7 +97,7 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Join existing meeting.
+        ///   Looks up a localized string similar to X Join existing meeting.
         /// </summary>
         public static string joinMeeting {
             get {
@@ -115,7 +124,7 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Meetings.
+        ///   Looks up a localized string similar to X Meetings.
         /// </summary>
         public static string meetings {
             get {
@@ -133,7 +142,7 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New meeting.
+        ///   Looks up a localized string similar to X New meeting.
         /// </summary>
         public static string newMeeting {
             get {
@@ -192,6 +201,15 @@ namespace MeetingDataExchange.Resources {
         public static string serverName {
             get {
                 return ResourceManager.GetString("serverName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server options.
+        /// </summary>
+        public static string serverOptions {
+            get {
+                return ResourceManager.GetString("serverOptions", resourceCulture);
             }
         }
         

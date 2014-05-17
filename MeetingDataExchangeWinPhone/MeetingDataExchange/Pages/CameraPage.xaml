@@ -30,7 +30,7 @@
                 <Button Content="View Files" FontSize="26" FontWeight="ExtraBold" Height="150" >
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="Click">
-                            <ec:NavigateToPageAction TargetPage="/ViewFilesPage.xaml"/>
+                            <ec:NavigateToPageAction TargetPage="/Pages/ViewFilesPage.xaml"/>
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Button>

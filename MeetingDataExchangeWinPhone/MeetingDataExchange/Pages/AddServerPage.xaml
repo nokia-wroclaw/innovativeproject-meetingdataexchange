@@ -24,7 +24,7 @@
 
         <!--TitlePanel contains the name of the appliaction and page title-->
         <StackPanel Grid.Row="0">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="{Binding Path=AppResources.appName, Source={StaticResource LocalizedStrings} }" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Text="{Binding Path=AppResources.addServer, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
        <!--     <Popup IsOpen="True" VerticalOffset="60" HorizontalOffset="25">
                 <Border Background="Black" BorderBrush="White" BorderThickness="5" Width="{Binding ActualWidth, ElementName=LayoutRoot}">
@@ -92,6 +92,8 @@ Unchecked="tglSwitch_Unchecked" >
                     <TextBlock Name="repPasswordBlock" Text="{Binding Path=AppResources.repPassword, Source={StaticResource LocalizedStrings}}"/>
                     <PasswordBox Name="repPasswordBox" />-->
                     <Button x:Name="button" Content="Register" Click="button_Click"/>
+                    <ProgressBar x:Name="buttonProgressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
+
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

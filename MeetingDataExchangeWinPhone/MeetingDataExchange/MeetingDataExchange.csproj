@@ -97,6 +97,9 @@
     <Compile Include="Pages\ServerManagementPage.xaml.cs">
       <DependentUpon>ServerManagementPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ServerOptionsPage.xaml.cs">
+      <DependentUpon>ServerOptionsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Resources\AppResources.pl-PL.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -150,6 +153,10 @@
     </Page>
     <Page Include="Pages\QRPage.xaml">
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\ServerOptionsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ViewFilesPage.xaml">
       <SubType>Designer</SubType>

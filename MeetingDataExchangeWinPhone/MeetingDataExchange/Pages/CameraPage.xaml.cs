@@ -103,7 +103,6 @@ namespace MeetingDataExchange
         // Informs when full resolution photo has been taken, saves to local media library and the local folder.
         void cam_CaptureImageAvailable(object sender, Microsoft.Devices.ContentReadyEventArgs e)
         {
-            string fileName = DateTime.Now.ToString("yymmddhhmmss")+ ".jpg";
 
             try
             {   // Write message to the UI thread.
@@ -128,6 +127,9 @@ namespace MeetingDataExchange
                 // Save photo as JPEG to the local folder.
                 using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
                 {
+                    string fileName = "files\\" + DateTime.Now.ToString("yymmddhhmmss") + ".jpg";
+                    if (!isStore.DirectoryExists("files"))
+                        isStore.CreateDirectory("files");
                     using (IsolatedStorageFileStream targetStream = isStore.OpenFile(fileName, FileMode.Create, FileAccess.Write))
                     {
                         // Initialize the buffer for 4KB disk pages.
@@ -161,7 +163,6 @@ namespace MeetingDataExchange
         // User will select this image in the Photos Hub to bring up the full-resolution. 
         public void cam_CaptureThumbnailAvailable(object sender, ContentReadyEventArgs e)
         {
-            string fileName = DateTime.Now.ToString("yymmddhhmmss") + "_th.jpg";
 
             try
             {
@@ -174,6 +175,9 @@ namespace MeetingDataExchange
                 // Save thumbnail as JPEG to the local folder.
                 using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
                 {
+                    if (!isStore.DirectoryExists("files"))
+                        isStore.CreateDirectory("files");
+                    string fileName = "files\\" + DateTime.Now.ToString("yymmddhhmmss") + "_th.jpg";
                     using (IsolatedStorageFileStream targetStream = isStore.OpenFile(fileName, FileMode.Create, FileAccess.Write))
                     {
                         // Initialize the buffer for 4KB disk pages.

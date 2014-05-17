@@ -30,11 +30,11 @@ namespace MeetingDataExchange.ServerCommunication
             Stream postStream = request.EndGetRequestStream(result);
 
             string postData = JsonConvert.SerializeObject(entity);
-            // Convert the string into a byte array. 
+            // Convert the string into a byte array.
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
             postStream.Write(byteArray, 0, postData.Length);
             postStream.Close();
-
+            System.Diagnostics.Debug.WriteLine("Json sent:\n"+postData);
             request.BeginGetResponse(new AsyncCallback(ResponseCallback), request);
         }
 
@@ -47,12 +47,13 @@ namespace MeetingDataExchange.ServerCommunication
                 Stream streamResponse = response.GetResponseStream();
                 StreamReader streamRead = new StreamReader(streamResponse);
                 string responseText = streamRead.ReadToEnd();
-                System.Diagnostics.Debug.WriteLine(responseText);
+                System.Diagnostics.Debug.WriteLine("JSON received:\n"+responseText);
                 del(JsonConvert.DeserializeObject<T>(responseText));
             }
             catch (WebException e)
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
+                System.Diagnostics.Debug.WriteLine("WebException!");
                 del(JsonConvert.DeserializeObject<T>(""));
             }
         }

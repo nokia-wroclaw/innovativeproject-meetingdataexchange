@@ -47,7 +47,6 @@ namespace MeetingDataExchange.Pages
                     connectProgressBar.Visibility = System.Windows.Visibility.Collapsed;
                     if (result == null)
                     {
-
                         connectedPanel.Visibility = System.Windows.Visibility.Collapsed;
                         MessageBox.Show("Couldn't connect to server");
                     }
@@ -58,8 +57,18 @@ namespace MeetingDataExchange.Pages
                     }
                     else
                     {
-                        connectedPanel.Visibility = System.Windows.Visibility.Visible;
                         serverNameBox.Text = result.servername;
+                        var servers = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverNameBox.Text select s);
+                        if (servers.Count() > 0)
+                        {
+                            MessageBox.Show("You already have account on this server. If you want to change to another one, please remove server from application. "+
+                            "All data on the device will be lost. Data on the server will remain unchanged.");
+                            connectedPanel.Visibility = System.Windows.Visibility.Collapsed;
+                        }
+                        else
+                        {
+                            connectedPanel.Visibility = System.Windows.Visibility.Visible;
+                        }
                     }
 
                 }); 
@@ -85,6 +94,8 @@ namespace MeetingDataExchange.Pages
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            button.IsEnabled = false;
+            buttonProgressBar.Visibility = System.Windows.Visibility.Visible;
             if ((bool)(tglSwitch.IsChecked))
             {
                 login();
@@ -105,35 +116,39 @@ namespace MeetingDataExchange.Pages
 
         private void loginCallback(LoginOutput output)
         {
-            if (output.status == "ok")
+            this.Dispatcher.BeginInvoke(delegate()
             {
-                this.Dispatcher.BeginInvoke(delegate()
+                buttonProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+                if (output.status == "ok")
                 {
-                    MessageBox.Show("Logged in on server.");
-                    var servers = from Server s in MDEDB.Servers where s.serverName == serverNameBox.Text select s;
+                    var servers = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverNameBox.Text select s);
                     Server server;
-                    if (servers.Count() > 0) server = new ObservableCollection<Server>(servers)[0];
+                    if (servers.Count() > 0)
+                    {
+                        MessageBox.Show("Wow, you shouldn't be here, how have you done that?!");
+                    }
                     else
                     {
                         server = new Server();
-                        server.serverName = nameBox.Text;
                         MDEDB.Servers.InsertOnSubmit(server);
+                        server.serverName = serverNameBox.Text;
+                        server.address = serverAddressBox.Text;
+                        server.login = loginBox.Text;
+                        server.name = nameBox.Text;
+                        server.pass = passwordBox.Password;
+                        server.sid = output.sid;
+                        System.Diagnostics.Debug.WriteLine(server.address + "\n" + server.login + "\n" + server.name);
+                        MDEDB.SubmitChanges();
+
+                        MessageBox.Show("Logged in on server.");
+                        NavigationService.GoBack();
                     }
-                    server.address = serverAddressBox.Text;
-                    server.login = loginBox.Text;
-                    server.name = nameBox.Text;
-                    server.pass = passwordBox.Password;
-                    server.sid = output.sid;
-                    MDEDB.SubmitChanges();
-                });
-            }
-            else
-            {
-                this.Dispatcher.BeginInvoke(delegate()
+                }
+                else
                 {
                     MessageBox.Show("Login or password incorrect.");
-                });
-            }
+                }
+            });
 
         }
 
@@ -147,6 +162,7 @@ namespace MeetingDataExchange.Pages
                     MessageBox.Show("These passwords are different.");
                 });
                 passwordBox.Password = repPasswordBox.Password = "";
+                button.IsEnabled = true;
             }
             else if(loginBox.Text==""||nameBox.Text==""||mailBox.Text==""||passwordBox.Password=="")
             {
@@ -155,6 +171,7 @@ namespace MeetingDataExchange.Pages
                     MessageBox.Show("All fields must not be empty.");
                 });
                 passwordBox.Password = repPasswordBox.Password = "";
+                button.IsEnabled = true;
             }
             else
             {
@@ -171,6 +188,8 @@ namespace MeetingDataExchange.Pages
                     if (output == null)
                     {
                         MessageBox.Show("Error communicating with server. Check your internet connection and try again.");
+                        passwordBox.Password = repPasswordBox.Password = "";
+                        button.IsEnabled = true;
                     }
                     else if (output.status == "ok")
                     {
@@ -178,24 +197,30 @@ namespace MeetingDataExchange.Pages
                         MessageBox.Show("Registerred on server.");
                         var servers = from Server s in MDEDB.Servers where s.serverName == serverNameBox.Text select s;
                         Server server;
-                        if (servers.Count() > 0) server = new ObservableCollection<Server>(servers)[0];
-                        else server=new Server();
-
+                        if (servers.Count() > 0)
+                        {
+                            MessageBox.Show("Wow, you shouldn't be here, how have you done that?!");
+                        }
+                        else
+                        {
+                            server=new Server();
                             server.address = serverUrl;
                             server.serverName = serverNameBox.Text;
                             server.login = loginBox.Text;
                             server.name = nameBox.Text;
                             server.email = mailBox.Text;
                             server.pass = passwordBox.Password;
-
-                        MDEDB.Servers.InsertOnSubmit(server);
-                        MDEDB.SubmitChanges();
-                        login();
+                            MDEDB.Servers.InsertOnSubmit(server);
+                            MDEDB.SubmitChanges();
+                            login();
+                        }
 
                     }
                     else
                     {
                         MessageBox.Show("Login or password incorrect.");
+                        passwordBox.Password = repPasswordBox.Password = "";
+                        button.IsEnabled = true;
                     }
                 });
         }

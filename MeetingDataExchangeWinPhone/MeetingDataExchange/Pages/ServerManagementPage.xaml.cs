@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using System.ComponentModel;
 using MeetingDataExchange.Model;
 using System.Collections.ObjectModel;
+using MeetingDataExchange.ServerCommunication;
 
 namespace MeetingDataExchange.Pages
 {
@@ -17,6 +18,7 @@ namespace MeetingDataExchange.Pages
     {
         // Data context for the local database
         private MDEDataContext MDEDB;
+
 
         // Define an observable collection property that controls can bind to.
         private ObservableCollection<Server> _servers;
@@ -38,6 +40,8 @@ namespace MeetingDataExchange.Pages
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            MDEDB = new MDEDataContext();
+
             // Define the query to gather all of the to-do items.
             var serversInDB = from Server s in MDEDB.Servers
                                 select s;
@@ -53,12 +57,14 @@ namespace MeetingDataExchange.Pages
         {
             InitializeComponent();
 
-            MDEDB = new MDEDataContext();
-
             // Data context and observable collection are children of the main page.
             this.DataContext = this;
         }
-
+        
+        public void serverClicked(Object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/ServerOptionsPage.xaml?serverName=" + ((Button)sender).Tag, UriKind.Relative));//
+        }
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -72,5 +78,6 @@ namespace MeetingDataExchange.Pages
             }
         }
         #endregion
+
     }
 }

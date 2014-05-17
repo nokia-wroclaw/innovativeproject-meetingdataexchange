@@ -127,7 +127,7 @@
     <value>Connect</value>
   </data>
   <data name="joinMeeting" xml:space="preserve">
-    <value>Join existing meeting</value>
+    <value>X Join existing meeting</value>
   </data>
   <data name="login" xml:space="preserve">
     <value>Login</value>
@@ -136,13 +136,13 @@
     <value>Your email address</value>
   </data>
   <data name="meetings" xml:space="preserve">
-    <value>Meetings</value>
+    <value>X Meetings</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Name (shown to other users)</value>
   </data>
   <data name="newMeeting" xml:space="preserve">
-    <value>New meeting</value>
+    <value>X New meeting</value>
   </data>
   <data name="password" xml:space="preserve">
     <value>Password</value>
@@ -165,5 +165,11 @@
   </data>
   <data name="servers" xml:space="preserve">
     <value>Servers</value>
+  </data>
+  <data name="appName" xml:space="preserve">
+    <value>Meeting Data Exchange</value>
+  </data>
+  <data name="serverOptions" xml:space="preserve">
+    <value>Server options</value>
   </data>
 </root>

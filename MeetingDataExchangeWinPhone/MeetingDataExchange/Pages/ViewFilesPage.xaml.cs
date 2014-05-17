@@ -23,25 +23,29 @@ namespace MeetingDataExchange
 
             using (IsolatedStorageFile isStore = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                string[] fileNames = isStore.GetFileNames();
-                foreach (string fileName in fileNames)
+                if(isStore.DirectoryExists("files"))
                 {
-//                    TextBlock block = new TextBlock();
-//                    block.Text = fileName;
-//                    grid.Children.Add(block);
+                    string[] fileNames = isStore.GetFileNames("files/*.jpg");
+                    foreach (string fileName in fileNames)
+                    {
+    //                    TextBlock block = new TextBlock();
+    //                    block.Text = fileName;
+    //                    grid.Children.Add(block);
 
-                    Button button = new Button();
-                    button.Content = fileName;
-                    ImageBrush brush = new ImageBrush();
-                    BitmapImage bi = new BitmapImage();
-                    bi.SetSource(isStore.OpenFile(fileName, FileMode.Open, FileAccess.Read));
-                    brush.ImageSource = bi;
-                    brush.Stretch = Stretch.Uniform;
-                    button.Height = 300;
-                    button.Width = 300;
-                    button.Background = brush;
+                        Button button = new Button();
+                        button.Content = fileName;
+                        button.VerticalContentAlignment = System.Windows.VerticalAlignment.Bottom;
+                        ImageBrush brush = new ImageBrush();
+                        BitmapImage bi = new BitmapImage();
+                        bi.SetSource(isStore.OpenFile("files\\"+fileName, FileMode.Open, FileAccess.Read));
+                        brush.ImageSource = bi;
+                        brush.Stretch = Stretch.Uniform;
+                        button.Height = 300;
+                        button.Width = 300;
+                        button.Background = brush;
 
-                    grid.Children.Add(button);
+                        grid.Children.Add(button);
+                    }
                 }
             }
         }

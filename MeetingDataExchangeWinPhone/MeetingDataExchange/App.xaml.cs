@@ -100,6 +100,7 @@ namespace MeetingDataExchange
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // A navigation has failed; break into the debugger
+                System.Diagnostics.Debug.WriteLine(e.Exception.StackTrace);
                 System.Diagnostics.Debugger.Break();
             }
         }
@@ -110,6 +111,7 @@ namespace MeetingDataExchange
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger
+                System.Diagnostics.Debug.WriteLine(e.ToString());
                 System.Diagnostics.Debugger.Break();
             }
         }
