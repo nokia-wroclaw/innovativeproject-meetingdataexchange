@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import asynctasks.HttpPostRequestLogIn;
+import asynctasks.HttpPostRequestLogInFirstTime;
 
 public class LogInActivity extends Activity {
 
@@ -35,7 +36,7 @@ public class LogInActivity extends Activity {
 		String login=logEd.getText().toString();
 		String passwd=passwdEd.getText().toString();
 		/*should check here is that server already exists ??*/
-		new HttpPostRequestLogIn(this).execute(address,name,login,passwd);
+		new HttpPostRequestLogInFirstTime(this).execute(address,name,login,passwd);
 		
 	}
 	public void displayMessage(String message)

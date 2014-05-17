@@ -30,12 +30,12 @@ public class ServerAdapter extends ArrayAdapter<ServerEntity>
 	       // Lookup view for data population
 	       TextView serverName = (TextView) convertView.findViewById(R.id.serverName);
 	       TextView introduceName = (TextView) convertView.findViewById(R.id.introduceName);
-	       TextView login= (TextView) convertView.findViewById(R.id.login);
+	      // TextView login= (TextView) convertView.findViewById(R.id.login);
 	      
 	       // Populate the data into the template view using the data object
 	       serverName.setText(server.getServerName());
 	       introduceName.setText(server.getAddress());
-	       login.setText(server.getLogin());
+	      // login.setText(server.getLogin());
 	       // Return the completed view to render on screen
 	       return convertView;
 	   }

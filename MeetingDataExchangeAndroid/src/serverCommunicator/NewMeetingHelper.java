@@ -3,28 +3,27 @@ package serverCommunicator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import dataBase.ServerEntity;
-
 import android.util.Log;
 
-public class RegistrationHelper
+public class NewMeetingHelper 
 {
-	private static final String LOG ="RegistrationHelper";
-	public JSONObject makeJSON2Reg(String login,String nick,String email,String password)
+	private static final String LOG="NewMeetingHelper";
+	public JSONObject makeJSON2LogIn
+	(String login,String sid,String title,String topic,String permission)
 	{	
 		JSONObject json= new JSONObject();
 		try {
 			json.accumulate("login", login);
-			json.accumulate("name", nick);
-			json.accumulate("email", email);
-			json.accumulate("password", password);
+			json.accumulate("sid", sid);
+			json.accumulate("title", title);
+			json.accumulate("topic", topic);
+			json.accumulate("abilityToSendFiles", permission);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return json;
 	}
-	
 	public String[] parseJSONRespondRegistration(String input)
 	{
 		JSONObject json;
@@ -40,6 +39,11 @@ public class RegistrationHelper
 				result[1]=json.getString("reason");
 				Log.i(LOG,"status "+result[1]);
 			}
+			else if(status.contains("ok"))
+			{
+				result[1]=json.getString("meetingid");
+				Log.i(LOG,"status "+result[1]);
+			}
 					
 		} 
 		catch (JSONException e) 
@@ -49,5 +53,7 @@ public class RegistrationHelper
 		return result;
 	}
 	
+	
 
+	
 }
