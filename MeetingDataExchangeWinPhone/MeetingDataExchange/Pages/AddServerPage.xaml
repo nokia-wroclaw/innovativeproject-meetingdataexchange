@@ -42,7 +42,7 @@
                 <TextBlock Text="{Binding Path=AppResources.serverAddress, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
                 <StackPanel Orientation="Horizontal" >
                     <TextBox Name="serverAddressBox" Text="156.17.230.172:9000" Width="311"/>
-                    <Button Click="connect">
+                    <Button x:Name="connectButton" Click="connect">
                         <TextBlock Text="{Binding Path=AppResources.connect, Source={StaticResource LocalizedStrings}}" />
                     </Button>
                 </StackPanel>
@@ -80,17 +80,6 @@ Unchecked="tglSwitch_Unchecked" >
                         <PasswordBox x:Name="repPasswordBox"/>
                     </StackPanel>
 
-<!--                    <TextBlock Name="nameBlock" Text="{Binding Path=AppResources.name, Source={StaticResource LocalizedStrings}}"/>
-                    <TextBox Name="nameBox" />
-
-                    <TextBlock Name="mailBlock" Text="{Binding Path=AppResources.mail, Source={StaticResource LocalizedStrings}}"/>
-                    <TextBox Name="mailBox" />
-
-                    <TextBlock Name="passwordBlock" Text="{Binding Path=AppResources.password, Source={StaticResource LocalizedStrings}}"/>
-                    <PasswordBox Name="passwordBox" />
-
-                    <TextBlock Name="repPasswordBlock" Text="{Binding Path=AppResources.repPassword, Source={StaticResource LocalizedStrings}}"/>
-                    <PasswordBox Name="repPasswordBox" />-->
                     <Button x:Name="button" Content="Register" Click="button_Click"/>
                     <ProgressBar x:Name="buttonProgressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
 

@@ -94,6 +94,9 @@
     <Compile Include="Pages\AddServerPage.xaml.cs">
       <DependentUpon>AddServerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EditPersonalDataPage.xaml.cs">
+      <DependentUpon>EditPersonalDataPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ServerManagementPage.xaml.cs">
       <DependentUpon>ServerManagementPage.xaml</DependentUpon>
     </Compile>
@@ -138,6 +141,10 @@
     </ApplicationDefinition>
     <Page Include="Pages\CameraPage.xaml">
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\EditPersonalDataPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MainPage.xaml">
       <SubType>Designer</SubType>

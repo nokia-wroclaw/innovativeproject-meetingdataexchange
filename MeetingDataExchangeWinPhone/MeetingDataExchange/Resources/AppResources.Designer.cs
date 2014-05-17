@@ -97,6 +97,15 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit data.
+        /// </summary>
+        public static string editPersonalData {
+            get {
+                return ResourceManager.GetString("editPersonalData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to X Join existing meeting.
         /// </summary>
         public static string joinMeeting {
@@ -151,11 +160,29 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New password (leave blank to keep current).
+        /// </summary>
+        public static string newPassword {
+            get {
+                return ResourceManager.GetString("newPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string password {
             get {
                 return ResourceManager.GetString("password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repeat new password.
+        /// </summary>
+        public static string repNewPassword {
+            get {
+                return ResourceManager.GetString("repNewPassword", resourceCulture);
             }
         }
         

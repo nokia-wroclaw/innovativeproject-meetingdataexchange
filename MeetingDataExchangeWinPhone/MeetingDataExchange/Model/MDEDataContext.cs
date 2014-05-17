@@ -528,6 +528,27 @@ namespace MeetingDataExchange.Model
     [Table]
     public class File
     {
+        public File()
+        {
+            _comments = new EntitySet<Comment>(
+                new Action<Comment>(this.attach_comment),
+                new Action<Comment>(this.detach_comment)
+                );
+        }
+
+        // Called during an add operation
+        private void attach_comment(Comment comment)
+        {
+            NotifyPropertyChanging("comment");
+            comment.file = this;
+        }
+
+        // Called during a remove operation
+        private void detach_comment(Comment comment)
+        {
+            NotifyPropertyChanging("comment");
+            comment.file = null;
+        }
         #region ID
         private int _ID;
 

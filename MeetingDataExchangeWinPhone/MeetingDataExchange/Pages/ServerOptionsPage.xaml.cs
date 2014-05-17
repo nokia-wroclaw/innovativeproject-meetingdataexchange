@@ -26,7 +26,17 @@ namespace MeetingDataExchange.Pages
             MDEDB = new MDEDataContext();
         }
 
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (Popup.IsOpen)
+            {
+                Popup.IsOpen = false;
+                ContentPanel.Visibility = System.Windows.Visibility.Visible;
+                e.Cancel = true;
+            }
 
+            base.OnBackKeyPress(e);
+        }
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             // Define the query to gather all of the to-do items.
@@ -35,17 +45,19 @@ namespace MeetingDataExchange.Pages
 
             string serverName = NavigationContext.QueryString["serverName"];
             System.Diagnostics.Debug.WriteLine(serverName);
-            server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverName select s)[0];
+            if(serverName!="")server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverName select s)[0];
 
             if (server.sid == null)
             {
                 Login.Visibility = System.Windows.Visibility.Visible;
+                ChangeAddress.Visibility = System.Windows.Visibility.Visible;
                 Logout.Visibility = System.Windows.Visibility.Collapsed;
                 Edit.Visibility = System.Windows.Visibility.Collapsed;
             }
             else
             {
                 Login.Visibility = System.Windows.Visibility.Collapsed;
+                ChangeAddress.Visibility = System.Windows.Visibility.Collapsed;
                 Logout.Visibility = System.Windows.Visibility.Visible;
                 Edit.Visibility = System.Windows.Visibility.Visible;
             }
@@ -54,6 +66,7 @@ namespace MeetingDataExchange.Pages
             base.OnNavigatedTo(e);
         }
 
+        #region login
         private void loginClicked(Object sender, RoutedEventArgs e)
         {
             //TODO block buttons
@@ -100,8 +113,9 @@ namespace MeetingDataExchange.Pages
                 }
             });
         }
+        #endregion
 
-
+        #region logout
         private void logoutClicked(Object sender, RoutedEventArgs e)
         {
             //TODO block buttons
@@ -140,10 +154,9 @@ namespace MeetingDataExchange.Pages
                 NavigationService.GoBack();
             });
         }
-        private void editClicked(Object sender, RoutedEventArgs e)
-        {
-            NavigationService.GoBack();
-        }
+        #endregion
+
+        #region delete
         private void deleteClicked(Object sender, RoutedEventArgs e)
         {
             this.Dispatcher.BeginInvoke(delegate()
@@ -163,30 +176,66 @@ namespace MeetingDataExchange.Pages
                 logoutClicked(sender, e);
             });
         }
+        #endregion
+
+        #region changeAddres
+        private void changeAddressClicked(Object sender, RoutedEventArgs e)
+        {
+            Popup.IsOpen = true;
+            ContentPanel.Visibility = System.Windows.Visibility.Collapsed;
+        }
+        private void changeAddressClicked2(Object sender, RoutedEventArgs e)
+        {
+            if (!changeAddressBox.Text.StartsWith("http://")) changeAddressBox.Text = "http://" + changeAddressBox.Text;
+            string url = changeAddressBox.Text + "/api/general/getname";
+            new HttpGetRequest<ServerName>(url, connectCallback);
+            changeAddressBox.IsEnabled = false;
+            ChangeAddress2.IsEnabled = false;
+            connectProgressBar.Visibility = System.Windows.Visibility.Visible;
+        }
+
+        private void connectCallback(ServerName result)
+        {
+            this.Dispatcher.BeginInvoke(delegate()
+            {
+                changeAddressBox.IsEnabled = true;
+                ChangeAddress2.IsEnabled = true;
+                connectProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+                if (result == null)
+                {
+                    MessageBox.Show("Couldn't connect to server");
+                }
+                else if (result.servername == null)
+                {
+                    MessageBox.Show("Incorrect server response, please contact with administrator or try again later.");
+                }
+                else
+                {
+                    if (result.servername != server.serverName)
+                        MessageBox.Show("Server with this address is other than chosen one. Please add it as new serwer.");
+                    else
+                    {
+                        MessageBox.Show("Server address changed.");
+                        server.address = changeAddressBox.Text;
+                        MDEDB.SubmitChanges();
+                        Popup.IsOpen = false;
+                        ContentPanel.Visibility = System.Windows.Visibility.Visible;
+                    }
+
+                }
+
+            });
+        }
+
+        #endregion
+
+        private void editClicked(Object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/EditPersonalDataPage.xaml?serverName=" + server.serverName, UriKind.Relative));
+        }
         private void cancelClicked(Object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
         }
-
-        /*private void serverClicked(Object sender, RoutedEventArgs e)
-        {
-            serverButtons.IsOpen = true;
-            serverButtons.Tag = ((Button)sender).Tag;
-            ContentPanel.Visibility = System.Windows.Visibility.Collapsed;
-            var server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == (string)serverButtons.Tag select s)[0];
-            if (server.sid == null)
-            {
-                Login.Visibility = System.Windows.Visibility.Visible;
-                Logout.Visibility = System.Windows.Visibility.Collapsed;
-                Edit.Visibility = System.Windows.Visibility.Collapsed;
-            }
-            else
-            {
-                Login.Visibility = System.Windows.Visibility.Collapsed;
-                Logout.Visibility = System.Windows.Visibility.Visible;
-                Edit.Visibility = System.Windows.Visibility.Visible;
-            }
-        }*/
-
     }
 }

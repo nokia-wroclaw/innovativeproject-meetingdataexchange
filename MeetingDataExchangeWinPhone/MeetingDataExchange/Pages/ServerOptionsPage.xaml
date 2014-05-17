@@ -28,12 +28,22 @@
             <TextBlock Text="{Binding Path=AppResources.appName, Source={StaticResource LocalizedStrings} }" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Text="{Binding Path=AppResources.serverOptions, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
-
+        <Popup x:Name="Popup" Grid.Row="1">
+            <Border Width="455" Margin="12" BorderThickness="5">
+                <StackPanel>
+                    <TextBlock Text="{Binding Path=AppResources.changeAddress, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                    <TextBox x:Name="changeAddressBox"/>
+                    <Button x:Name="ChangeAddress2" Content="Change connection address" Click="changeAddressClicked2"/>
+                    <ProgressBar x:Name="connectProgressBar" Visibility="Collapsed" IsIndeterminate="True"/>
+                </StackPanel>
+                </Border>
+            </Popup>
         <Border Width="455" BorderThickness="5"  Grid.Row="1">
-            <StackPanel>
+            <StackPanel x:Name="ContentPanel">
                 <Button x:Name="Login" Content="Log in" Click="loginClicked"/>
                 <Button x:Name="Logout" Content="Log out" Click="logoutClicked"/>
                 <Button x:Name="Edit" Content="Edit personal data" Click="editClicked"/>
+                <Button x:Name="ChangeAddress" Content="Change connection address" Click="changeAddressClicked"/>
                 <Button Content="Delete server" Click="deleteClicked"/>
                 <Button Content="Cancel" Click="cancelClicked"/>
             </StackPanel>

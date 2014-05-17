@@ -29,13 +29,14 @@ namespace MeetingDataExchange.Pages
             this.DataContext = this;
         }
 
-        private void connect(object sender, RoutedEventArgs e)
+        private void connect(Object sender, RoutedEventArgs e)
         {
             if (!serverAddressBox.Text.StartsWith("http://")) serverAddressBox.Text = "http://" + serverAddressBox.Text;
             serverUrl = serverAddressBox.Text;
             string url = serverUrl + "/api/general/getname";
             new HttpGetRequest<ServerName>(url, connectCallback);
             serverAddressBox.IsEnabled = false;
+            connectButton.IsEnabled = false;
             connectProgressBar.Visibility = System.Windows.Visibility.Visible;
         }
 
@@ -44,6 +45,7 @@ namespace MeetingDataExchange.Pages
             this.Dispatcher.BeginInvoke(delegate()
                 {
                     serverAddressBox.IsEnabled = true;
+                    connectButton.IsEnabled = true;
                     connectProgressBar.Visibility = System.Windows.Visibility.Collapsed;
                     if (result == null)
                     {
@@ -61,8 +63,17 @@ namespace MeetingDataExchange.Pages
                         var servers = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverNameBox.Text select s);
                         if (servers.Count() > 0)
                         {
-                            MessageBox.Show("You already have account on this server. If you want to change to another one, please remove server from application. "+
+                            Server server = servers[0];
+                            if (server.address == serverAddressBox.Text)
+                                MessageBox.Show("You already have account on this server. \n If you want to change to another one, please remove server from application. " +
                             "All data on the device will be lost. Data on the server will remain unchanged.");
+                            else
+                            {
+                                server.address = serverAddressBox.Text;
+                                MDEDB.SubmitChanges();
+                                MessageBox.Show("You already have account on this server, under other address. Address in application had been automatically changed. \n If you want to change to another one, please remove server from application. " +
+                            "All data on the device will be lost. Data on the server will remain unchanged.");
+                            }
                             connectedPanel.Visibility = System.Windows.Visibility.Collapsed;
                         }
                         else
@@ -74,7 +85,7 @@ namespace MeetingDataExchange.Pages
                 }); 
         }
 
-        private void tglSwitch_Checked(object sender, RoutedEventArgs e)
+        private void tglSwitch_Checked(Object sender, RoutedEventArgs e)
         {
             tglSwitch.Content = "Yes";
             namePanel.Visibility = System.Windows.Visibility.Collapsed;
@@ -83,7 +94,7 @@ namespace MeetingDataExchange.Pages
             button.Content = "Log in";
         }
 
-        private void tglSwitch_Unchecked(object sender, RoutedEventArgs e)
+        private void tglSwitch_Unchecked(Object sender, RoutedEventArgs e)
         {
             tglSwitch.Content = "No";
             namePanel.Visibility = System.Windows.Visibility.Visible;
@@ -92,7 +103,7 @@ namespace MeetingDataExchange.Pages
             button.Content = "Register";
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private void button_Click(Object sender, RoutedEventArgs e)
         {
             button.IsEnabled = false;
             buttonProgressBar.Visibility = System.Windows.Visibility.Visible;
@@ -118,6 +129,7 @@ namespace MeetingDataExchange.Pages
         {
             this.Dispatcher.BeginInvoke(delegate()
             {
+                button.IsEnabled = true;
                 buttonProgressBar.Visibility = System.Windows.Visibility.Collapsed;
                 if (output.status == "ok")
                 {
@@ -125,7 +137,12 @@ namespace MeetingDataExchange.Pages
                     Server server;
                     if (servers.Count() > 0)
                     {
-                        MessageBox.Show("Wow, you shouldn't be here, how have you done that?!");
+                        //MessageBox.Show("Wow, you shouldn't be here, how have you done that?!");
+                        //We are here right after registration. We should only add sid.
+                        server = servers[0];
+                        server.sid = output.sid;
+                        MDEDB.SubmitChanges();
+                        NavigationService.GoBack();
                     }
                     else
                     {
@@ -134,11 +151,14 @@ namespace MeetingDataExchange.Pages
                         server.serverName = serverNameBox.Text;
                         server.address = serverAddressBox.Text;
                         server.login = loginBox.Text;
-                        server.name = nameBox.Text;
+                        //server.name = nameBox.Text;
                         server.pass = passwordBox.Password;
                         server.sid = output.sid;
-                        System.Diagnostics.Debug.WriteLine(server.address + "\n" + server.login + "\n" + server.name);
+
                         MDEDB.SubmitChanges();
+
+                        string url = serverUrl + "/api/account/getdata/" + loginBox.Text + "/" + output.sid;
+                        new HttpGetRequest<PersonalDataOutput>(url, personalDataCallback);
 
                         MessageBox.Show("Logged in on server.");
                         NavigationService.GoBack();
@@ -150,6 +170,22 @@ namespace MeetingDataExchange.Pages
                 }
             });
 
+        }
+
+        private void personalDataCallback(PersonalDataOutput output)
+        {
+            if (output.status == "ok")
+            {
+                this.Dispatcher.BeginInvoke(delegate()
+                {
+                    var servers = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverNameBox.Text select s);
+                    Server server = servers[0];
+                    server.name = output.name;
+                    server.email = output.email;
+
+                    MDEDB.SubmitChanges();
+                });
+            }
         }
 
 

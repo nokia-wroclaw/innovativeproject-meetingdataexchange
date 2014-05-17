@@ -169,7 +169,16 @@
   <data name="appName" xml:space="preserve">
     <value>Meeting Data Exchange</value>
   </data>
+  <data name="editPersonalData" xml:space="preserve">
+    <value>Edit data</value>
+  </data>
   <data name="serverOptions" xml:space="preserve">
     <value>Server options</value>
+  </data>
+  <data name="newPassword" xml:space="preserve">
+    <value>New password (leave blank to keep current)</value>
+  </data>
+  <data name="repNewPassword" xml:space="preserve">
+    <value>Repeat new password</value>
   </data>
 </root>
