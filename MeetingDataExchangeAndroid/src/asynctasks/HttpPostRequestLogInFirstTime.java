@@ -9,7 +9,7 @@ import com.TrololoCompany.meetingdataexchange.LogInActivity;
 
 import android.os.AsyncTask;
 
-public class HttpPostRequestLogIn extends AsyncTask<String, Void, Void>
+public class HttpPostRequestLogInFirstTime extends HttpPostRequestLogIn
 {
 	
 	private LogInActivity activty;
@@ -18,7 +18,11 @@ public class HttpPostRequestLogIn extends AsyncTask<String, Void, Void>
 	private String login;
 	private String password;
 	private String result[];
-
+	public HttpPostRequestLogInFirstTime(LogInActivity activity)
+	{
+		this.activty=activity;
+		this.result=new String[2];
+	}
 	@Override
 	protected Void doInBackground(String... arg0) 
 	{
@@ -39,6 +43,26 @@ public class HttpPostRequestLogIn extends AsyncTask<String, Void, Void>
 		return null;
 		
 	}
-	
+	@Override
+	protected void onPostExecute(Void something) 
+	{
+		if(result[0]==null)
+		{
+			activty.displayMessage("connection refused");
+		}
+		else if(result[0].contains("failed"))
+		{
+			activty.displayMessage("authorisation fail reason "+result[1]);
+		}
+		else
+		{
+			
+			String sid=result[1];
+			activty.displayMessage("log in successed");
+			new HttpGetPersonalData(activty).
+			execute(address,name,login,password,sid);
+			
+		}
+	}
 
 }

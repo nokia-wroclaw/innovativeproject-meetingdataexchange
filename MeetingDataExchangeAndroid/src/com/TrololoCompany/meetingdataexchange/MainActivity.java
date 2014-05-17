@@ -26,8 +26,20 @@ public class MainActivity extends Activity {
 		
 		return true;
 	}
-
+	public void create_new_meeting(View v) 
+	{
+		
+		Intent intent = new Intent(this, ServerList.class);
+	    startActivity(intent);
+		
+	}
 	public void join_meeting(View v) 
+	{
+		
+		
+		
+	}
+	public void show_meetings(View v) 
 	{
 		
 		

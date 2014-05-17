@@ -8,25 +8,20 @@
     <string name="join_meeting">Dołącz</string>
     <string name="meetings">Spotkania</string>
     <string name="setting">Zarządanie serwerami</string>
-    
     <string name="server_manage_button">Dodaj nowy serwer</string>
-    
     <string name="add_new_server_text_view1">Krok 1</string>
     <string name="add_new_server_text_view2">Podaj adres serwera:</string>
     <string name="add_new_server_button">Dalej</string>
-    
     <string name="add_new_server_succ_text1">Krok2</string>
     <string name="add_new_server_succ_text2">Podany adres jest prawidłowy</string>
     <string name="add_new_server_succ_text3">Czy posiadasz juz konto na serwerze </string>
     <string name="add_new_server_succ_button1">Tak,zaloguj</string>
     <string name="add_new_server_succ_button2">Nie,zarejstruj</string>
-    
     <string name="log_in_text1">Krok 3</string>
     <string name="log_in_text2">Logowanie</string>
     <string name="log_in_text3">Login</string>
     <string name="log_in_text4">Hasło</string>
     <string name="log_in_button1">Zaloguj</string>
-    
     <string name="sign_up_text1">Krok 3</string>
     <string name="sign_up_text2">Rejestracja</string>
     <string name="sign_up_text3">Login</string>
@@ -35,7 +30,6 @@
     <string name="sign_up_text6">Hasło</string>
     <string name="sign_up_text7">Powtórz hasło</string>
     <string name="sign_up_button1">Zarejestruj</string>
-    
     <string name="main_act_name">MeetingDataExchange</string>
     <string name="title_activity_camera">CameraActivity</string>
     <string name="title_activity_add_new_item">Add_new_itemActivity</string>
@@ -56,5 +50,12 @@
     <string name="title_activity_add_server_activity_success">AddServerActivitySuccess</string>
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_add_new_meeting">AddNewMeeting</string>
+    
+    <string name="add_new_meeting_textView1">Serwer</string>
+    <string name="add_new_meeting_textView2">Tytuł spotkania</string>
+    <string name="add_new_meeting_textView3">Temat</string>
+    <string name="add_new_meeting_textView4">Uczestnicy mogą dodawać zawartość</string>
+    <string name="add_new_meeting_button1">Utwórz spotkanie</string>
 
 </resources>

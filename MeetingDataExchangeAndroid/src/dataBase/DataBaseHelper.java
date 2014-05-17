@@ -183,6 +183,17 @@ public class DataBaseHelper extends SQLiteOpenHelper
     	return result;
     	
     }
+    public ServerEntity getServer(long id)
+    {
+    	long result=-1;
+    		SQLiteDatabase db =this.getReadableDatabase();
+    		String cond=SERVER_ID+" = '"+id+"'";
+    		Cursor cursor= db.query(SERVER_TABLE_NAME,null,cond,
+   						null,null,null,null);
+   			
+   			return makeServerEntityList(cursor).get(0);
+    	
+    }
     private ArrayList<ServerEntity> makeServerEntityList(Cursor cursor)
     {
     	ArrayList<ServerEntity> result=null;

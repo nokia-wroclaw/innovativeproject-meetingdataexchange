@@ -1,6 +1,8 @@
 package dataBase;
 
-public class ServerEntity 
+import java.io.Serializable;
+
+public class ServerEntity implements Serializable
 {
 	private long Id;
 	private String address;
