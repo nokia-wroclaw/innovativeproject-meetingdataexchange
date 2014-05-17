@@ -63,11 +63,11 @@ public class Meetings extends Controller {
 				.fetchOne();
 		
 		int meetingId = record.getValue(MEETING.ID);
-		
+		Timestamp ts = new Timestamp(date.getTime());
 		DbSingleton.getInstance().getDsl()
 				.insertInto(MEETINGUSER,
 						MEETINGUSER.MEETINGID, MEETINGUSER.USERLOGIN, MEETINGUSER.JOINTIME)
-				.values(meetingId, login, new Timestamp(date.getTime()))
+				.values(meetingId, login, ts)
 				.execute();
 		
 		new File(System.getProperty("user.dir")+"/upload/"+String.valueOf(meetingId)).mkdir();
@@ -81,8 +81,8 @@ public class Meetings extends Controller {
 		ObjectNode on = Accounts.web_getData(login,sid);
 		result.put("hostname", on.get("name").textValue());
 		
-		result.put("starttime", record.getValue(MEETING.STARTTIME).toString());
-		result.put("endtime",  record.getValue(MEETING.ENDTIME).toString());
+		result.put("starttime", ts.toString());
+		result.putNull("endtime");
 		result.put("members", 1);
 		result.put("permissions", "host");
 		result.put("accessCode", hash);

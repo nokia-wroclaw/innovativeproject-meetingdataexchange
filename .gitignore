@@ -10,3 +10,4 @@ meetingDataExchangeServer/upload/2/test2.txt
 meetingDataExchangeServer/data/mde.db
 meetingDataExchangeServer/data/mde.db
 meetingDataExchangeServer/data/mde.db
+*.db
