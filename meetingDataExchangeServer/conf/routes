@@ -13,7 +13,10 @@ POST	/api/meeting/edit					controllers.Meetings.edit()
 POST	/api/meeting/adduser				controllers.Meetings.adduser()
 GET		/api/meeting/list/:login/:sid		controllers.Meetings.getList(login: String, sid: String)
 GET		/api/general/getname				controllers.GeneralStuff.getName()
-PUT		/api/upload/:meetingid/:filename	controllers.FilesManagement.upload(meetingid: String, filename: String)
+PUT		/api/upload/:login/:sid/:meetingid/:filename	controllers.FilesManagement.upload(login: String, sid: String, meetingid: String, filename: String)
+POST	/api/files/remove					controllers.FilesManagement.remove()
+POST	/api/comment/add					controllers.FilesManagement.comment()
+GET		/api/files/download/:login/:sid/:fileid		controllers.FilesManagement.download(login: String, sid: String, fileid : String)					
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

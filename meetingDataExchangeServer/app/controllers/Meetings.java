@@ -2,6 +2,7 @@ package controllers;
 
 import static models.Tables.*;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
@@ -69,9 +70,22 @@ public class Meetings extends Controller {
 				.values(meetingId, login, new Timestamp(date.getTime()))
 				.execute();
 		
+		new File(System.getProperty("user.dir")+"/upload/"+String.valueOf(meetingId)).mkdir();
+		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
 		result.put("meetingid", meetingId);
+		result.put("title", title);
+		result.put("topic", topic);
+		
+		ObjectNode on = Accounts.web_getData(login,sid);
+		result.put("hostname", on.get("name").textValue());
+		
+		result.put("starttime", record.getValue(MEETING.STARTTIME).toString());
+		result.put("endtime",  record.getValue(MEETING.ENDTIME).toString());
+		result.put("members", 1);
+		result.put("permissions", "host");
+		result.put("accessCode", hash);
 		return result;
 	}
 	
