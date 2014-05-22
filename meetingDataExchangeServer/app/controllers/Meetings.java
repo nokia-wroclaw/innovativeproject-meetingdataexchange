@@ -6,6 +6,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.util.Iterator;
 
 import models.DbSingleton;
 
@@ -150,7 +151,6 @@ public class Meetings extends Controller {
 		if(!userIsA_Host(login, meetingId))
 			return errorObject("access denied");
 		
-		//String abilityToSendFiles = json.findPath("abilityToSendFiles").textValue();
 		if(abilityToSendFiles!=null){
 			boolean permit;
 			if(!abilityToSendFiles.equals("true") && !abilityToSendFiles.equals("false"))
@@ -164,14 +164,12 @@ public class Meetings extends Controller {
 			.where(MEETING.ID.equal(Integer.parseInt(meetingId))).execute();
 		}
 		
-		//String title = json.findPath("title").textValue();
 		if(title!=null){
 			DbSingleton.getInstance().getDsl().update(MEETING)
 			.set(MEETING.TITLE, title)
 			.where(MEETING.ID.equal(Integer.parseInt(meetingId))).execute();
 		}
 		
-		//String topic = json.findPath("topic").textValue();
 		if(topic!=null){
 			DbSingleton.getInstance().getDsl().update(MEETING)
 			.set(MEETING.TOPIC, topic)
@@ -218,6 +216,28 @@ public class Meetings extends Controller {
 		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
+		
+		ObjectNode on = Meetings.web_getList(login,sid);
+		
+		ArrayNode array = (ArrayNode) on.get("meetings");
+		Iterator<JsonNode> it = array.elements();
+		while(it.hasNext()){
+			JsonNode jn = it.next();
+			if (jn.get("meetingid") == null )
+				continue;
+			if (Integer.parseInt(meetingId) == jn.get("meetingid").asInt()){
+				result.put("meetingid", jn.get("meetingid").asInt()).asInt();
+				result.put("title", jn.get("title"));
+				result.put("topic", jn.get("topic"));
+				result.put("hostname", jn.get("hostname"));
+				result.put("starttime", jn.get("starttime"));
+				result.put("endtime", jn.get("endtime"));
+				result.put("members", jn.get("members"));
+				result.put("permissions", jn.get("permissions"));
+				result.put("accessCode", jn.get("accessCode"));
+				break;
+			}
+		}
 		return result;
 	}
 
