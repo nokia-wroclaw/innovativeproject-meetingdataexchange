@@ -71,7 +71,7 @@ namespace MeetingDataExchange.Pages
                             {
                                 server.address = serverAddressBox.Text;
                                 MDEDB.SubmitChanges();
-                                MessageBox.Show("You already have account on this server, under other address. Address in application had been automatically changed. \n If you want to change to another one, please remove server from application. " +
+                                MessageBox.Show("You already have account on this server, under other address. Address in application had been automatically changed. \n If you want to change to another account, please remove server from application. " +
                             "All data on the device will be lost. Data on the server will remain unchanged.");
                             }
                             connectedPanel.Visibility = System.Windows.Visibility.Collapsed;
@@ -137,7 +137,6 @@ namespace MeetingDataExchange.Pages
                     Server server;
                     if (servers.Count() > 0)
                     {
-                        //MessageBox.Show("Wow, you shouldn't be here, how have you done that?!");
                         //We are here right after registration. We should only add sid.
                         server = servers[0];
                         server.sid = output.sid;

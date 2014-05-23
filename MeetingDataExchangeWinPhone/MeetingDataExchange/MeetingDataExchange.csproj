@@ -94,6 +94,18 @@
     <Compile Include="Pages\AddServerPage.xaml.cs">
       <DependentUpon>AddServerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\NewMeetingPage.xaml.cs">
+      <DependentUpon>NewMeetingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\NewMeetingsServersPage.xaml.cs">
+      <DependentUpon>NewMeetingsServersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MeetingsPage.xaml.cs">
+      <DependentUpon>MeetingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\MeetingsServersPage.xaml.cs">
+      <DependentUpon>MeetingsServersPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\EditPersonalDataPage.xaml.cs">
       <DependentUpon>EditPersonalDataPage.xaml</DependentUpon>
     </Compile>
@@ -118,8 +130,8 @@
     <Compile Include="Model\MDEDataContext.cs" />
     <Compile Include="PhotoCameraLuminanceSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pages\QRPage.xaml.cs">
-      <DependentUpon>QRPage.xaml</DependentUpon>
+    <Compile Include="Pages\JoinMeetingPage.xaml.cs">
+      <DependentUpon>JoinMeetingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -142,6 +154,22 @@
     <Page Include="Pages\CameraPage.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\NewMeetingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\NewMeetingsServersPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\MeetingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\MeetingsServersPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\EditPersonalDataPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -158,7 +186,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\QRPage.xaml">
+    <Page Include="Pages\JoinMeetingPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\ServerOptionsPage.xaml">

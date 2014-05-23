@@ -299,7 +299,7 @@ namespace MeetingDataExchange.Model
             get { return _server.Entity; }
             set
             {
-                NotifyPropertyChanging("Server");
+                NotifyPropertyChanging("server");
                 _server.Entity = value;
 
                 if (value != null)
@@ -307,7 +307,7 @@ namespace MeetingDataExchange.Model
                     _serverID = value.ID;
                 }
 
-                NotifyPropertyChanging("Server");
+                NotifyPropertyChanging("server");
             }
         }
         #endregion
@@ -389,10 +389,10 @@ namespace MeetingDataExchange.Model
         #endregion
 
         #region startTime
-        private DateTime _startTime;
+        private string _startTime;
 
         [Column]
-        public DateTime startTime
+        public string startTime
         {
             get { return _startTime; }
             set
@@ -408,10 +408,10 @@ namespace MeetingDataExchange.Model
         #endregion
 
         #region endTime
-        private DateTime _endTime;
+        private string _endTime;
 
         [Column]
-        public DateTime endTime
+        public string endTime
         {
             get { return _endTime; }
             set
@@ -427,10 +427,10 @@ namespace MeetingDataExchange.Model
         #endregion
 
         #region code
-        private int _code;
+        private string _code;
 
         [Column]
-        public int code
+        public string code
         {
             get { return _code; }
             set
@@ -652,10 +652,10 @@ namespace MeetingDataExchange.Model
         #endregion
 
         #region addTime
-        private DateTime _addTime;
+        private string _addTime;
 
         [Column]
-        public DateTime addTime
+        public string addTime
         {
             get { return _addTime; }
             set
@@ -818,10 +818,10 @@ namespace MeetingDataExchange.Model
         #endregion
 
         #region addTime
-        private DateTime _addTime;
+        private string _addTime;
 
         [Column]
-        public DateTime addTime
+        public string addTime
         {
             get { return _addTime; }
             set

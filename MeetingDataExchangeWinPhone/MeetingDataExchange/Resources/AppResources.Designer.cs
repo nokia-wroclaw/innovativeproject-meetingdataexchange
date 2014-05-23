@@ -97,6 +97,15 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create new meeting.
+        /// </summary>
+        public static string createMeeting {
+            get {
+                return ResourceManager.GetString("createMeeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit data.
         /// </summary>
         public static string editPersonalData {
@@ -106,7 +115,7 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X Join existing meeting.
+        ///   Looks up a localized string similar to Join existing meeting.
         /// </summary>
         public static string joinMeeting {
             get {
@@ -133,11 +142,29 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X Meetings.
+        ///   Looks up a localized string similar to Meetings.
         /// </summary>
         public static string meetings {
             get {
                 return ResourceManager.GetString("meetings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string meetingTitle {
+            get {
+                return ResourceManager.GetString("meetingTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Topic.
+        /// </summary>
+        public static string meetingTopic {
+            get {
+                return ResourceManager.GetString("meetingTopic", resourceCulture);
             }
         }
         
@@ -151,7 +178,7 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X New meeting.
+        ///   Looks up a localized string similar to New meeting.
         /// </summary>
         public static string newMeeting {
             get {
@@ -246,6 +273,15 @@ namespace MeetingDataExchange.Resources {
         public static string servers {
             get {
                 return ResourceManager.GetString("servers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can users add content?.
+        /// </summary>
+        public static string userAdding {
+            get {
+                return ResourceManager.GetString("userAdding", resourceCulture);
             }
         }
     }

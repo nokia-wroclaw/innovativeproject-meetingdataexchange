@@ -74,5 +74,34 @@ namespace MeetingDataExchange.ServerCommunication
         public string name { get; set; }
         public string email { get; set; }
     }
+    public class NewMeetingInput
+    {
+        public string login { get; set; }
+        public string sid { get; set; }
+        public string title { get; set; }
+        public string topic { get; set; }
+        public string abilityToSendFiles { get; set; }
+
+    }
+    public class MeetingOutput : StatusReasonOutput
+    {
+        public string meetingid { get; set; }
+        public string title { get; set; }
+        public string topic { get; set; }
+        public string hostname { get; set; }
+        public string starttime { get; set; }
+        public string endtime { get; set; }
+        public string members { get; set; }
+        public string permissions { get; set; }
+        public string accessCode { get; set; }
+    }
+    public class JoinMeetingInput
+    {
+        public string login { get; set; }
+        public string sid { get; set; }
+        public string meetingid { get; set; }
+        public string accessCode { get; set; }
+
+    }
 
 }
