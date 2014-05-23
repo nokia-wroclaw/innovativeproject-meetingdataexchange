@@ -21,40 +21,43 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="{Binding Path=AppResources.appName, Source={StaticResource LocalizedStrings} }" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Text="{Binding Path=AppResources.meetings, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="serverNameTextBox"/>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <StackPanel Grid.Row="1"  x:Name="ContentPanel" Margin="12,0,12,0">
-            <TextBlock x:Name="serverNameTextBox"/>
-            <ListBox x:Name="meetingsListBox" ItemsSource="{Binding meetings}" 
-                     Grid.Row="0" Margin="12, 0, 12, 0" Width="400">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Button  BorderThickness="5" Click="meetingClicked" Tag="{Binding topic}">
-                            <StackPanel HorizontalAlignment="Stretch" Width="400" >
-                                <!--    <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="100" />
-                            </Grid.ColumnDefinitions>
-                            -->
-                                <TextBlock Text="{Binding topic}" FontSize="{StaticResource PhoneFontSizeLarge}"
+        <ListBox x:Name="meetingsListBox" ItemsSource="{Binding meetings}" 
+                     Grid.Row="1" Margin="12, 0, 12, 0" Width="400">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button  BorderThickness="5" Click="meetingClicked" Tag="{Binding topic}">
+                        <StackPanel HorizontalAlignment="Stretch" Width="400" >
+                            <TextBlock Text="{Binding title}" FontSize="{StaticResource PhoneFontSizeLarge}"
                                            Grid.Column="1" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding startTime}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding endTime}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                            </StackPanel>
-                        </Button>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            </StackPanel>
-        
+                            <TextBlock Text="{Binding topic}" FontSize="{StaticResource PhoneFontSizeNormal}"
+                                           Grid.Column="1" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding startTime}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            <TextBlock Text="{Binding endTime}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Grid.Row="2" >
+            <Button Name="refreshButton" Margin="-5,-5,-5,-5" BorderThickness="0" Click="refreshClicked">
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                </Button.Background>
+                <TextBlock FontSize="36" Text="{Binding Path=AppResources.refresh, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" >
+
+                </TextBlock>
+            </Button>
+            <ProgressBar x:Name="progressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
+        </StackPanel>
     </Grid>
 
 </phone:PhoneApplicationPage>

@@ -18,7 +18,7 @@ namespace MeetingDataExchange.Pages
     {
         // Data context for the local database
         private MDEDataContext MDEDB;
-
+        private Server server;
 
         // Define an observable collection property that controls can bind to.
         private ObservableCollection<Meeting> _meetings;
@@ -54,6 +54,8 @@ namespace MeetingDataExchange.Pages
             MDEDB.SubmitChanges();
             */
 
+            server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverName select s)[0];
+
             serverNameTextBox.Text = serverName;
             // Define the query to gather all of the to-do items.
             var meetingsInDB = from Meeting m in MDEDB.Meetings
@@ -76,8 +78,7 @@ namespace MeetingDataExchange.Pages
         
         public void meetingClicked(Object sender, RoutedEventArgs e)
         {
-            //TODO
-            //NavigationService.Navigate(new Uri("/Pages/MeetingsPage.xaml?serverName=" + ((Button)sender).Tag, UriKind.Relative));//
+            NavigationService.Navigate(new Uri("/Pages/MeetingPage.xaml?serverName=" + ((Button)sender).Tag, UriKind.Relative));//
         }
         #region INotifyPropertyChanged Members
 
@@ -92,6 +93,51 @@ namespace MeetingDataExchange.Pages
             }
         }
         #endregion
+
+        private void setControlEnabled(bool isEnabled)
+        {
+            refreshButton.IsEnabled = isEnabled;
+            progressBar.Visibility = isEnabled ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public void refreshClicked(Object sender, RoutedEventArgs e)
+        {
+            setControlEnabled(false);
+            string url = server.address + "/api/meeting/list/" + server.login + "/" + server.sid;
+            new HttpGetRequest<MeetingsListOutput>(url, meetingListCallback);
+        }
+
+        private void meetingListCallback(MeetingsListOutput output)
+        {
+            this.Dispatcher.BeginInvoke(delegate()
+                {
+                    if (output == null)
+                    {
+                        MessageBox.Show("Error communicating with server. Check your internet connection and try again.");
+                    }
+                    else if (output.status == "ok")
+                    {
+
+                        foreach (MeetingOutput meetingOutput in output.meetings)
+                        {
+                            var meeting = (from Meeting m in MDEDB.Meetings where m.serverMeetingID == meetingOutput.meetingid select m);
+                            if (meeting.Count() == 0)
+                            {
+                                MDEDB.Meetings.InsertOnSubmit(meetingOutput.getEntity(server));
+                            }
+                        }
+                        MDEDB.SubmitChanges();
+                        meetings = new ObservableCollection<Meeting>(from Meeting m in MDEDB.Meetings
+                                                                     where m.server == server
+                                                                     select m);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unable to refresh.\nServer response:\n" + output.reason);
+                    }
+                    setControlEnabled(true);
+                });
+        }
 
     }
 }

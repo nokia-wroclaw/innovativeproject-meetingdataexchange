@@ -1,4 +1,5 @@
 ﻿
+using MeetingDataExchange.Model;
 namespace MeetingDataExchange.ServerCommunication
 {
     public class ServerName
@@ -85,23 +86,45 @@ namespace MeetingDataExchange.ServerCommunication
     }
     public class MeetingOutput : StatusReasonOutput
     {
-        public string meetingid { get; set; }
+        public int meetingid { get; set; }
         public string title { get; set; }
         public string topic { get; set; }
         public string hostname { get; set; }
         public string starttime { get; set; }
         public string endtime { get; set; }
-        public string members { get; set; }
+        public int members { get; set; }
         public string permissions { get; set; }
         public string accessCode { get; set; }
+
+        public Meeting getEntity(Server server)
+        {
+            Meeting meeting = new Meeting();
+            meeting.server = server;
+            meeting.serverMeetingID = meetingid;
+            meeting.title = title;
+            meeting.topic = topic;
+            meeting.adminName = hostname;
+            meeting.startTime = starttime;
+            meeting.endTime = endtime;
+            meeting.numerOfMembers = members;
+            meeting.permissions = permissions == "memberUpload" ? 1 : (permissions == "member" ? 0 : 2);
+            meeting.code = accessCode;
+            return meeting;
+        }
+
     }
     public class JoinMeetingInput
     {
         public string login { get; set; }
         public string sid { get; set; }
-        public string meetingid { get; set; }
+        public int meetingid { get; set; }
         public string accessCode { get; set; }
 
+    }
+
+    public class MeetingsListOutput : StatusReasonOutput
+    {
+        public MeetingOutput[] meetings { get; set; }
     }
 
 }

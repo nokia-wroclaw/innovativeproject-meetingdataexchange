@@ -137,7 +137,7 @@ namespace MeetingDataExchange
                                JoinMeetingInput input = new JoinMeetingInput();
                                input.login = server.login;
                                input.sid = server.sid;
-                               input.meetingid = text.Split(';')[2];
+                               input.meetingid = Convert.ToInt32(text.Split(';')[2]);
                                input.accessCode = text.Split(';')[3];
 
                                string url = text.Split(';')[1] + "/api/meeting/adduser";
@@ -160,23 +160,28 @@ namespace MeetingDataExchange
                {
                    if (output.status == "OK")
                    {
-                       server.address = text.Split(';')[1];
-                       Meeting meeting=new Meeting();
+                       //server.address = text.Split(';')[1];
+                    /*   Meeting meeting=new Meeting();
                        meeting.server = server;
-                       meeting.serverMeetingID = Convert.ToInt32(output.meetingid);
+                       meeting.serverMeetingID = output.meetingid;
                        meeting.title = output.title;
                        meeting.topic = output.title;
-                       meeting.adminName = server.name;
+                       meeting.adminName = output.hostname;
                        meeting.startTime = output.starttime;
-                       meeting.numerOfMembers = Convert.ToInt32(output.members);
+                       meeting.endTime = output.endtime;
+                       meeting.numerOfMembers = output.members;
                        meeting.permissions = output.permissions=="memberUpload"? 1 : (output.permissions=="member" ? 0:2);
-                       meeting.code = output.accessCode;
-                       MDEDB.Meetings.InsertOnSubmit(meeting);
+                       meeting.code = output.accessCode;*/
+                       MDEDB.Meetings.InsertOnSubmit(output.getEntity(server));
                        MDEDB.SubmitChanges();
+
+                       //TODO go to the meeting page instead
+                       MessageBox.Show("Succesfully joined the meeting.");
+                       NavigationService.GoBack();
                    }
                    else
                    {
-                       MessageBox.Show("Unable to join meeting.\nServer response:\n" + output.status);
+                       MessageBox.Show("Unable to join meeting.\nServer response:\n" + output.reason);
                        _timer.Start();
                    }
                });

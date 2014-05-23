@@ -193,4 +193,7 @@
   <data name="userAdding" xml:space="preserve">
     <value>Can users add content?</value>
   </data>
+  <data name="refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
 </root>

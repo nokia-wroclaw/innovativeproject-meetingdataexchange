@@ -114,7 +114,7 @@ namespace MeetingDataExchange.Pages
                     meeting.serverMeetingID = Convert.ToInt32(output.meetingid);
                     meeting.title = output.title;
                     meeting.topic = output.title;
-                    meeting.adminName = server.name;
+                    meeting.adminName = output.hostname;
                     meeting.startTime = output.starttime;
                     meeting.numerOfMembers = 1;
                     meeting.permissions = 3;
@@ -128,7 +128,7 @@ namespace MeetingDataExchange.Pages
                 }
                 else
                 {
-                    MessageBox.Show(output.status);
+                    MessageBox.Show("Unable to join meeting.\nServer response:\n" + output.reason);
 
                     setControlEnabled(true);
                 }
