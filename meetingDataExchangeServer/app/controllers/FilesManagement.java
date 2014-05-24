@@ -183,7 +183,7 @@ public class FilesManagement extends Controller {
 			return ok(fileToSend);
 		}
 		else
-			return Controller.badRequest();
+			return Controller.notFound();
 	}
 	
 	
