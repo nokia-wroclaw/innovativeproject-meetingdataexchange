@@ -4,10 +4,8 @@ import java.sql.Timestamp;
 
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record2;
 import org.jooq.Record4;
 import org.jooq.Record6;
-import org.jooq.Record8;
 import org.jooq.exception.DataAccessException;
 
 import models.DbSingleton;
@@ -18,7 +16,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.Files;
 
 import play.libs.Json;
-import play.mvc.Content;
 import play.mvc.Controller;
 import play.mvc.Result;
 import tools.MD5Checksum;
@@ -58,15 +55,12 @@ public class FilesManagement extends Controller {
 			return errorObject("Upload forbidden");
 		else
 			meetinguserid = record.getValue(0, MEETINGUSER.ID);
-		
-		//Logger.info(System.getProperty("user.dir")+"/upload/"+meetingid+"/"+file.getName());
-		
+				
 		File newFile = new File(System.getProperty("user.dir")+"/upload/"+meetingid+"/"+filename);
 		
 		if(newFile.exists())
 			return errorObject("File with this name already exists");
 			
-		//File rawFile = request().body().asRaw().asFile();
 		newFile.createNewFile();
 		Files.copy(file, newFile);
 		
@@ -171,6 +165,25 @@ public class FilesManagement extends Controller {
 		response().setContentType("application/x-download");  
 		response().setHeader("Content-disposition","attachment; filename="+filename);
 		return fileToSend;
+	}
+	
+	public static Result downloadDir(String meetingid, String code, String filename){
+		org.jooq.Result<Record1<Integer>> record = DbSingleton.getInstance().getDsl()
+				.select(MEETING.ID)
+				.from(FILE).join(MEETINGUSER).on(FILE.MEETINGUSERID.equal(MEETINGUSER.ID))
+				.join(MEETING).on(MEETING.ID.equal(MEETINGUSER.MEETINGID))
+				.where(MEETING.ID.equal(Integer.parseInt(meetingid)))
+				.and(MEETING.ACCESSCODE.equal(code))
+				.and(FILE.NAME.equal(filename)).fetch();
+		if(record.size()>0){
+			File fileToSend = new File(System.getProperty("user.dir")+"/upload/"+meetingid+"/"+filename);
+			
+			response().setContentType("application/x-download");  
+			response().setHeader("Content-disposition","attachment; filename="+filename);
+			return ok(fileToSend);
+		}
+		else
+			return Controller.badRequest();
 	}
 	
 	

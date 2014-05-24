@@ -19,6 +19,8 @@ POST	/api/files/remove								controllers.FilesManagement.remove()
 POST	/api/comment/add								controllers.FilesManagement.comment()
 GET		/api/files/download/:login/:sid/:fileid			controllers.FilesManagement.download(login: String, sid: String, fileid : String)					
 GET		/api/files/list/:meetingid/:login/:sid			controllers.FilesManagement.getList(meetingid: String, login: String, sid: String)
+POST	/api/sendhyperlink								controllers.Mailing.sendHyperlink()
+GET		/download/:meetingid/:code/:filename			controllers.FilesManagement.downloadDir(meetingid: String, code: String, filename: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               					controllers.Assets.at(path="/public", file)
