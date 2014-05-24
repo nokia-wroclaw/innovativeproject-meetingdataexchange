@@ -2,26 +2,27 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-POST	/api/account/register				controllers.Accounts.register()
-POST	/api/account/login					controllers.Accounts.login()
-POST	/api/account/logoff					controllers.Accounts.logoff()
-GET		/api/account/getdata/:login/:sid	controllers.Accounts.getData(login: String, sid: String)
-POST	/api/account/setdata				controllers.Accounts.setData()
-POST	/api/meeting/new					controllers.Meetings.createNew()
-POST	/api/meeting/stop					controllers.Meetings.stop()
-POST	/api/meeting/edit					controllers.Meetings.edit()
-POST	/api/meeting/adduser				controllers.Meetings.adduser()
-GET		/api/meeting/list/:login/:sid		controllers.Meetings.getList(login: String, sid: String)
+POST	/api/account/register							controllers.Accounts.register()
+POST	/api/account/login								controllers.Accounts.login()
+POST	/api/account/logoff								controllers.Accounts.logoff()
+GET		/api/account/getdata/:login/:sid				controllers.Accounts.getData(login: String, sid: String)
+POST	/api/account/setdata							controllers.Accounts.setData()
+POST	/api/meeting/new								controllers.Meetings.createNew()
+POST	/api/meeting/stop								controllers.Meetings.stop()
+POST	/api/meeting/edit								controllers.Meetings.edit()
+POST	/api/meeting/adduser							controllers.Meetings.adduser()
+GET		/api/meeting/list/:login/:sid					controllers.Meetings.getList(login: String, sid: String)
 GET		/api/meeting/details/:meetingid/:login/:sid		controllers.Meetings.getDetails(meetingid: String, login: String, sid: String)
-GET		/api/general/getname				controllers.GeneralStuff.getName()
+GET		/api/general/getname							controllers.GeneralStuff.getName()
 PUT		/api/upload/:login/:sid/:meetingid/:filename	controllers.FilesManagement.upload(login: String, sid: String, meetingid: String, filename: String)
-POST	/api/files/remove					controllers.FilesManagement.remove()
-POST	/api/comment/add					controllers.FilesManagement.comment()
-GET		/api/files/download/:login/:sid/:fileid		controllers.FilesManagement.download(login: String, sid: String, fileid : String)					
+POST	/api/files/remove								controllers.FilesManagement.remove()
+POST	/api/comment/add								controllers.FilesManagement.comment()
+GET		/api/files/download/:login/:sid/:fileid			controllers.FilesManagement.download(login: String, sid: String, fileid : String)					
+GET		/api/files/list/:meetingid/:login/:sid			controllers.FilesManagement.getList(meetingid: String, login: String, sid: String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
-GET     /webjars/*file              controllers.WebJarAssets.at(file)
+GET     /assets/*file               					controllers.Assets.at(path="/public", file)
+GET     /webjars/*file              					controllers.WebJarAssets.at(file)
 
 
 #Milena :
