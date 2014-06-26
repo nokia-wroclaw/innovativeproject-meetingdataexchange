@@ -214,8 +214,8 @@
   <data name="meetingSettings" xml:space="preserve">
     <value>Meeting settings</value>
   </data>
-  <data name="organisator" xml:space="preserve">
-    <value>Organisator</value>
+  <data name="administrator" xml:space="preserve">
+    <value>Administrator</value>
   </data>
   <data name="permission" xml:space="preserve">
     <value>Permissions</value>

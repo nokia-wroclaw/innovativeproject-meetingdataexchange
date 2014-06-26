@@ -16,7 +16,6 @@ namespace MeetingDataExchange.Pages
 {
     public partial class ServerOptionsPage : PhoneApplicationPage
     {
-        // Data context for the local database
         private MDEDataContext MDEDB;
         private Server server;
         public ServerOptionsPage()
@@ -39,7 +38,6 @@ namespace MeetingDataExchange.Pages
         }
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            // Define the query to gather all of the to-do items.
             var serversInDB = from Server s in MDEDB.Servers
                               select s;
 
@@ -62,7 +60,6 @@ namespace MeetingDataExchange.Pages
                 Edit.Visibility = System.Windows.Visibility.Visible;
             }
             
-            // Call the base method.
             base.OnNavigatedTo(e);
         }
 
@@ -161,17 +158,14 @@ namespace MeetingDataExchange.Pages
         {
             this.Dispatcher.BeginInvoke(delegate()
             {
-                var meetings = server.meetings;//from Meeting m in MDEDB.Meetings where m.server.name == server.serverName select m;
+                var meetings = server.meetings;
                 foreach (Meeting meeting in new ObservableCollection<Meeting>(meetings))
                 {
                     var files = meeting.files;
                     System.Diagnostics.Debug.WriteLine(meeting.title);
                     MDEDB.Files.DeleteAllOnSubmit(files);
-                    //TODO - delete files
                 }
-                MDEDB.SubmitChanges();
                 MDEDB.Meetings.DeleteAllOnSubmit(meetings);
-                MDEDB.SubmitChanges();
                 MDEDB.Servers.DeleteOnSubmit(server);
                 MDEDB.SubmitChanges();
 

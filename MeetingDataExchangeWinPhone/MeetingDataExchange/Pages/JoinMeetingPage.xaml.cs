@@ -160,18 +160,6 @@ namespace MeetingDataExchange
                {
                    if (output.status == "OK")
                    {
-                       //server.address = text.Split(';')[1];
-                    /*   Meeting meeting=new Meeting();
-                       meeting.server = server;
-                       meeting.serverMeetingID = output.meetingid;
-                       meeting.title = output.title;
-                       meeting.topic = output.title;
-                       meeting.adminName = output.hostname;
-                       meeting.startTime = output.starttime;
-                       meeting.endTime = output.endtime;
-                       meeting.numerOfMembers = output.members;
-                       meeting.permissions = output.permissions=="memberUpload"? 1 : (output.permissions=="member" ? 0:2);
-                       meeting.code = output.accessCode;*/
                        MDEDB.Meetings.InsertOnSubmit(output.getEntity(server));
                        MDEDB.SubmitChanges();
 

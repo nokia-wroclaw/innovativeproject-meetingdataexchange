@@ -7,11 +7,15 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+    xmlns:pres1="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:pres2="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
+    mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -28,7 +32,7 @@
                     <StackPanel Grid.Row="0">
                         <TextBlock Text="{Binding Path=AppResources.topic, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                         <TextBlock x:Name="topicBlock" Style="{StaticResource PhoneTextLargeStyle}" />
-                        <TextBlock Text="{Binding Path=AppResources.organisator, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock Text="{Binding Path=AppResources.administrator, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                         <TextBlock x:Name="organisatorBlock" Style="{StaticResource PhoneTextLargeStyle}" />
                         <TextBlock Text="{Binding Path=AppResources.time, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                         <TextBlock x:Name="timeBlock" Style="{StaticResource PhoneTextLargeStyle}" />
@@ -51,16 +55,17 @@
             <!--Pivot item two-->
             <controls:PivotItem Header="Files">
                 <ListBox x:Name="filesListBox" ItemsSource="{Binding files}" 
-                     Grid.Row="1" Margin="12, 0, 12, 0" Width="400">
+                     Margin="12,0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button  BorderThickness="5" Click="fileClicked" Hold="fileHolded"  Tag="{Binding ID}">
-                                <StackPanel HorizontalAlignment="Stretch" Width="400" >
-                                    <TextBlock Text="{Binding fileName}" FontSize="{StaticResource PhoneFontSizeLarge}"
-                                           Grid.Column="1" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding authorName}" FontSize="{StaticResource PhoneFontSizeNormal}"
-                                           Grid.Column="1" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding addTime}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            <Button Name="button" BorderThickness="5" Margin="0" Click="fileClicked" Hold="fileHolded" Tag="{Binding ID}">
+                                <StackPanel HorizontalAlignment="Stretch" >
+                                    <TextBlock Text="{Binding fileName}"  FontSize="{StaticResource PhoneFontSizeLarge}" 
+                                               TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding authorName}" FontSize="{StaticResource PhoneFontSizeNormal}" 
+                                               TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding addTime}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}" 
+                                               TextWrapping="Wrap" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
                         </DataTemplate>

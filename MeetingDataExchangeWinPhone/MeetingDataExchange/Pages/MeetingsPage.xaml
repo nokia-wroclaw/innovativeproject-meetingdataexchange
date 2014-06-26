@@ -31,7 +31,7 @@
         </StackPanel>
 
         <ListBox x:Name="meetingsListBox" ItemsSource="{Binding meetings}" 
-                     Grid.Row="1" Margin="12, 0, 12, 0" Width="400">
+                     Grid.Row="1" Margin="12,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Button  BorderThickness="5" Click="meetingClicked" Tag="{Binding ID}">

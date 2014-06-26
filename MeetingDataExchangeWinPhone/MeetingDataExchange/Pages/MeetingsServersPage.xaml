@@ -38,27 +38,17 @@
             </Grid.RowDefinitions>
             
             <ListBox x:Name="serversListBox" ItemsSource="{Binding servers}" 
-                     Grid.Row="0" Margin="12, 0, 12, 0" Width="400">
+                     Grid.Row="0" Margin="12, 0, 12, 0" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Button  BorderThickness="5" Click="serverClicked" Tag="{Binding serverName}">
-                            <StackPanel HorizontalAlignment="Stretch" Width="400" >
-                                <!--    <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="100" />
-                            </Grid.ColumnDefinitions>
-                            -->
-                                <TextBlock Text="{Binding address}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            <StackPanel HorizontalAlignment="Stretch" Width="400">
                                 <TextBlock
                                 Text="{Binding serverName}"
                                 FontSize="{StaticResource PhoneFontSizeLarge}"
                                 Grid.Column="1"
                                 VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding login}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding sid}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding pass}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                <TextBlock Text="{Binding name}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                <TextBlock Text="{Binding address}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
                             </StackPanel>
                         </Button>
                     </DataTemplate>

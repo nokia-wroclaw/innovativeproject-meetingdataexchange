@@ -117,7 +117,7 @@ namespace MeetingDataExchange.Pages
                     meeting.adminName = output.hostname;
                     meeting.startTime = output.starttime;
                     meeting.numerOfMembers = 1;
-                    meeting.permissions = 3;
+                    meeting.permissions = 2;
                     meeting.code = output.accessCode;
                     MDEDB.Meetings.InsertOnSubmit(meeting);
                     MDEDB.SubmitChanges();

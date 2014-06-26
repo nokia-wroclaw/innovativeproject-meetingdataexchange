@@ -9,16 +9,13 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using MeetingDataExchange.Model;
 using System.Collections.ObjectModel;
-using System.Windows.Media.Imaging;
-using ZXing;
 
-namespace MeetingDataExchange
+namespace MeetingDataExchange.Pages
 {
-    public partial class QRCodePage : PhoneApplicationPage
+    public partial class AddNotePage : PhoneApplicationPage
     {
         private MDEDataContext MDEDB;
         private Meeting meeting;
-        //private List<File> files;
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
@@ -32,29 +29,12 @@ namespace MeetingDataExchange
             serverNameBlock.Text = meeting.server.serverName;
             meetingNameBlock.Text = meeting.title;
 
-            imgQRCode.Source = GenerateQRCode("mde;"+meeting.server.address+";"+meeting.serverMeetingID+";"+meeting.code);
             base.OnNavigatedTo(e);
         }
-        public QRCodePage()
+
+        public AddNotePage()
         {
             InitializeComponent();
         }
-
-        private static WriteableBitmap GenerateQRCode(string text)
-        {
-            BarcodeWriter _writer = new BarcodeWriter();
-
-            _writer.Format = BarcodeFormat.QR_CODE;
-
-
-            _writer.Options.Height = 400;
-            _writer.Options.Width = 400;
-            _writer.Options.Margin = 10;
-
-            var barcodeImage = _writer.Write(text);
-
-            return barcodeImage;
-        }
-
     }
 }

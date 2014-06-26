@@ -115,6 +115,15 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrator.
+        /// </summary>
+        public static string administrator {
+            get {
+                return ResourceManager.GetString("administrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Meeting Data Exchange.
         /// </summary>
         public static string appName {
@@ -246,15 +255,6 @@ namespace MeetingDataExchange.Resources {
         public static string newPassword {
             get {
                 return ResourceManager.GetString("newPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Organisator.
-        /// </summary>
-        public static string organisator {
-            get {
-                return ResourceManager.GetString("organisator", resourceCulture);
             }
         }
         

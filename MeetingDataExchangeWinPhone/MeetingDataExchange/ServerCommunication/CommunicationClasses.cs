@@ -1,5 +1,6 @@
 ﻿
 using MeetingDataExchange.Model;
+using System.Collections.Generic;
 namespace MeetingDataExchange.ServerCommunication
 {
     public class ServerName
@@ -84,6 +85,7 @@ namespace MeetingDataExchange.ServerCommunication
         public string abilityToSendFiles { get; set; }
 
     }
+
     public class MeetingOutput : StatusReasonOutput
     {
         public int meetingid { get; set; }
@@ -111,8 +113,8 @@ namespace MeetingDataExchange.ServerCommunication
             meeting.code = accessCode;
             return meeting;
         }
-
     }
+
     public class JoinMeetingInput
     {
         public string login { get; set; }
@@ -125,6 +127,56 @@ namespace MeetingDataExchange.ServerCommunication
     public class MeetingsListOutput : StatusReasonOutput
     {
         public MeetingOutput[] meetings { get; set; }
+    }
+
+    public class CommentOutput
+    {
+        public int commentid { get; set; }
+        public string author { get; set; }
+        public string addtime { get; set; }
+        public string content { get; set; }
+
+        public Comment getEntity(File file)
+        {
+            Comment comment = new Comment();
+            comment.file = file;
+            comment.serverCommentID = commentid;
+            comment.authorName = author;
+            comment.content = content;
+            return comment;
+        }
+    }
+
+    public class FileOutput : StatusReasonOutput
+    {
+        public int fileid { get; set; }
+        public string filename { get; set; }
+        public string author { get; set; }
+        public string addtime { get; set; }
+        public string hash { get; set; }
+        public string sizeKB { get; set; }
+        public CommentOutput[] comments { get; set; }
+
+        public File getEntity(Meeting meeting)
+        {
+            File file = new File();
+            file.meeting = meeting;
+            file.serverFileID = fileid;
+            file.fileName = filename;
+            file.authorName = author;
+            file.hash = hash;
+            List<Comment> list = new List<Comment>();
+            foreach(CommentOutput comment in comments)
+                list.Add(comment.getEntity(file) );
+            file.comments.AddRange(list);
+            return file;
+        }
+    }
+
+
+    public class FilesListOutput : StatusReasonOutput
+    {
+        public FileOutput[] files { get; set; }
     }
 
 }

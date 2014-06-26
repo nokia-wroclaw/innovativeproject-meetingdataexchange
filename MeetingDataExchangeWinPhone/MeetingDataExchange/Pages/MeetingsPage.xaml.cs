@@ -58,12 +58,13 @@ namespace MeetingDataExchange.Pages
 
             serverNameTextBox.Text = serverName;
             // Define the query to gather all of the to-do items.
-            var meetingsInDB = from Meeting m in MDEDB.Meetings
+            /*var meetingsInDB = from Meeting m in MDEDB.Meetings
                                 where m.server.serverName==serverName select m;
-
+            */
 
             // Execute the query and place the results into a collection.
-            meetings= new ObservableCollection<Meeting>(meetingsInDB);
+            meetings = new ObservableCollection<Meeting>(server.meetings);
+            refresh();
             // Call the base method.
             base.OnNavigatedTo(e);
         }
@@ -101,6 +102,11 @@ namespace MeetingDataExchange.Pages
         }
 
         public void refreshClicked(Object sender, RoutedEventArgs e)
+        {
+            refresh();
+        }
+
+        public void refresh()
         {
             setControlEnabled(false);
             string url = server.address + "/api/meeting/list/" + server.login + "/" + server.sid;

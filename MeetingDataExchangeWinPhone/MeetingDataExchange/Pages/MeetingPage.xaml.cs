@@ -13,6 +13,7 @@ using Microsoft.Phone.Controls;
 using MeetingDataExchange.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using MeetingDataExchange.ServerCommunication;
 
 namespace MeetingDataExchange.Pages
 {
@@ -21,9 +22,37 @@ namespace MeetingDataExchange.Pages
         private MDEDataContext MDEDB;
         private Server server;
         private Meeting meeting;
-        private List<File> files;
+
+        #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        // Used to notify the app that a property has changed.
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
+
+        private ObservableCollection<File> _files;
+        public ObservableCollection<File> files
+        {
+            get
+            {
+                return _files;
+            }
+            set
+            {
+                if (_files != value)
+                {
+                    _files = value;
+                    NotifyPropertyChanged("files");
+                }
+            }
+        }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
@@ -32,7 +61,8 @@ namespace MeetingDataExchange.Pages
 
             meeting = new ObservableCollection<Meeting>(from Meeting m in MDEDB.Meetings where m.ID == meetingID select m)[0];
             server = meeting.server;
-            files = meeting.files.ToList();
+            files = new ObservableCollection<File>(meeting.files);
+            System.Diagnostics.Debug.WriteLine("Count1 = " + files.Count());
 
             PivotRoot.Title = server.serverName;
 
@@ -68,7 +98,7 @@ namespace MeetingDataExchange.Pages
             #endregion
 
             #region Files
-
+            refresh();
             #endregion
 
             #region Add
@@ -76,6 +106,53 @@ namespace MeetingDataExchange.Pages
             // Call the base method.
             base.OnNavigatedTo(e);
         }
+
+        public MeetingPage()
+        {
+            InitializeComponent();
+
+            // Data context and observable collection are children of the main page.
+            this.DataContext = this;
+        }
+
+        public void refresh()
+        {
+            string url = server.address + "/api/files/list/" + meeting.serverMeetingID + "/" + server.login + "/" + server.sid;
+            new HttpGetRequest<FilesListOutput>(url, filesListCallback);
+        }
+
+        private void filesListCallback(FilesListOutput output)
+        {
+            this.Dispatcher.BeginInvoke(delegate()
+            {
+                if (output == null)
+                {
+                    MessageBox.Show("Error communicating with server. Check your internet connection and try again.");
+                }
+                else if (output.status == "ok")
+                {
+                    foreach (FileOutput fileOutput in output.files)
+                    {
+                        var file = (from File f in MDEDB.Files where f.serverFileID == fileOutput.fileid select f);
+                        System.Diagnostics.Debug.WriteLine("Count = " + file.Count());
+                        if (file.Count() == 0)
+                        {
+                            MDEDB.Files.InsertOnSubmit(fileOutput.getEntity(meeting));
+                        }
+                    }
+                    MDEDB.SubmitChanges();
+                    /*files = 
+                        new ObservableCollection<Meeting>(from Meeting m in MDEDB.Meetings
+                                                                 where m.server == server
+                                                                 select m);*/
+                }
+                else
+                {
+                    MessageBox.Show("Unable to refresh.\nServer response:\n" + output.reason);
+                }
+            });
+        }
+
 
         public void settingsButtonClicked(Object sender, RoutedEventArgs e)
         {
@@ -99,16 +176,12 @@ namespace MeetingDataExchange.Pages
         }
         public void addNoteButtonClicked(Object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/Pages/AddNotePage.xaml?meetingID=" + meeting.ID, UriKind.Relative));
         }
         public void addUserButtonClicked(Object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/QRCodePage.xaml?meetingID=" + meeting.ID, UriKind.Relative));
         }
-
-        public MeetingPage()
-        {
-            InitializeComponent();
-        }
+ 
     }
 }
