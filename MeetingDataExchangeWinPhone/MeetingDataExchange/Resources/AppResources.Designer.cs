@@ -70,6 +70,33 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add file.
+        /// </summary>
+        public static string addFile {
+            get {
+                return ResourceManager.GetString("addFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add note.
+        /// </summary>
+        public static string addNote {
+            get {
+                return ResourceManager.GetString("addNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add photo.
+        /// </summary>
+        public static string addPhoto {
+            get {
+                return ResourceManager.GetString("addPhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add server.
         /// </summary>
         public static string addServer {
@@ -79,11 +106,29 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add user.
+        /// </summary>
+        public static string addUser {
+            get {
+                return ResourceManager.GetString("addUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Meeting Data Exchange.
         /// </summary>
         public static string appName {
             get {
                 return ResourceManager.GetString("appName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Server Address.
+        /// </summary>
+        public static string changeAddress {
+            get {
+                return ResourceManager.GetString("changeAddress", resourceCulture);
             }
         }
         
@@ -151,6 +196,15 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Meeting settings.
+        /// </summary>
+        public static string meetingSettings {
+            get {
+                return ResourceManager.GetString("meetingSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
         public static string meetingTitle {
@@ -196,11 +250,29 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organisator.
+        /// </summary>
+        public static string organisator {
+            get {
+                return ResourceManager.GetString("organisator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string password {
             get {
                 return ResourceManager.GetString("password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permissions.
+        /// </summary>
+        public static string permission {
+            get {
+                return ResourceManager.GetString("permission", resourceCulture);
             }
         }
         
@@ -282,6 +354,33 @@ namespace MeetingDataExchange.Resources {
         public static string servers {
             get {
                 return ResourceManager.GetString("servers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        public static string state {
+            get {
+                return ResourceManager.GetString("state", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        public static string time {
+            get {
+                return ResourceManager.GetString("time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Topic.
+        /// </summary>
+        public static string topic {
+            get {
+                return ResourceManager.GetString("topic", resourceCulture);
             }
         }
         

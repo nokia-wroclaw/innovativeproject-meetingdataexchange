@@ -78,7 +78,7 @@ namespace MeetingDataExchange.Pages
         
         public void meetingClicked(Object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/MeetingPage.xaml?serverName=" + ((Button)sender).Tag, UriKind.Relative));//
+            NavigationService.Navigate(new Uri("/Pages/MeetingPage.xaml?meetingID=" + ((Button)sender).Tag, UriKind.Relative));//
         }
         #region INotifyPropertyChanged Members
 

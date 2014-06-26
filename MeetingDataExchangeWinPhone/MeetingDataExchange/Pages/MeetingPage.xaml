@@ -17,15 +17,85 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
-        <controls:Pivot Title="MY APPLICATION">
+        <controls:Pivot x:Name="PivotRoot">
             <!--Pivot item one-->
-            <controls:PivotItem Header="item1">
-                <Grid/>
+            <controls:PivotItem Header="Details">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Text="{Binding Path=AppResources.topic, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock x:Name="topicBlock" Style="{StaticResource PhoneTextLargeStyle}" />
+                        <TextBlock Text="{Binding Path=AppResources.organisator, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock x:Name="organisatorBlock" Style="{StaticResource PhoneTextLargeStyle}" />
+                        <TextBlock Text="{Binding Path=AppResources.time, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock x:Name="timeBlock" Style="{StaticResource PhoneTextLargeStyle}" />
+                        <TextBlock Text="{Binding Path=AppResources.state, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock x:Name="stateBlock" Style="{StaticResource PhoneTextLargeStyle}" />
+                        <TextBlock Text="{Binding Path=AppResources.permission, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        <TextBlock x:Name="permissionBlock" Style="{StaticResource PhoneTextLargeStyle}" />
+                    </StackPanel>
+                    <Button x:Name="settingsButton" Click="settingsButtonClicked" Grid.Row="1" Margin="-5,-5,-5,-5" BorderThickness="0">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                        </Button.Background>
+                        <TextBlock FontSize="36" Text="{Binding Path=AppResources.meetingSettings, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" >
+
+                        </TextBlock>
+                    </Button>
+                </Grid>
             </controls:PivotItem>
 
             <!--Pivot item two-->
-            <controls:PivotItem Header="item2">
-                <Grid/>
+            <controls:PivotItem Header="Files">
+                <ListBox x:Name="filesListBox" ItemsSource="{Binding files}" 
+                     Grid.Row="1" Margin="12, 0, 12, 0" Width="400">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button  BorderThickness="5" Click="fileClicked" Hold="fileHolded"  Tag="{Binding ID}">
+                                <StackPanel HorizontalAlignment="Stretch" Width="400" >
+                                    <TextBlock Text="{Binding fileName}" FontSize="{StaticResource PhoneFontSizeLarge}"
+                                           Grid.Column="1" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding authorName}" FontSize="{StaticResource PhoneFontSizeNormal}"
+                                           Grid.Column="1" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding addTime}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PivotItem>
+
+
+            <controls:PivotItem Header="Add">
+                <StackPanel>
+                    <Button x:Name="addPhotoButton" Click="addPhotoButtonClicked" Margin="-5,-5,-5,-5" BorderThickness="0">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                        </Button.Background>
+                        <TextBlock FontSize="36" Text="{Binding Path=AppResources.addPhoto, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" />
+                    </Button>
+                    <Button x:Name="addFileButton" Click="addFileButtonClicked" Margin="-5,-5,-5,-5" BorderThickness="0">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                        </Button.Background>
+                        <TextBlock FontSize="36" Text="{Binding Path=AppResources.addFile, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" />
+                    </Button>
+                    <Button x:Name="addNoteButton" Click="addNoteButtonClicked" Margin="-5,-5,-5,-5" BorderThickness="0">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                        </Button.Background>
+                        <TextBlock FontSize="36" Text="{Binding Path=AppResources.addNote, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" />
+                    </Button>
+                    <Button x:Name="addUserButton" Click="addUserButtonClicked" Margin="-5,-5,-5,-5" BorderThickness="0">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                        </Button.Background>
+                        <TextBlock FontSize="36" Text="{Binding Path=AppResources.addUser, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" />
+                    </Button>
+                </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>

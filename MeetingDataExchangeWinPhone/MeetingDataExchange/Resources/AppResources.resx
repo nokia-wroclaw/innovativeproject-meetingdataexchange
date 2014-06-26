@@ -196,4 +196,37 @@
   <data name="refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
+  <data name="changeAddress" xml:space="preserve">
+    <value>Change Server Address</value>
+  </data>
+  <data name="addFile" xml:space="preserve">
+    <value>Add file</value>
+  </data>
+  <data name="addNote" xml:space="preserve">
+    <value>Add note</value>
+  </data>
+  <data name="addPhoto" xml:space="preserve">
+    <value>Add photo</value>
+  </data>
+  <data name="addUser" xml:space="preserve">
+    <value>Add user</value>
+  </data>
+  <data name="meetingSettings" xml:space="preserve">
+    <value>Meeting settings</value>
+  </data>
+  <data name="organisator" xml:space="preserve">
+    <value>Organisator</value>
+  </data>
+  <data name="permission" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="state" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="time" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="topic" xml:space="preserve">
+    <value>Topic</value>
+  </data>
 </root>

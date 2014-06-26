@@ -161,19 +161,22 @@ namespace MeetingDataExchange.Pages
         {
             this.Dispatcher.BeginInvoke(delegate()
             {
-                var servers = from Server s in MDEDB.Servers where s.serverName == server.serverName select s;
-                MDEDB.Servers.DeleteAllOnSubmit(servers);
-                //var server = new ObservableCollection<Server>(servers)[0];
-                var meetings = from Meeting m in MDEDB.Meetings where m.server.name == server.serverName select m;
-                MDEDB.Meetings.DeleteAllOnSubmit(meetings);
+                var meetings = server.meetings;//from Meeting m in MDEDB.Meetings where m.server.name == server.serverName select m;
                 foreach (Meeting meeting in new ObservableCollection<Meeting>(meetings))
                 {
-                    var files = from File f in MDEDB.Files where f.meeting == meeting select f;
-                    MDEDB.Meetings.DeleteAllOnSubmit(meetings);
+                    var files = meeting.files;
+                    System.Diagnostics.Debug.WriteLine(meeting.title);
+                    MDEDB.Files.DeleteAllOnSubmit(files);
                     //TODO - delete files
                 }
-                //MDEDB.SubmitChanges(); //They will be submited after logout succeed
-                logoutClicked(sender, e);
+                MDEDB.SubmitChanges();
+                MDEDB.Meetings.DeleteAllOnSubmit(meetings);
+                MDEDB.SubmitChanges();
+                MDEDB.Servers.DeleteOnSubmit(server);
+                MDEDB.SubmitChanges();
+
+                MessageBox.Show("Server deleted.");
+                NavigationService.GoBack();
             });
         }
         #endregion

@@ -34,7 +34,7 @@
                      Grid.Row="1" Margin="12, 0, 12, 0" Width="400">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Button  BorderThickness="5" Click="meetingClicked" Tag="{Binding topic}">
+                    <Button  BorderThickness="5" Click="meetingClicked" Tag="{Binding ID}">
                         <StackPanel HorizontalAlignment="Stretch" Width="400" >
                             <TextBlock Text="{Binding title}" FontSize="{StaticResource PhoneFontSizeLarge}"
                                            Grid.Column="1" VerticalAlignment="Center"/>
