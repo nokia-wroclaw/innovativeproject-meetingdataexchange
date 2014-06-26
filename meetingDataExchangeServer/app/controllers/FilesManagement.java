@@ -285,7 +285,7 @@ public class FilesManagement extends Controller {
 			
 			int count_comment = record2.size();
 			
-			for(int j=0; i<count_comment; j++){
+			for(int j=0; j<count_comment; j++){
 				ObjectNode comment = Json.newObject();
 				
 				comment.put("commentid", record2.getValue(j, COMMENT.ID));
