@@ -10,9 +10,9 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.TrololoCompany.meetingdataexchangeAdapters.ServerAdapter;
+import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
-import dataBase.DataBaseHelper;
-import dataBase.ServerEntity;
 
 public class ServerManageActivity extends Activity 
 {

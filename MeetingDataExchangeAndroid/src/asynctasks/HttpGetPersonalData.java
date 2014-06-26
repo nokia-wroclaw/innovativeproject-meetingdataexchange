@@ -7,9 +7,9 @@ import org.json.JSONException;
 
 import com.TrololoCompany.meetingdataexchange.LogInActivity;
 import com.TrololoCompany.meetingdataexchange.SignUpActivity;
+import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
-import dataBase.DataBaseHelper;
-import dataBase.ServerEntity;
 
 import serverCommunicator.CommunicationHelper;
 import serverCommunicator.GetPersonalDataHelper;

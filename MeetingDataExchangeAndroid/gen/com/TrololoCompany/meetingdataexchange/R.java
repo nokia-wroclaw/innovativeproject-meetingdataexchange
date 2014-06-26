@@ -37,7 +37,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int line_vertical=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f09002a;
+        public static final int action_settings=0x7f090035;
         public static final int add_new_meeting_permission_check=0x7f09000a;
         public static final int add_new_meeting_textView_name=0x7f090001;
         public static final int add_new_meeting_thema=0x7f090007;
@@ -56,15 +56,25 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int imageView2=0x7f090005;
         public static final int imageView3=0x7f090008;
         public static final int imageView4=0x7f09000b;
-        public static final int introduceName=0x7f090028;
+        public static final int introduceName=0x7f09002b;
         public static final int join_meeting_button=0x7f09001a;
         public static final int logIn_passwd_ed=0x7f090018;
         public static final int log_in_login_ed=0x7f090017;
+        public static final int logged_in_change_data=0x7f090028;
+        public static final int logged_in_log_out=0x7f090027;
+        public static final int logged_in_remove_server=0x7f090029;
+        public static final int meeting_details=0x7f090036;
+        public static final int meeting_details_server_during_time=0x7f09002f;
+        public static final int meeting_details_server_host_name=0x7f09002e;
+        public static final int meeting_details_server_members=0x7f090031;
+        public static final int meeting_details_server_permission=0x7f090033;
+        public static final int meeting_details_server_topic=0x7f09002d;
+        public static final int meeting_details_title=0x7f09002c;
         public static final int meetings_button=0x7f09001b;
         public static final int new_meeting_button=0x7f090019;
         public static final int pager=0x7f09001e;
         public static final int serverList=0x7f09001f;
-        public static final int serverName=0x7f090027;
+        public static final int serverName=0x7f09002a;
         public static final int server_address_edit_text=0x7f09000f;
         public static final int sign_up_button1=0x7f090010;
         public static final int sign_up_email_ed=0x7f090022;
@@ -72,14 +82,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int sign_up_nick_ed=0x7f090021;
         public static final int sign_up_pass=0x7f090024;
         public static final int sign_up_pass_rep=0x7f090026;
-        public static final int textView=0x7f090029;
+        public static final int textView=0x7f090034;
         public static final int textView1=0x7f090000;
+        public static final int textView10=0x7f090032;
         public static final int textView2=0x7f090016;
         public static final int textView3=0x7f090003;
         public static final int textView4=0x7f090006;
         public static final int textView5=0x7f090009;
         public static final int textView6=0x7f090023;
         public static final int textView7=0x7f090025;
+        public static final int textView8=0x7f090030;
     }
     public static final class layout {
         public static final int activity_add_new_meeting=0x7f030000;
@@ -91,10 +103,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_server_list=0x7f030006;
         public static final int activity_server_manage=0x7f030007;
         public static final int activity_sign_up=0x7f030008;
-        public static final int item_server=0x7f030009;
-        public static final int meeting_details_add_frag=0x7f03000a;
-        public static final int meeting_details_desc_frag=0x7f03000b;
-        public static final int meeting_details_progress_frag=0x7f03000c;
+        public static final int dialog_logged_in=0x7f030009;
+        public static final int item_server=0x7f03000a;
+        public static final int meeting_details_add_frag=0x7f03000b;
+        public static final int meeting_details_desc_frag=0x7f03000c;
+        public static final int meeting_details_progress_frag=0x7f03000d;
     }
     public static final class menu {
         public static final int add_new_meeting=0x7f080000;
@@ -140,9 +153,20 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int log_in_text3=0x7f060012;
         public static final int log_in_text4=0x7f060013;
         public static final int main_act_name=0x7f06001d;
+        public static final int meeting_details_desc_button=0x7f06003c;
+        public static final int meeting_details_desc_during_time=0x7f060039;
+        public static final int meeting_details_desc_host_name=0x7f060038;
+        public static final int meeting_details_desc_members=0x7f06003a;
+        public static final int meeting_details_desc_permission=0x7f06003b;
+        public static final int meeting_details_desc_topic=0x7f060037;
         public static final int meetings=0x7f060005;
         public static final int new_meeting=0x7f060003;
         public static final int server_manage_button=0x7f060007;
+        public static final int server_option_logged_in_change_data=0x7f06003e;
+        public static final int server_option_logged_in_log_out=0x7f06003d;
+        public static final int server_option_logged_in_remove_server=0x7f06003f;
+        public static final int server_option_logged_out_log_in=0x7f060040;
+        public static final int server_option_logged_out_remove_server=0x7f060041;
         public static final int setting=0x7f060006;
         public static final int sign_up_button1=0x7f06001c;
         public static final int sign_up_text1=0x7f060015;

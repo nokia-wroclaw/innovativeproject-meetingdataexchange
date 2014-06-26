@@ -1,9 +1,12 @@
 package serverCommunicator;
 
+
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import dataBase.ServerEntity;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
+
 
 import android.util.Log;
 

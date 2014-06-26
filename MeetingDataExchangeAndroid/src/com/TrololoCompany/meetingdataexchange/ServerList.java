@@ -13,9 +13,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.TrololoCompany.meetingdataexchangeAdapters.ServerAdapter;
+import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
-import dataBase.DataBaseHelper;
-import dataBase.ServerEntity;
 
 public class ServerList extends Activity 
 {
@@ -52,15 +52,14 @@ public class ServerList extends Activity
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 				long id) {
-			Intent intent = new Intent(getApplicationContext(), AddNewMeetingActivity.class);
+			Intent intent = new Intent();
 		    ServerEntity entity=arrayOfServers.get(position);
-			//intent.putExtra("",entity );
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("com.TrololoCompany.meetingdataexchange.ser", entity);
 			intent.putExtras(bundle);
-			Log.i(LOG,"start AddNewMeetingActivity");
-			startActivity(intent);
-			
+			setResult(RESULT_OK,intent);
+			finish();
+
 			
 		}
 		
