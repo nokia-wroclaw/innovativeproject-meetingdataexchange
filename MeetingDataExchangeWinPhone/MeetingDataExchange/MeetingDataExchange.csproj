@@ -98,6 +98,12 @@
     <Compile Include="Pages\AddServerPage.xaml.cs">
       <DependentUpon>AddServerPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\AddPhotoPage.xaml.cs">
+      <DependentUpon>AddPhotoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EditMeetingSettingsPage.xaml.cs">
+      <DependentUpon>EditMeetingSettingsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\MeetingPage.xaml.cs">
       <DependentUpon>MeetingPage.xaml</DependentUpon>
     </Compile>
@@ -149,6 +155,7 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="ServerCommunication\CommunicationClasses.cs" />
+    <Compile Include="ServerCommunication\HttpPutRequest.cs" />
     <Compile Include="ServerCommunication\HttpPostRequest.cs" />
     <Compile Include="ServerCommunication\HttpGetRequest.cs" />
     <Compile Include="ServerCommunication\ServerSession.cs" />
@@ -166,6 +173,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\CameraPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\AddPhotoPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\EditMeetingSettingsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\MeetingPage.xaml">

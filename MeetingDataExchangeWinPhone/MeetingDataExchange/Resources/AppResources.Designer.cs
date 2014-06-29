@@ -142,11 +142,29 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Choose server.
+        /// </summary>
+        public static string chooseServer {
+            get {
+                return ResourceManager.GetString("chooseServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         public static string connect {
             get {
                 return ResourceManager.GetString("connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t connect to server..
+        /// </summary>
+        public static string connectionFailure {
+            get {
+                return ResourceManager.GetString("connectionFailure", resourceCulture);
             }
         }
         
@@ -160,6 +178,15 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit meeting settings.
+        /// </summary>
+        public static string editMeetingSettings {
+            get {
+                return ResourceManager.GetString("editMeetingSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit data.
         /// </summary>
         public static string editPersonalData {
@@ -169,7 +196,16 @@ namespace MeetingDataExchange.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Join existing meeting.
+        ///   Looks up a localized string similar to End meeting.
+        /// </summary>
+        public static string endMeeting {
+            get {
+                return ResourceManager.GetString("endMeeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join meeting.
         /// </summary>
         public static string joinMeeting {
             get {
@@ -255,6 +291,24 @@ namespace MeetingDataExchange.Resources {
         public static string newPassword {
             get {
                 return ResourceManager.GetString("newPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note.
+        /// </summary>
+        public static string note {
+            get {
+                return ResourceManager.GetString("note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string noteTitle {
+            get {
+                return ResourceManager.GetString("noteTitle", resourceCulture);
             }
         }
         

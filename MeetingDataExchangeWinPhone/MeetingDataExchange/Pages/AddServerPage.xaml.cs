@@ -105,8 +105,7 @@ namespace MeetingDataExchange.Pages
 
         private void button_Click(Object sender, RoutedEventArgs e)
         {
-            button.IsEnabled = false;
-            buttonProgressBar.Visibility = System.Windows.Visibility.Visible;
+            setControlEnabled(false);
             if ((bool)(tglSwitch.IsChecked))
             {
                 login();
@@ -125,12 +124,17 @@ namespace MeetingDataExchange.Pages
             new HttpPostRequest<LoginInput, LoginOutput>(url, loginCallback, input);
         }
 
+        private void setControlEnabled(bool isEnabled)
+        {
+            button.IsEnabled = isEnabled;
+            buttonProgressBar.Visibility = isEnabled ? Visibility.Collapsed : Visibility.Visible;
+        }
+
         private void loginCallback(LoginOutput output)
         {
             this.Dispatcher.BeginInvoke(delegate()
             {
-                button.IsEnabled = true;
-                buttonProgressBar.Visibility = System.Windows.Visibility.Collapsed;
+                setControlEnabled(true);
                 if (output.status == "ok")
                 {
                     var servers = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverNameBox.Text select s);
@@ -150,7 +154,6 @@ namespace MeetingDataExchange.Pages
                         server.serverName = serverNameBox.Text;
                         server.address = serverAddressBox.Text;
                         server.login = loginBox.Text;
-                        //server.name = nameBox.Text;
                         server.pass = passwordBox.Password;
                         server.sid = output.sid;
 
@@ -197,7 +200,7 @@ namespace MeetingDataExchange.Pages
                     MessageBox.Show("These passwords are different.");
                 });
                 passwordBox.Password = repPasswordBox.Password = "";
-                button.IsEnabled = true;
+                setControlEnabled(true);
             }
             else if(loginBox.Text==""||nameBox.Text==""||mailBox.Text==""||passwordBox.Password=="")
             {
@@ -206,7 +209,7 @@ namespace MeetingDataExchange.Pages
                     MessageBox.Show("All fields must not be empty.");
                 });
                 passwordBox.Password = repPasswordBox.Password = "";
-                button.IsEnabled = true;
+                setControlEnabled(true);
             }
             else
             {
@@ -224,7 +227,7 @@ namespace MeetingDataExchange.Pages
                     {
                         MessageBox.Show("Error communicating with server. Check your internet connection and try again.");
                         passwordBox.Password = repPasswordBox.Password = "";
-                        button.IsEnabled = true;
+                        setControlEnabled(true);
                     }
                     else if (output.status == "ok")
                     {
@@ -253,9 +256,9 @@ namespace MeetingDataExchange.Pages
                     }
                     else
                     {
-                        MessageBox.Show("Login or password incorrect.");
+                        MessageBox.Show("Error: " + output.reason);
                         passwordBox.Password = repPasswordBox.Password = "";
-                        button.IsEnabled = true;
+                        setControlEnabled(true);
                     }
                 });
         }

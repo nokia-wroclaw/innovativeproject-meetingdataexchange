@@ -14,6 +14,8 @@ using MeetingDataExchange.Model;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using MeetingDataExchange.ServerCommunication;
+using System.Windows.Threading;
+using Microsoft.Phone.Tasks;
 
 namespace MeetingDataExchange.Pages
 {
@@ -22,6 +24,8 @@ namespace MeetingDataExchange.Pages
         private MDEDataContext MDEDB;
         private Server server;
         private Meeting meeting;
+
+        private readonly DispatcherTimer _timer;
 
         #region INotifyPropertyChanged Members
 
@@ -37,6 +41,7 @@ namespace MeetingDataExchange.Pages
         }
         #endregion
 
+        public PhotoChooserTask photoChooserTask;
         private ObservableCollection<File> _files;
         public ObservableCollection<File> files
         {
@@ -62,14 +67,14 @@ namespace MeetingDataExchange.Pages
             meeting = new ObservableCollection<Meeting>(from Meeting m in MDEDB.Meetings where m.ID == meetingID select m)[0];
             server = meeting.server;
             files = new ObservableCollection<File>(meeting.files);
-            System.Diagnostics.Debug.WriteLine("Count1 = " + files.Count());
 
             PivotRoot.Title = server.serverName;
 
             #region Details
+            titleBlock.Text = meeting.title;
             topicBlock.Text = meeting.topic;
             organisatorBlock.Text = meeting.adminName;
-            if (meeting.endTime != "")
+            if (meeting.endTime == null)
             {
                 timeBlock.Text = meeting.startTime;
                 stateBlock.Text = "Trwa (liczba użytkowników: " + meeting.numerOfMembers + " )";
@@ -77,7 +82,7 @@ namespace MeetingDataExchange.Pages
             else
             {
                 timeBlock.Text = meeting.startTime + " - " + meeting.endTime;
-                stateBlock.Text = "Zakończone (liczba użytkowników: " + meeting.numerOfMembers + " )";
+                stateBlock.Text = "Zakończone (l. użytkowników: " + meeting.numerOfMembers + " )";
             }
             //permision = 0 - member
             //1 - member upload
@@ -96,28 +101,44 @@ namespace MeetingDataExchange.Pages
                     permissionBlock.Text = "Member without upload permission";
             }
             #endregion
-
-            #region Files
             refresh();
-            #endregion
 
-            #region Add
-            #endregion
-            // Call the base method.
+            _timer.Start();
+
             base.OnNavigatedTo(e);
+        }
+
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            _timer.Stop();
+            base.OnNavigatedFrom(e);
         }
 
         public MeetingPage()
         {
             InitializeComponent();
 
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(10000);
+            _timer.Tick += (o, arg) => refresh();
+
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
+
             // Data context and observable collection are children of the main page.
             this.DataContext = this;
         }
 
+        private void setControlEnabled(bool isEnabled)
+        {
+            progressBar.Visibility = isEnabled ? Visibility.Collapsed : Visibility.Visible;
+        }
+
         public void refresh()
         {
-            string url = server.address + "/api/files/list/" + meeting.serverMeetingID + "/" + server.login + "/" + server.sid;
+            setControlEnabled(false);
+            string url = server.address + "/api/files/list/" + meeting.serverMeetingID + "/" + server.login + "/" + server.sid;// +"?cache=" + Guid.NewGuid().ToString();
+            System.Diagnostics.Debug.WriteLine(url);
             new HttpGetRequest<FilesListOutput>(url, filesListCallback);
         }
 
@@ -127,40 +148,50 @@ namespace MeetingDataExchange.Pages
             {
                 if (output == null)
                 {
-                    MessageBox.Show("Error communicating with server. Check your internet connection and try again.");
+                    //MessageBox.Show("Error communicating with server. Check your internet connection and try again.");
+                    connectionFailureTextBlock.Visibility = System.Windows.Visibility.Visible;
                 }
                 else if (output.status == "ok")
                 {
+                    connectionFailureTextBlock.Visibility = System.Windows.Visibility.Collapsed;
                     foreach (FileOutput fileOutput in output.files)
                     {
                         var file = (from File f in MDEDB.Files where f.serverFileID == fileOutput.fileid select f);
-                        System.Diagnostics.Debug.WriteLine("Count = " + file.Count());
                         if (file.Count() == 0)
                         {
                             MDEDB.Files.InsertOnSubmit(fileOutput.getEntity(meeting));
                         }
+                        else
+                        {
+                            File f1 = file.ToList()[0];
+                            File f2 = fileOutput.getEntity(meeting);
+                            f1.addTime = f2.addTime;
+                            f1.authorName = f2.authorName;
+                            f1.comments = f2.comments;
+                            f1.fileName = f2.fileName;
+                        }
                     }
                     MDEDB.SubmitChanges();
-                    /*files = 
-                        new ObservableCollection<Meeting>(from Meeting m in MDEDB.Meetings
-                                                                 where m.server == server
-                                                                 select m);*/
+                    files = new ObservableCollection<File>(from File f in MDEDB.Files
+                                                                 where f.meeting == meeting
+                                                                 select f);
                 }
                 else
                 {
                     MessageBox.Show("Unable to refresh.\nServer response:\n" + output.reason);
                 }
+                setControlEnabled(true);
             });
         }
 
 
         public void settingsButtonClicked(Object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/Pages/EditMeetingSettingsPage.xaml?meetingID=" + meeting.ID, UriKind.Relative));
         }
         public void fileClicked(Object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/Pages/FilePage.xaml?fileID=" + ((Button)sender).Tag, UriKind.Relative));
         }
         public void fileHolded(Object sender, RoutedEventArgs e)
         {
@@ -168,11 +199,12 @@ namespace MeetingDataExchange.Pages
         }
         public void addPhotoButtonClicked(Object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/Pages/AddPhotoPage.xaml?meetingID=" + meeting.ID, UriKind.Relative));
         }
         public void addFileButtonClicked(Object sender, RoutedEventArgs e)
         {
-
+            System.Diagnostics.Debug.WriteLine("Add File Button Clicked");
+            photoChooserTask.Show();
         }
         public void addNoteButtonClicked(Object sender, RoutedEventArgs e)
         {
@@ -181,6 +213,43 @@ namespace MeetingDataExchange.Pages
         public void addUserButtonClicked(Object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/QRCodePage.xaml?meetingID=" + meeting.ID, UriKind.Relative));
+        }
+
+
+        void photoChooserTask_Completed(object sender, PhotoResult e)
+        {
+            if (e.TaskResult == TaskResult.OK)
+            {
+                //e.ChosenPhoto.Seek(0, SeekOrigin.Begin);
+
+                byte[] image = new byte[e.ChosenPhoto.Length];
+                e.ChosenPhoto.Read(image, 0, image.Length);
+
+                string url = meeting.server.address + "/api/upload/" + meeting.server.login + "/" + meeting.server.sid + "/" + meeting.serverMeetingID + "/" + DateTime.Now.ToString("yymmddhhmmss") + ".jpg";
+                System.Diagnostics.Debug.WriteLine(url);
+                new HttpPutRequest<StatusReasonOutput>(url, addPhotoCallback, image, (int)e.ChosenPhoto.Length);
+            }
+        }
+
+        private void addPhotoCallback(StatusReasonOutput output)
+        {
+            this.Dispatcher.BeginInvoke(delegate()
+            {
+                if (output == null)
+                {
+                    MessageBox.Show("Couldn't connect to server");
+                }
+                else if (output.status == "ok")
+                {
+                    MessageBox.Show("Photo added.");
+                    NavigationService.GoBack();
+                }
+                else
+                {
+                    MessageBox.Show(output.reason);
+                }
+            });
+
         }
  
     }

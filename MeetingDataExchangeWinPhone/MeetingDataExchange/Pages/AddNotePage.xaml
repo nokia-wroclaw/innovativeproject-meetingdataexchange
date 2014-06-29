@@ -18,17 +18,28 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel Grid.Row="0" Margin="12,0">
             <TextBlock Name="serverNameBlock" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Name="meetingNameBlock" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Path=AppResources.noteTitle, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
+            <TextBox x:Name="titleBox"/>
+            <TextBlock Text="{Binding Path=AppResources.note, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
+        <TextBox Grid.Row="1" x:Name="noteBox" AcceptsReturn="True" Margin="12,0"/>
+        <StackPanel  Grid.Row="2" Margin="12,0">
+            <ProgressBar x:Name="progressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
+            <Button Name="addNoteButton" Click="addNoteButtonCliked" Margin="0,-5" BorderThickness="0">
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                </Button.Background>
+                <TextBlock FontSize="36" Text="{Binding Path=AppResources.addNote, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0" />
+            </Button>
         </StackPanel>
     </Grid>
 

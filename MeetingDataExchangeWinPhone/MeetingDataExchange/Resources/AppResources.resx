@@ -127,7 +127,7 @@
     <value>Connect</value>
   </data>
   <data name="joinMeeting" xml:space="preserve">
-    <value>Join existing meeting</value>
+    <value>Join meeting</value>
   </data>
   <data name="login" xml:space="preserve">
     <value>Login</value>
@@ -228,5 +228,23 @@
   </data>
   <data name="topic" xml:space="preserve">
     <value>Topic</value>
+  </data>
+  <data name="note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="noteTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="editMeetingSettings" xml:space="preserve">
+    <value>Edit meeting settings</value>
+  </data>
+  <data name="endMeeting" xml:space="preserve">
+    <value>End meeting</value>
+  </data>
+  <data name="chooseServer" xml:space="preserve">
+    <value>Choose server</value>
+  </data>
+  <data name="connectionFailure" xml:space="preserve">
+    <value>Couldn't connect to server.</value>
   </data>
 </root>

@@ -20,8 +20,8 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
@@ -30,8 +30,13 @@
             <TextBlock x:Name="serverNameTextBox"/>
         </StackPanel>
 
+        <StackPanel Grid.Row="1" >
+            <ProgressBar x:Name="progressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
+            <TextBlock x:Name="connectionFailureTextBlock" Text="{Binding Path=AppResources.connectionFailure, Source={StaticResource LocalizedStrings}}" Margin="0" Style="{StaticResource PhoneTextSubtleStyle}" Visibility="Collapsed"/>
+        </StackPanel>
+        
         <ListBox x:Name="meetingsListBox" ItemsSource="{Binding meetings}" 
-                     Grid.Row="1" Margin="12,0">
+                     Grid.Row="2" Margin="12,0">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Button  BorderThickness="5" Click="meetingClicked" Tag="{Binding ID}">
@@ -47,17 +52,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Row="2" >
-            <Button Name="refreshButton" Margin="-5,-5,-5,-5" BorderThickness="0" Click="refreshClicked">
-                <Button.Background>
-                    <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
-                </Button.Background>
-                <TextBlock FontSize="36" Text="{Binding Path=AppResources.refresh, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" >
-
-                </TextBlock>
-            </Button>
-            <ProgressBar x:Name="progressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
-        </StackPanel>
     </Grid>
 
 </phone:PhoneApplicationPage>

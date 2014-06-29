@@ -18,6 +18,9 @@ namespace MeetingDataExchange.ServerCommunication
             {
                 this.delegat = delegat;
                 var httpWebRequest = HttpWebRequest.Create(url);
+                if (httpWebRequest.Headers == null)
+                    httpWebRequest.Headers = new WebHeaderCollection();
+                httpWebRequest.Headers[HttpRequestHeader.IfModifiedSince] = DateTime.UtcNow.ToString();
                 httpWebRequest.Method = "GET";
                 httpWebRequest.BeginGetResponse(ResponseCallback, httpWebRequest);
             }

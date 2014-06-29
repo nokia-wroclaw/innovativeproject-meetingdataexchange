@@ -11,16 +11,18 @@ using System.ComponentModel;
 using MeetingDataExchange.Model;
 using System.Collections.ObjectModel;
 using MeetingDataExchange.ServerCommunication;
+using System.Windows.Threading;
 
 namespace MeetingDataExchange.Pages
 {
     public partial class MeetingsPage : PhoneApplicationPage, INotifyPropertyChanged
     {
-        // Data context for the local database
         private MDEDataContext MDEDB;
         private Server server;
 
-        // Define an observable collection property that controls can bind to.
+        private readonly DispatcherTimer _timer;
+
+
         private ObservableCollection<Meeting> _meetings;
         public ObservableCollection<Meeting> meetings
         {
@@ -43,38 +45,33 @@ namespace MeetingDataExchange.Pages
             MDEDB = new MDEDataContext();
             string serverName = NavigationContext.QueryString["serverName"];
 
-
-            /*Meeting meeting = new Meeting();
-            Server server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverName select s)[0];
-            meeting.server = server;
-            server.meetings.Add(meeting);
-            meeting.topic = "LOL";
-
-            MDEDB.Meetings.InsertOnSubmit(meeting);
-            MDEDB.SubmitChanges();
-            */
-
             server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverName select s)[0];
 
             serverNameTextBox.Text = serverName;
-            // Define the query to gather all of the to-do items.
-            /*var meetingsInDB = from Meeting m in MDEDB.Meetings
-                                where m.server.serverName==serverName select m;
-            */
 
-            // Execute the query and place the results into a collection.
             meetings = new ObservableCollection<Meeting>(server.meetings);
             refresh();
-            // Call the base method.
+            _timer.Start();
+
             base.OnNavigatedTo(e);
+        }
+
+
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            _timer.Stop();
+            base.OnNavigatedFrom(e);
         }
 
         public MeetingsPage()
         {
             InitializeComponent();
 
-            // Data context and observable collection are children of the main page.
             this.DataContext = this;
+            
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(10000);
+            _timer.Tick += (o, arg) => refresh();
         }
         
         public void meetingClicked(Object sender, RoutedEventArgs e)
@@ -97,13 +94,7 @@ namespace MeetingDataExchange.Pages
 
         private void setControlEnabled(bool isEnabled)
         {
-            refreshButton.IsEnabled = isEnabled;
             progressBar.Visibility = isEnabled ? Visibility.Collapsed : Visibility.Visible;
-        }
-
-        public void refreshClicked(Object sender, RoutedEventArgs e)
-        {
-            refresh();
         }
 
         public void refresh()
@@ -119,17 +110,30 @@ namespace MeetingDataExchange.Pages
                 {
                     if (output == null)
                     {
-                        MessageBox.Show("Error communicating with server. Check your internet connection and try again.");
+                        //MessageBox.Show("Error communicating with server. Check your internet connection and try again.");
+                        connectionFailureTextBlock.Visibility = System.Windows.Visibility.Visible;
                     }
                     else if (output.status == "ok")
                     {
-
+                        connectionFailureTextBlock.Visibility = System.Windows.Visibility.Collapsed;
                         foreach (MeetingOutput meetingOutput in output.meetings)
                         {
                             var meeting = (from Meeting m in MDEDB.Meetings where m.serverMeetingID == meetingOutput.meetingid select m);
                             if (meeting.Count() == 0)
                             {
                                 MDEDB.Meetings.InsertOnSubmit(meetingOutput.getEntity(server));
+                            }
+                            else
+                            {
+                                Meeting m1 = meeting.ToList()[0];
+                                Meeting m2 = meetingOutput.getEntity(server);
+                                m1.adminName = m2.adminName;
+                                m1.topic = m2.topic;
+                                m1.title = m1.title;
+                                m1.numerOfMembers = m2.numerOfMembers;
+                                m1.permissions = m2.permissions;
+                                m1.startTime = m2.startTime;
+                                m1.endTime = m2.endTime;
                             }
                         }
                         MDEDB.SubmitChanges();

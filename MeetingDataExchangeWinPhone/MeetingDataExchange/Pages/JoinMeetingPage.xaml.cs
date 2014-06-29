@@ -41,7 +41,7 @@ namespace MeetingDataExchange
             MDEDB = new MDEDataContext();
 
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(250);
+            _timer.Interval = TimeSpan.FromMilliseconds(100);
             _timer.Tick += (o, arg) => ScanPreviewBuffer();
         }
 
@@ -58,16 +58,23 @@ namespace MeetingDataExchange
 
         private void OnPhotoCameraInitialized(object sender, CameraOperationCompletedEventArgs e)
         {
-            int width = Convert.ToInt32(_photoCamera.PreviewResolution.Width);
-            int height = Convert.ToInt32(_photoCamera.PreviewResolution.Height);
-            _luminance = new PhotoCameraLuminanceSource(width, height);
-            _reader = new QRCodeReader();
-
-            Dispatcher.BeginInvoke(() =>
+            try
             {
-                qrPreviewTransform.Rotation = _photoCamera.Orientation;
-                _timer.Start();
-            });
+                int width = Convert.ToInt32(_photoCamera.PreviewResolution.Width);
+                int height = Convert.ToInt32(_photoCamera.PreviewResolution.Height);
+                _luminance = new PhotoCameraLuminanceSource(width, height);
+                _reader = new QRCodeReader();
+
+                Dispatcher.BeginInvoke(() =>
+                {
+                    qrPreviewTransform.Rotation = _photoCamera.Orientation;
+                    _timer.Start();
+                });
+            }
+            catch
+            {
+                _timer.Stop();
+            }
         }
 
         private void ScanPreviewBuffer()
@@ -88,7 +95,7 @@ namespace MeetingDataExchange
 
         private void ResultReady(string text)
         {
-            if (text != null)
+            if (text != null && (this.text == null || this.text != text) )
             {
                 _timer.Stop();
                 this.text = text;
@@ -137,7 +144,7 @@ namespace MeetingDataExchange
                                JoinMeetingInput input = new JoinMeetingInput();
                                input.login = server.login;
                                input.sid = server.sid;
-                               input.meetingid = Convert.ToInt32(text.Split(';')[2]);
+                               input.meetingid = text.Split(';')[2];
                                input.accessCode = text.Split(';')[3];
 
                                string url = text.Split(';')[1] + "/api/meeting/adduser";
@@ -158,7 +165,7 @@ namespace MeetingDataExchange
         {
             this.Dispatcher.BeginInvoke(delegate()
                {
-                   if (output.status == "OK")
+                   if (output.status == "ok")
                    {
                        MDEDB.Meetings.InsertOnSubmit(output.getEntity(server));
                        MDEDB.SubmitChanges();

@@ -115,13 +115,25 @@ namespace MeetingDataExchange.ServerCommunication
         }
     }
 
+    public class StopInput
+    {
+        public string login { get; set; }
+        public string sid { get; set; }
+        public string meetingid { get; set; }
+        public StopInput(string login, string sid, string meetingid)
+        {
+            this.login = login;
+            this.sid = sid;
+            this.meetingid = meetingid;
+        }
+    }
+
     public class JoinMeetingInput
     {
         public string login { get; set; }
         public string sid { get; set; }
-        public int meetingid { get; set; }
+        public string meetingid { get; set; }
         public string accessCode { get; set; }
-
     }
 
     public class MeetingsListOutput : StatusReasonOutput

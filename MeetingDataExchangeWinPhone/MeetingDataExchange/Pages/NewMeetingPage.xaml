@@ -50,15 +50,15 @@ Unchecked="tglSwitch_Unchecked" >
                 </tools:ToggleSwitch>
             </StackPanel>
         </Border>
-        <Button Name="createMeetingButton" Click="createMeetingCliked" Grid.Row="2" Margin="-5,-5,-5,-5" BorderThickness="0">
-            <Button.Background>
-                <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
-            </Button.Background>
-            <TextBlock FontSize="36" Text="{Binding Path=AppResources.createMeeting, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" >
-
-            </TextBlock>
-        </Button>
-        <ProgressBar x:Name="progressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
+        <StackPanel Grid.Row="2">
+            <Button Name="createMeetingButton" Click="createMeetingCliked" Margin="-5,-5,-5,-5" BorderThickness="0">
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                </Button.Background>
+                <TextBlock FontSize="36" Text="{Binding Path=AppResources.createMeeting, Source={StaticResource LocalizedStrings} }" TextAlignment="Center" Margin="0,0,0,0" />
+            </Button>
+            <ProgressBar x:Name="progressBar" Visibility="Collapsed" IsIndeterminate="True" />
+        </StackPanel>
     </Grid>
 
 </phone:PhoneApplicationPage>

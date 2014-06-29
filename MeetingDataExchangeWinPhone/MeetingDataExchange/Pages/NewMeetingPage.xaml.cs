@@ -113,7 +113,7 @@ namespace MeetingDataExchange.Pages
                     meeting.server = server;
                     meeting.serverMeetingID = Convert.ToInt32(output.meetingid);
                     meeting.title = output.title;
-                    meeting.topic = output.title;
+                    meeting.topic = output.topic;
                     meeting.adminName = output.hostname;
                     meeting.startTime = output.starttime;
                     meeting.numerOfMembers = 1;

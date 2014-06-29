@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="MeetingDataExchange.JoinMeetingPage"
+    x:Class="MeetingDataExchange.Pages.EditMeetingSettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -21,31 +21,17 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="{Binding Path=AppResources.appName, Source={StaticResource LocalizedStrings} }" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="{Binding Path=AppResources.joinMeeting, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Path=AppResources.editMeetingSettings, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
+        <StackPanel Grid.Row="1">
+            <Button x:Name="button" Content="{Binding Path=AppResources.endMeeting, Source={StaticResource LocalizedStrings}}" Click="button_Click"/>
+            <ProgressBar x:Name="buttonProgressBar" Visibility="Collapsed" IsIndeterminate="True"></ProgressBar>
 
-        <Grid x:Name="ContentPanel" HorizontalAlignment="center" VerticalAlignment="center" Grid.Row="1" Margin="12,0,12,0">
-            <!-- rectangle which acts as the 'camera window' -->
-            <Rectangle Height="420"  Margin="0"
-                Name="videoRectangle" Stroke="White" StrokeThickness="5"
-                VerticalAlignment="Top" Width="420">
-                <Rectangle.Fill>
-                    <VideoBrush x:Name="qrPreviewVideo" Stretch="UniformToFill">
-                        <VideoBrush.RelativeTransform>
-                            <CompositeTransform
-                                x:Name="qrPreviewTransform" CenterX=".5" CenterY=".5" />
-                        </VideoBrush.RelativeTransform>
-                    </VideoBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-
-            <ListBox x:Name="qrMatchesList" FontSize="30" Margin="31,446,0,0" FontWeight="ExtraBold" />
-        </Grid>
+        </StackPanel>
     </Grid>
 
 </phone:PhoneApplicationPage>

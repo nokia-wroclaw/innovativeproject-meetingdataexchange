@@ -26,11 +26,12 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="{Binding Path=AppResources.appName, Source={StaticResource LocalizedStrings} }" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="{Binding Path=AppResources.servers, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Path=AppResources.meetings, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Path=AppResources.chooseServer, Source={StaticResource LocalizedStrings} }" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -38,7 +39,7 @@
             </Grid.RowDefinitions>
             
             <ListBox x:Name="serversListBox" ItemsSource="{Binding servers}" 
-                     Grid.Row="0" Margin="12, 0, 12, 0" >
+                     Grid.Row="0" Margin="12, 0" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Button  BorderThickness="5" Click="serverClicked" Tag="{Binding serverName}">
