@@ -16,9 +16,9 @@ import serverCommunicator.CommunicationHelper;
 import serverCommunicator.RegistrationHelper;
 
 import com.TrololoCompany.meetingdataexchange.SignUpActivity;
+import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
-import dataBase.DataBaseHelper;
-import dataBase.ServerEntity;
 
 import android.content.Context;
 import android.os.AsyncTask;

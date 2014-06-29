@@ -41,6 +41,7 @@ public class HttpGetServerName extends AsyncTask<String, Void, Void>
 	protected Void doInBackground(String... address)
 	{
 		String response = null;
+		
 	    try {
 	    	CommunicationHelper communication= new CommunicationHelper();
 	    	response=communication.

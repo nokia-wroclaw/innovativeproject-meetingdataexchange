@@ -24,8 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import dataBase.DataBaseHelper;
-import dataBase.ServerEntity;
+import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
+import com.TrololoCompany.meetingdataexchangedataBase.MeetingEntity;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
+
 
 import android.content.Context;
 import android.nfc.Tag;
@@ -96,6 +98,7 @@ public class CommunicationHelper
 		return entity;
 
 	}
+	
 
 
 }

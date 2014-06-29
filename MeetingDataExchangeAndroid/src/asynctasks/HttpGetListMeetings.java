@@ -8,9 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.TrololoCompany.meetingdataexchange.LogInActivity;
+import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
+import com.TrololoCompany.meetingdataexchangedataBase.MeetingEntity;
 
-import dataBase.DataBaseHelper;
-import dataBase.MeetingEntity;
 
 import serverCommunicator.CommunicationHelper;
 import serverCommunicator.GetMeetingListHelper;

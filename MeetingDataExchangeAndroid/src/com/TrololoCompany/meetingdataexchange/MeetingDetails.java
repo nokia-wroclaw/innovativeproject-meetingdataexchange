@@ -1,143 +1,98 @@
 package com.TrololoCompany.meetingdataexchange;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.TrololoCompany.meetingdataexchangeServices.MeetingServerCommunication;
+import com.TrololoCompany.meetingdataexchangedataBase.MeetingEntity;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
-import meeting_options.FireMissilesDialogFragment;
-import meeting_options.MeetDetOnPageListener;
-import meeting_options.MeetDetTabListener;
-import meeting_options.MeetingTabPagerAdapter;
+import meeting_options.MeetingDescription;
+import meeting_options.MyOnPageChangeListener;
+import meeting_options.MyTabListener;
+import meeting_options.TabsPagerAdapter;
 import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.FragmentTransaction;
+import android.app.ActionBar.Tab;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
-public class MeetingDetails extends FragmentActivity 
-{
-  private ViewPager Tab;
-  private MeetingTabPagerAdapter TabAdapter;
-  private ActionBar actionBar;
-  String path="meeting1";///temp
-  
-  
-  
+
+
+public class MeetingDetails extends FragmentActivity {
+ 
+	private ViewPager viewPager;
+    private TabsPagerAdapter mAdapter;
+    private ActionBar actionBar;
+    private ServerEntity server;
+    private MeetingEntity meeting;
+    private String[] tabs = { "Opis", "Przebieg spotkania","Dodaj"};
+   
+ 
     @Override
-    protected void onCreate(Bundle savedInstanceState) 
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meeting_details);
-        initTab();
-        initActionBar();
-      
+        Intent intent=getIntent();
+        this.server=(ServerEntity) intent.getSerializableExtra("com.TrololoCompany.meetingdataexchange.server");
+		this.meeting=(MeetingEntity)intent.getSerializableExtra("com.TrololoCompany.meetingdataexchange.meeting");
+																
+		// Initilization
+        initGUI();
+        
     }
-    private File createImageFile(String directory,String name)  {
-        // Create an image file name
-       // String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-    	String path= getApplicationContext().getApplicationInfo().dataDir+"/"+directory;
-    	File dir=new File(path);
-    	if(!dir.isDirectory())
-    		dir.mkdir();
-    	
-    	File [] temp=dir.listFiles();
-    	for(int i=0;i<temp.length;i++)
-    	{
-    		Log.i("tahg",temp[i].getName());
-    		Log.i("tahg",temp[i].length()+"");
+    @Override
+    protected void onResume() 
+    {
+    	try{
+    	Intent intent = new Intent(this, MeetingServerCommunication.class);
+    	Bundle bundle = new Bundle();
+		bundle.putSerializable("com.TrololoCompany.meetingdataexchange.meeting", meeting);
+		bundle.putSerializable("com.TrololoCompany.meetingdataexchange.server", server);
+		
+		intent.putExtras(bundle);
+        startService(intent);
+        super.onResume();
     	}
-    	File image = new File(path,name);
-    	try {
-			if(image.createNewFile()==true)
-				Log.i("TAG","fileCreated");
-			else
-				Log.i("TAG","errWhilefilecreating");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Log.i("TAG","errWhilefilecreating");
-		}
-        return image;
-    }
-    public void add_photo_Button(View v) 
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    };
+	private void addTabsAndListeners()
     {
-		//dialog.show();
-       Log.i("dzial", "dziala");
-       Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-       
-       // Ensure that there's a camera activity to handle the intent
-       if (takePictureIntent.resolveActivity(getPackageManager()) != null) 
-       {
-    	   Log.i("info","test");
-    	   startActivityForResult(takePictureIntent, 1);
-       }
+    	for(int i=0;i<3;i++)
+        {
+        	Tab tab=actionBar.newTab();
+        	tab.setText(tabs[i]);
+        	tab.setTabListener(new MyTabListener(viewPager));
+        	actionBar.addTab(tab);
+        }
     }
-     @Override
-     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-           if (requestCode == 1 && resultCode == RESULT_OK) {
-               
-        	   Log.i("infro","2");
-               Bundle temp=data.getExtras();
-               Bundle extras = data.getExtras();
-               Bitmap imageBitmap = (Bitmap) extras.get("data");
-               String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-               File img = createImageFile(path, timeStamp);
-               try 
-               {
-            	   FileOutputStream fileOut= new FileOutputStream(img);
-            	   imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOut);
-            	   Log.i("infro","done");
-               } 
-               catch (FileNotFoundException e) 
-               {
-				// TODO Auto-generated catch block
-            	   Log.i("infro","err");
-				e.printStackTrace();
-               }
-               
-               
-           }
-       }
-    void initActionBar()
+    private void initGUI()
     {
-    	actionBar = getActionBar();
-        //Enable Tabs on Action Bar
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-    	MeetDetTabListener tabListener = new MeetDetTabListener(Tab);
-    	
-    	ActionBar.Tab descTab=actionBar.newTab();
-    	ActionBar.Tab progressTab=actionBar.newTab();
-    	ActionBar.Tab addTab=actionBar.newTab();
-    	
-    	descTab.setText(getString(R.string.add_item_ac_meeting_desc_button));
-    	progressTab.setText(getString(R.string.add_item_ac_meeting_progress_button));
-    	addTab.setText(getString(R.string.add_item_ac_meeting_add_button));
-    	
-    	descTab.setTabListener(tabListener);
-    	progressTab.setTabListener(tabListener);
-    	addTab.setTabListener(tabListener);
-    	
-    	actionBar.addTab(descTab);
-    	actionBar.addTab(progressTab);
-    	actionBar.addTab(addTab);
+    	viewPager = (ViewPager) findViewById(R.id.pager);
+        actionBar = getActionBar();
+        mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+        
+        viewPager.setAdapter(mAdapter);
+        actionBar.setHomeButtonEnabled(false);
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);  
+        addTabsAndListeners();
+        
+        viewPager.setOnPageChangeListener(new MyOnPageChangeListener(actionBar));
     }
-    void initTab()
-    {
-    	TabAdapter = new MeetingTabPagerAdapter(getSupportFragmentManager());
-        Tab = (ViewPager)findViewById(R.id.pager);
-        this.actionBar = getActionBar();
-        Tab.setOnPageChangeListener(new MeetDetOnPageListener(actionBar));
-        Tab.setAdapter(TabAdapter);
-    }
-    
+    public ServerEntity getServer() {
+		return server;
+	}
+	public void setServer(ServerEntity server) {
+		this.server = server;
+	}
+	public MeetingEntity getMeeting() {
+		return meeting;
+	}
+	public void setMeeting(MeetingEntity meeting) {
+		this.meeting = meeting;
+	}
+   
+ 
 }

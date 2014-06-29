@@ -1,6 +1,8 @@
 package com.TrololoCompany.meetingdataexchange;
 
-import dataBase.ServerEntity;
+import com.TrololoCompany.meetingdataexchangedataBase.MeetingEntity;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import asynctasks.HttpPostNewMeeting;
 
 public class AddNewMeetingActivity extends Activity {
@@ -52,4 +55,23 @@ public class AddNewMeetingActivity extends Activity {
 		getDataFromGUI();
 		new HttpPostNewMeeting(server,this).execute(title,topic,permission+"");
 	}
+	public void meeting_added(MeetingEntity meeting,ServerEntity server)
+	{
+		displayMessage("meetings added");
+		Intent intent = new Intent(this, MeetingDetails.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("com.TrololoCompany.meetingdataexchange.meeting", meeting);
+		bundle.putSerializable("com.TrololoCompany.meetingdataexchange.server", server);
+		intent.putExtras(bundle);
+		setResult(RESULT_OK,intent);
+		finish();
+		
+	}
+	public void displayMessage(String message)
+	{
+		Toast toast = Toast.makeText(getApplicationContext(), 
+				message, Toast.LENGTH_LONG);
+		toast.show();
+	}
+	
 }

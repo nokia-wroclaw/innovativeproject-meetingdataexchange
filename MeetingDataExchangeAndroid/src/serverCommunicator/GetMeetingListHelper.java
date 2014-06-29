@@ -6,7 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import dataBase.MeetingEntity;
+import com.TrololoCompany.meetingdataexchangedataBase.MeetingEntity;
+
 
 import android.util.Log;
 

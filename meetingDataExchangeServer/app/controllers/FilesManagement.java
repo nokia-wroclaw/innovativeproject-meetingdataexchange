@@ -4,17 +4,18 @@ import java.sql.Timestamp;
 
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record2;
+import org.jooq.Record4;
+import org.jooq.Record6;
 import org.jooq.exception.DataAccessException;
 
 import models.DbSingleton;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.Files;
 
 import play.libs.Json;
-import play.mvc.Content;
 import play.mvc.Controller;
 import play.mvc.Result;
 import tools.MD5Checksum;
@@ -54,15 +55,12 @@ public class FilesManagement extends Controller {
 			return errorObject("Upload forbidden");
 		else
 			meetinguserid = record.getValue(0, MEETINGUSER.ID);
-		
-		//Logger.info(System.getProperty("user.dir")+"/upload/"+meetingid+"/"+file.getName());
-		
+				
 		File newFile = new File(System.getProperty("user.dir")+"/upload/"+meetingid+"/"+filename);
 		
 		if(newFile.exists())
 			return errorObject("File with this name already exists");
 			
-		//File rawFile = request().body().asRaw().asFile();
 		newFile.createNewFile();
 		Files.copy(file, newFile);
 		
@@ -169,6 +167,25 @@ public class FilesManagement extends Controller {
 		return fileToSend;
 	}
 	
+	public static Result downloadDir(String meetingid, String code, String filename){
+		org.jooq.Result<Record1<Integer>> record = DbSingleton.getInstance().getDsl()
+				.select(MEETING.ID)
+				.from(FILE).join(MEETINGUSER).on(FILE.MEETINGUSERID.equal(MEETINGUSER.ID))
+				.join(MEETING).on(MEETING.ID.equal(MEETINGUSER.MEETINGID))
+				.where(MEETING.ID.equal(Integer.parseInt(meetingid)))
+				.and(MEETING.ACCESSCODE.equal(code))
+				.and(FILE.NAME.equal(filename)).fetch();
+		if(record.size()>0){
+			File fileToSend = new File(System.getProperty("user.dir")+"/upload/"+meetingid+"/"+filename);
+			
+			response().setContentType("application/x-download");  
+			response().setHeader("Content-disposition","attachment; filename="+filename);
+			return ok(fileToSend);
+		}
+		else
+			return Controller.notFound();
+	}
+	
 	
 	
 	public static Result comment(){
@@ -212,6 +229,77 @@ public class FilesManagement extends Controller {
 		
 		ObjectNode result = Json.newObject();
 		result.put("status", "ok");
+		return result;
+	}
+	
+	public static Result getList(String meetingid, String login, String sid){
+		return ok(web_getList(meetingid, login, sid));
+	}
+	
+	public static ObjectNode web_getList(String meetingid, String login, String sid){
+		if(login==null || sid==null)
+			return errorObject("incorrect data");
+		if(!checkIsSidCorrect(login, sid))
+			return errorObject("incorrect sid");
+		if(!Meetings.userIsA_MemberOfMeeting(login, meetingid))
+			return errorObject("access denied");
+		
+		ObjectNode result = Json.newObject();
+		ArrayNode arrayFile = Json.newObject().arrayNode();
+		
+		org.jooq.Result<Record6<Integer, String, Integer, Timestamp, String, String>> record = 
+				DbSingleton.getInstance().getDsl()
+				.select(FILE.ID, FILE.NAME, FILE.SIZEKB, FILE.ADDEDTIME, FILE.HASHMD5, USER.NAME)
+				.from(FILE)
+				.join(MEETINGUSER)
+				.on(FILE.MEETINGUSERID.equal(MEETINGUSER.ID))
+				.join(MEETING)
+				.on(MEETING.ID.equal(MEETINGUSER.MEETINGID))
+				.join(USER)
+				.on(USER.LOGIN.equal(MEETINGUSER.USERLOGIN))
+				.where(MEETING.ID.equal(Integer.parseInt(meetingid)))
+				.orderBy(FILE.ADDEDTIME.desc()).fetch();
+		
+		int count = record.size();
+		
+		for(int i=0; i<count; i++){
+			ObjectNode file = Json.newObject();
+			
+			file.put("fileid", record.getValue(i, FILE.ID)).asInt();
+			file.put("filename", record.getValue(i, FILE.NAME));
+			file.put("author", record.getValue(i, USER.NAME));
+			file.put("addtime", record.getValue(i, FILE.ADDEDTIME).toString());
+			file.put("hash", record.getValue(i, FILE.HASHMD5));
+			file.put("sizeKB", record.getValue(i, FILE.SIZEKB)).asInt();
+			
+			ArrayNode arrayComment = Json.newObject().arrayNode();
+			
+			org.jooq.Result<Record4<Integer, String, Timestamp, String>> record2 = 
+					DbSingleton.getInstance().getDsl()
+					.select(COMMENT.ID, USER.NAME, COMMENT.DATE, COMMENT.CONTENT)
+					.from(COMMENT)
+					.join(USER)
+					.on(COMMENT.USERLOGIN.equal(USER.LOGIN))
+					.where(COMMENT.FILEID.equal(record.getValue(i, FILE.ID)))
+					.orderBy(COMMENT.DATE.desc()).fetch();
+			
+			int count_comment = record2.size();
+			
+			for(int j=0; j<count_comment; j++){
+				ObjectNode comment = Json.newObject();
+				
+				comment.put("commentid", record2.getValue(j, COMMENT.ID));
+				comment.put("author", record2.getValue(j, USER.NAME));
+				comment.put("addtime", record2.getValue(j, COMMENT.DATE).toString());
+				comment.put("content", record2.getValue(j, COMMENT.CONTENT));
+				
+				arrayComment.add(comment);
+			}
+			file.put("comments", arrayComment);
+			arrayFile.add(file);
+		}
+		result.put("status", "ok");
+		result.put("files", arrayFile);
 		return result;
 	}
 	

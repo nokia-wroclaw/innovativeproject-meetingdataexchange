@@ -310,6 +310,70 @@ public class Meetings extends Controller {
 		return result;
 	}
 	
+	
+	public static Result getDetails(String meetingid, String login, String sid){
+		return ok(web_getDetails(meetingid,login, sid));
+	}
+	
+	public static ObjectNode web_getDetails(String meetingid, String login, String sid){
+		if(login==null || sid==null)
+			return errorObject("incorrect data");
+		if(!checkIsSidCorrect(login, sid))
+			return errorObject("incorrect sid");
+		ObjectNode result = Json.newObject();
+		
+		org.jooq.Result<Record8<Integer, String, String, Timestamp, Timestamp, Boolean, String, String>> record = 
+				DbSingleton.getInstance().getDsl()
+				.select(MEETING.ID, MEETING.TITLE, MEETING.TOPIC, MEETING.STARTTIME, 
+						MEETING.ENDTIME, MEETING.ABILITYTOSENDFILES, MEETING.AUTHORLOGIN, MEETING.ACCESSCODE)
+				.from(MEETING)
+				.join(MEETINGUSER)
+				.on(MEETING.ID.equal(MEETINGUSER.MEETINGID))
+				.where(MEETINGUSER.USERLOGIN.equal(login))
+				.and(MEETING.ID.equal(Integer.parseInt(meetingid)))
+				.fetch();
+		
+		if(record.size()==0)
+			return errorObject("access denied");
+		
+		result.put("status", "ok");
+		result.put("meetingid", record.getValue(0, MEETING.ID)).asInt();
+		result.put("title", record.getValue(0, MEETING.TITLE));
+		result.put("topic", record.getValue(0, MEETING.TOPIC));
+		
+		org.jooq.Result<Record1<String>> recordHost = 
+				DbSingleton.getInstance().getDsl()
+				.select(USER.NAME)
+				.from(USER)
+				.where(USER.LOGIN.equal(record.getValue(0, MEETING.AUTHORLOGIN))).fetch();
+		
+		result.put("hostname", recordHost.getValue(0, USER.NAME));
+		result.put("starttime", record.getValue(0, MEETING.STARTTIME).toString());
+		
+		Timestamp ts = record.getValue(0, MEETING.ENDTIME);
+		if(ts==null)
+			result.putNull("endtime");
+		else
+			result.put("endtime", record.getValue(0, MEETING.ENDTIME).toString());
+		
+		org.jooq.Result<Record> recordMembers = 
+				DbSingleton.getInstance().getDsl()
+				.select()
+				.from(MEETINGUSER)
+				.where(MEETINGUSER.MEETINGID.equal(record.getValue(0, MEETING.ID))).fetch();
+		
+		result.put("members", recordMembers.size());
+		boolean upl = record.getValue(0, MEETING.ABILITYTOSENDFILES);
+		if(login.equals(record.getValue(0, MEETING.AUTHORLOGIN)))
+			result.put("permissions", "host");
+		else if(upl)
+			result.put("permissions", "memberUpload");
+		else
+			result.put("permissions", "member");
+		result.put("accessCode", record.getValue(0, MEETING.ACCESSCODE));
+		return result;
+	}
+	
 	public static boolean userIsA_MemberOfMeeting(String login,
 			String meetingId) {
 		org.jooq.Result<Record> record = DbSingleton.getInstance().getDsl()

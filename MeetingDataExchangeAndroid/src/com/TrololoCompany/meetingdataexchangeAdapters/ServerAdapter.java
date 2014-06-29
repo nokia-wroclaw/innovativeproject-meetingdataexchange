@@ -10,8 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.TrololoCompany.meetingdataexchange.R;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
-import dataBase.ServerEntity;
 
 public class ServerAdapter extends ArrayAdapter<ServerEntity> 
 {
