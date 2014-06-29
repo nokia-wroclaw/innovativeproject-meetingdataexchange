@@ -115,6 +115,14 @@ namespace MeetingDataExchange.Pages
         #region logout
         private void logoutClicked(Object sender, RoutedEventArgs e)
         {
+            server.sid = null;
+            MDEDB.SubmitChanges();
+
+            MessageBox.Show("Logged out from server.");
+            NavigationService.GoBack();
+        }
+/*        private void logoutClicked(Object sender, RoutedEventArgs e)
+        {
             //TODO block buttons
             string url = server.address + "/api/general/getname";
             new HttpGetRequest<ServerName>(url, logoutCallback);
@@ -151,6 +159,7 @@ namespace MeetingDataExchange.Pages
                 NavigationService.GoBack();
             });
         }
+ */
         #endregion
 
         #region delete

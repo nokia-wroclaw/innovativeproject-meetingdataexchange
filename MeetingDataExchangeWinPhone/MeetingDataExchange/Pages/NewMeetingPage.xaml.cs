@@ -34,7 +34,7 @@ namespace MeetingDataExchange.Pages
 
             string serverName = NavigationContext.QueryString["serverName"];
             System.Diagnostics.Debug.WriteLine(serverName);
-            if(serverName!="")server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverName select s)[0];
+            if(serverName != "") server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == serverName select s)[0];
             serverNameBox.Text = serverName;
             /*if (server.sid == null)
             {
@@ -123,8 +123,9 @@ namespace MeetingDataExchange.Pages
                     MDEDB.SubmitChanges();
 
                     MessageBox.Show("Meeting created");
-                    //TODO navigation to meeting page, perfectly to QR code 
-                    NavigationService.GoBack();
+
+                    NavigationService.RemoveBackEntry();
+                    NavigationService.Navigate(new Uri("/Pages/MeetingPage.xaml?meetingID=" + meeting.ID + "&removePrevious=" + bool.TrueString, UriKind.Relative));
                 }
                 else
                 {

@@ -41,7 +41,7 @@
 
                 <TextBlock Text="{Binding Path=AppResources.serverAddress, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
                 <StackPanel Orientation="Horizontal" >
-                    <TextBox Name="serverAddressBox" Text="156.17.230.172:9000" Width="311"/>
+                    <TextBox Name="serverAddressBox" Text="" Width="311"/>
                     <Button x:Name="connectButton" Click="connect">
                         <TextBlock Text="{Binding Path=AppResources.connect, Source={StaticResource LocalizedStrings}}" />
                     </Button>

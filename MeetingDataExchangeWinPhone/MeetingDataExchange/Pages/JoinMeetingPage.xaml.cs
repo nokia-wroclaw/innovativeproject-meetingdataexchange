@@ -23,7 +23,6 @@ namespace MeetingDataExchange
     public partial class JoinMeetingPage : PhoneApplicationPage
     {
         private readonly DispatcherTimer _timer;
-        //private readonly ObservableCollection<string> _matches;
 
         private MDEDataContext MDEDB;
         private PhotoCameraLuminanceSource _luminance;
@@ -35,11 +34,9 @@ namespace MeetingDataExchange
         public JoinMeetingPage()
         {
             InitializeComponent();
-//            _matches = new ObservableCollection<string>();
-//            qrMatchesList.ItemsSource = _matches;
 
             MDEDB = new MDEDataContext();
-
+            server = new Server();
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromMilliseconds(100);
             _timer.Tick += (o, arg) => ScanPreviewBuffer();
@@ -52,7 +49,8 @@ namespace MeetingDataExchange
             qrPreviewVideo.SetSource(_photoCamera);
 
             CameraButtons.ShutterKeyHalfPressed += (o, arg) => _photoCamera.Focus();
-
+            if (server.name != null)
+                joinMeeting();
             base.OnNavigatedTo(e);
         }
 
@@ -102,6 +100,7 @@ namespace MeetingDataExchange
                 if (text.Split(';')[0] == "mde")
                 {
                     string serverUrl = text.Split(';')[1];
+                    server.address = serverUrl;
                     string url = serverUrl + "/api/general/getname";
                     new HttpGetRequest<ServerName>(url, joinMeetingCallback);
                 }
@@ -113,66 +112,108 @@ namespace MeetingDataExchange
             }
         }
 
+        private void joinMeeting()
+        {
+            JoinMeetingInput input = new JoinMeetingInput();
+            server = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == server.name select s)[0];
+            input.login = server.login;
+            input.sid = server.sid;
+            input.meetingid = text.Split(';')[2];
+            input.accessCode = text.Split(';')[3];
+
+            string url = text.Split(';')[1] + "/api/meeting/adduser";
+            new HttpPostRequest<JoinMeetingInput, MeetingOutput>(url, joinMeetingCallback, input);
+        }
+
         private void joinMeetingCallback(ServerName result)
         {
             this.Dispatcher.BeginInvoke(delegate()
-               {
-                   if (result == null)
-                   {
-                       MessageBox.Show("Couldn't connect to server");
-                       _timer.Start();
-                   }
-                   else if (result.servername == null)
-                   {
-                       MessageBox.Show("Incorrect server response, please contact with administrator or try again later.");
-                       _timer.Start();
-                   }
-                   else
-                   {
-                       var servers = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == result.servername select s);
-                       if (servers.Count() > 0)
-                       {
+            {
+                if (result == null)
+                {
+                    MessageBox.Show("Couldn't connect to server");
+                    _timer.Start();
+                }
+                else if (result.servername == null)
+                {
+                    MessageBox.Show("Incorrect server response, please contact with administrator or try again later.");
+                    _timer.Start();
+                }
+                else
+                {
+                    server.name = result.servername;
+                    var servers = new ObservableCollection<Server>(from Server s in MDEDB.Servers where s.serverName == result.servername select s);
+                    if (servers.Count() > 0)
+                    {
 
-                           server = servers[0];
-                           if (server.sid == null)
-                           {
-                               MessageBox.Show("You are logged out from server, please log in.");
-                               _timer.Start();
-                           }
-                           else
-                           {
-                               JoinMeetingInput input = new JoinMeetingInput();
-                               input.login = server.login;
-                               input.sid = server.sid;
-                               input.meetingid = text.Split(';')[2];
-                               input.accessCode = text.Split(';')[3];
+                        server = servers[0];
+                        if (server.sid == null)
+                        {
+                            MessageBoxResult messageResult =
+                                MessageBox.Show("You are not logged in on server. Would you like to log in?",
+                                "", MessageBoxButton.OKCancel);
 
-                               string url = text.Split(';')[1] + "/api/meeting/adduser";
-                               new HttpPostRequest<JoinMeetingInput, MeetingOutput>(url, joinMeetingCallback,input);
-
-                           }
-                       }
-                       else
-                       {
-                           //TODO go to registration page instead telling a user to do it
-                           MessageBox.Show("You don't have account on this server. Please add server on server management tab");
-                           _timer.Start();
-                       }
-                   }
-               });
+                            if (messageResult == MessageBoxResult.OK)
+                            {
+                                string url = server.address + "/api/account/login";
+                                LoginInput input = new LoginInput(server.login, server.pass);
+                                new HttpPostRequest<LoginInput, LoginOutput>(url, loginCallback, input);
+                            }
+                            else
+                            {
+                                _timer.Start();
+                                text = "";
+                            }
+                        }
+                        else
+                        {
+                            joinMeeting();
+                        }
+                    }
+                    else
+                    {
+                        //TODO go to registration page instead telling a user to do it
+                        MessageBox.Show("You are not logged in on server. Please register or log in to server.");
+                        NavigationService.Navigate(new Uri("/Pages/AddServerPage.xaml?serverAddress=" + server.address + "&serverName=" + server.name, UriKind.Relative));
+                    }
+                }
+            });
         }
+
+        private void loginCallback(LoginOutput output)
+        {
+            this.Dispatcher.BeginInvoke(delegate()
+            {
+                if (output.status == "ok")
+                {
+                    server.sid = output.sid;
+                    MDEDB.SubmitChanges();
+
+                    MessageBox.Show("Logged in on server.");
+                    joinMeeting();
+                }
+                else
+                {
+                    MessageBox.Show("Login or password incorrect.");
+                }
+            });
+        }
+
         private void joinMeetingCallback(MeetingOutput output)
         {
             this.Dispatcher.BeginInvoke(delegate()
                {
                    if (output.status == "ok")
                    {
-                       MDEDB.Meetings.InsertOnSubmit(output.getEntity(server));
+                       Meeting meeting = output.getEntity(server);
+//                       MDEDB.Meetings.InsertOnSubmit(output.getEntity(server));
+                       MDEDB.Meetings.InsertOnSubmit(meeting);
                        MDEDB.SubmitChanges();
+                       System.Diagnostics.Debug.WriteLine(meeting.ID);
 
                        //TODO go to the meeting page instead
                        MessageBox.Show("Succesfully joined the meeting.");
-                       NavigationService.GoBack();
+                       NavigationService.Navigate(new Uri("/Pages/MeetingPage.xaml?meetingID=" + meeting.ID + "&removePrevious=" + bool.TrueString, UriKind.Relative));
                    }
                    else
                    {

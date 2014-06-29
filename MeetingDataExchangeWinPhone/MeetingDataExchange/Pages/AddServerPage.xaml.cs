@@ -26,9 +26,21 @@ namespace MeetingDataExchange.Pages
 
             MDEDB = new MDEDataContext();
 
+            
             this.DataContext = this;
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            serverAddressBox.Text = NavigationContext.QueryString["serverAddress"];
+            string serverName = NavigationContext.QueryString["serverName"];
+            if (serverName != "")
+            {
+                serverNameBox.Text = serverName;
+                serverUrl = serverAddressBox.Text;
+                connectedPanel.Visibility = System.Windows.Visibility.Visible;
+            }
+        }
         private void connect(Object sender, RoutedEventArgs e)
         {
             if (!serverAddressBox.Text.StartsWith("http://")) serverAddressBox.Text = "http://" + serverAddressBox.Text;
@@ -168,7 +180,7 @@ namespace MeetingDataExchange.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Login or password incorrect.");
+                    MessageBox.Show("Unable to login on server:\n" + output.reason);
                 }
             });
 
@@ -197,7 +209,7 @@ namespace MeetingDataExchange.Pages
             {
                 this.Dispatcher.BeginInvoke(delegate()
                 {
-                    MessageBox.Show("These passwords are different.");
+                    MessageBox.Show("Given passwords are different.");
                 });
                 passwordBox.Password = repPasswordBox.Password = "";
                 setControlEnabled(true);
@@ -256,7 +268,7 @@ namespace MeetingDataExchange.Pages
                     }
                     else
                     {
-                        MessageBox.Show("Error: " + output.reason);
+                        MessageBox.Show("Unable to register on server:\n" + output.reason);
                         passwordBox.Password = repPasswordBox.Password = "";
                         setControlEnabled(true);
                     }

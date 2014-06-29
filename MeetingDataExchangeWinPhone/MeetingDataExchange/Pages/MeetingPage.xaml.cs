@@ -61,6 +61,21 @@ namespace MeetingDataExchange.Pages
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            #region Actualising navigation stack
+            bool remove = false;
+
+            if (NavigationContext.QueryString.ContainsKey("removePrevious"))
+            {
+                remove = ((string)NavigationContext.QueryString["removePrevious"]).Equals(bool.TrueString);
+                NavigationContext.QueryString.Remove("removePrevious");
+            }
+
+            if (remove)
+            {
+                NavigationService.RemoveBackEntry();
+            }
+            #endregion
+
             MDEDB = new MDEDataContext();
             int meetingID = int.Parse( NavigationContext.QueryString["meetingID"] );
 
@@ -101,8 +116,8 @@ namespace MeetingDataExchange.Pages
                     permissionBlock.Text = "Member without upload permission";
             }
             #endregion
-            refresh();
 
+            refresh();
             _timer.Start();
 
             base.OnNavigatedTo(e);
