@@ -10,6 +10,9 @@ import org.json.JSONException;
 import com.TrololoCompany.meetingdataexchange.LogInActivity;
 import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
 import com.TrololoCompany.meetingdataexchangedataBase.MeetingEntity;
+import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
+
+import fileMaintenance.FileMaintenance;
 
 
 import serverCommunicator.CommunicationHelper;
@@ -27,10 +30,12 @@ public class HttpGetListMeetings extends AsyncTask<String, Void, Void>
 	private String password;
 	private String sid;
 	private LogInActivity activity;
+	private ServerEntity server;
 	
-	public HttpGetListMeetings(LogInActivity activity)
+	public HttpGetListMeetings(LogInActivity activity,ServerEntity server)
 	{
 		this.activity=activity;
+		this.server=server;
 	}
 	
 	@Override
@@ -59,6 +64,7 @@ public class HttpGetListMeetings extends AsyncTask<String, Void, Void>
 			{
 				new DataBaseHelper(activity.getApplicationContext()).
 				insertMeetingEntity(result.get(i));
+				new FileMaintenance().makeMeetingFile(server, result.get(i));
 				Log.i(LOG,"meeting  "+i+" added");
 			}
 		} catch (ClientProtocolException e) {

@@ -31,8 +31,10 @@ public class MeetingHelper
 		}
 		return json;
 	}
-	public MeetingEntity getMeetingDetails(ServerEntity server,MeetingEntity meeting) throws ClientProtocolException, IOException
+	public synchronized MeetingEntity getMeetingDetails(ServerEntity server,MeetingEntity meeting) throws ClientProtocolException, IOException
 	{
+		
+		Log.i("meeting helper before request",meeting.getTitle()+" "+meeting.getID()+" "+meeting.getServerMeetingID());
 		MeetingEntity result_meeting=null;
 		CommunicationHelper communicationHelper= new CommunicationHelper();
 		String address="http://"+server.getAddress()+"/api/meeting/details/"+
@@ -44,11 +46,16 @@ public class MeetingHelper
 			result_meeting=makeMeeting(data, server);
 			
 		}
+		result_meeting.setID(meeting.getID());
 		return result_meeting;
 
 	}
 	public MeetingEntity makeMeeting(String input[],ServerEntity server)
 	{
+		for(int i=0;i<input.length;i++)
+		{
+			Log.i(LOG,i+" "+input[i]);
+		}
 		MeetingEntity meeting= new MeetingEntity();
 		meeting.setServerId(server.getId());
 		meeting.setServerMeetingID(Long.parseLong(input[1]));
@@ -78,7 +85,7 @@ public class MeetingHelper
 				result=new String[2];
 				result[0]=status;
 				result[1]=json.getString("reason");
-				Log.i(LOG,"status "+result[1]);
+				Log.i(LOG,"reason "+result[1]);
 			}
 			else if(status.contains("ok"))
 			{
@@ -94,7 +101,7 @@ public class MeetingHelper
 				result[8]=json.getString("permissions");
 				result[9]=json.getString("accessCode");
 
-				Log.i(LOG,"status "+result[1]);
+				Log.i(LOG,"ok");
 			}
 					
 		} 

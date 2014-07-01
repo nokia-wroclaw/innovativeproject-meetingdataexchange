@@ -51,27 +51,23 @@
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_add_new_meeting">AddNewMeeting</string>
-    
     <string name="add_new_meeting_textView1">Serwer</string>
     <string name="add_new_meeting_textView2">Tytuł spotkania</string>
     <string name="add_new_meeting_textView3">Temat</string>
     <string name="add_new_meeting_textView4">Uczestnicy mogą dodawać zawartość</string>
     <string name="add_new_meeting_button1">Utwórz spotkanie</string>
-    
-     <string name="meeting_details_desc_topic">Temat</string>
-     <string name="meeting_details_desc_host_name">Organizator</string>
-     <string name="meeting_details_desc_during_time">Czas trwania</string>
-     <string name="meeting_details_desc_members">Uzytkownicy</string>
-     <string name="meeting_details_desc_permission">Uprawnienia</string>
-	<string name="meeting_details_desc_button">Ustawienia spotkania</string>
-	
-	<string name="server_option_logged_in_log_out">Ustawienia spotkania</string>
-	<string name="server_option_logged_in_change_data">Ustawienia spotkania</string>
-	<string name="server_option_logged_in_remove_server">Ustawienia spotkania</string>
-	
-	<string name="server_option_logged_out_log_in">Ustawienia spotkania</string>
-	<string name="server_option_logged_out_remove_server">Ustawienia spotkania</string>
-	
+    <string name="meeting_details_desc_topic">Temat</string>
+    <string name="meeting_details_desc_host_name">Organizator</string>
+    <string name="meeting_details_desc_during_time">Czas trwania</string>
+    <string name="meeting_details_desc_members">Uzytkownicy</string>
+    <string name="meeting_details_desc_permission">Uprawnienia</string>
+    <string name="meeting_details_desc_button">Ustawienia spotkania</string>
+    <string name="server_option_logged_in_log_out">Ustawienia spotkania</string>
+    <string name="server_option_logged_in_change_data">Ustawienia spotkania</string>
+    <string name="server_option_logged_in_remove_server">Ustawienia spotkania</string>
+    <string name="server_option_logged_out_log_in">Ustawienia spotkania</string>
+    <string name="server_option_logged_out_remove_server">Ustawienia spotkania</string>
+    <string name="title_activity_file_list">FileList</string>
+    <string name="title_activity_display_qr">DisplayQR</string>
 
-    
 </resources>

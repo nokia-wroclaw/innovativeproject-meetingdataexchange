@@ -1,12 +1,7 @@
 package meeting_options;
 
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +11,6 @@ import android.widget.TextView;
 
 import com.TrololoCompany.meetingdataexchange.MeetingDetails;
 import com.TrololoCompany.meetingdataexchange.R;
-
 import com.TrololoCompany.meetingdataexchangedataBase.MeetingEntity;
 import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 public  class MeetingDescription extends Fragment 
@@ -70,17 +64,11 @@ private void getInitData()
    public void refreshValues()
    {
 	   try{
+
 		  title.setText(meeting.getTitle());
 		  topic.setText(meeting.getTopic());
 		  host.setText(meeting.getHostName());
-		  if(meeting.getEndTime()==null)
-		  {
-			  durationTime.setText(meeting.getStartTime()+"-");
-		  }
-		 else
-		 {
-			  durationTime.setText(meeting.getStartTime()+"-");//+meeting.getEndTime()); 
-		}
+		  durationTime.setText(meeting.getStartTime()+"-");
 		  members.setText(meeting.getNumberOfMembers()+"");
 		  permission.setText(meeting.getPermission());
 	   }

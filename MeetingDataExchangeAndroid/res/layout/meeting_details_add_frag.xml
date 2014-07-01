@@ -8,7 +8,7 @@
  
 
      <Button
-            android:id="@+id/sign_up_button1"
+            android:id="@+id/add_photo"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2"
@@ -17,7 +17,7 @@
             android:text="@string/add_item_ac_meeting_add_photo_button"
             android:onClick="add_photo_Button" />
      <Button
-            android:id="@+id/sign_up_button1"
+            android:id="@+id/add_file"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2"
@@ -25,24 +25,27 @@
             android:drawableTop="@drawable/line"
             android:text="@string/add_item_ac_meeting_add_file_button" />
      <Button
-            android:id="@+id/sign_up_button1"
+            android:id="@+id/add_note"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2"
             android:background="#f1f1f1"
             android:drawableTop="@drawable/line"
             android:text="@string/add_item_ac_meeting_add_note_button" />
+
     <Button
-            android:id="@+id/sign_up_button1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:background="#f1f1f1"
-            android:drawableTop="@drawable/line"
-            android:drawableBottom="@drawable/line"
-            android:text="@string/add_item_ac_meeting_add_user_button" />
+        android:id="@+id/add_user"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:background="#f1f1f1"
+        android:drawableBottom="@drawable/line"
+        android:drawableTop="@drawable/line"
+        android:text="@string/add_item_ac_meeting_add_user_button"
+        android:onClick="addUser" />
+
     <Button
-            android:id="@+id/sign_up_button1"
+            android:id="@+id/add_user"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"

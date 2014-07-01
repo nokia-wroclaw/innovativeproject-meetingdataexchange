@@ -66,8 +66,8 @@ public class CommunicationHelper
 		
 		HttpGet httpGet = new HttpGet(address);
 	    HttpParams httpParameters = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParameters, 3000);
-        HttpConnectionParams.setSoTimeout(httpParameters, 3000);
+        HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
+        HttpConnectionParams.setSoTimeout(httpParameters, 10000);
         HttpClient client = new DefaultHttpClient(httpParameters);
     	Log.i(log,"response before");
     	HttpResponse response  = client.execute(httpGet);

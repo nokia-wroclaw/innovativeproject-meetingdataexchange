@@ -21,22 +21,22 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <service android:name="com.TrololoCompany.meetingdataexchangeServices.MeetingServerCommunication" /> 
-          <service android:name="com.TrololoCompany.meetingdataexchangeServices.MeetingDetailsRefresh" />
+        <service android:name="com.TrololoCompany.meetingdataexchangeServices.MeetingServerCommunication" />
+        <service android:name="com.TrololoCompany.meetingdataexchangeServices.RefreshMeetingProgress" />
+
         <activity
             android:name="com.TrololoCompany.meetingdataexchange.MainActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.TrololoCompany.meetingdataexchange.MeetingDetails"
-            android:label="@string/title_activity_meeting_details"
-          >
-           
+            android:label="@string/title_activity_meeting_details" >
         </activity>
         <activity
             android:name="com.TrololoCompany.meetingdataexchange.ServerManageActivity"
@@ -48,7 +48,6 @@
             android:label="@string/title_activity_add_server"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
         </activity>
-    
         <activity
             android:name="com.TrololoCompany.meetingdataexchange.AddServerActivitySuccess"
             android:label="@string/title_activity_add_server_activity_success"
@@ -67,13 +66,25 @@
         <activity
             android:name="com.TrololoCompany.meetingdataexchange.AddNewMeetingActivity"
             android:label="@string/title_activity_add_new_meeting"
-            android:windowSoftInputMode="adjustPan"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="lists.ServerList"
+            android:label="@string/title_activity_server_manage"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.TrololoCompany.meetingdataexchange.ServerList"
-            android:label="@string/title_activity_server_manage"
+            android:name="lists.MeetingList"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.TrololoCompany.meetingdataexchange.FileList"
+            android:label="@string/title_activity_file_list" >
+        </activity>
+        <activity
+            android:name="com.TrololoCompany.meetingdataexchange.DisplayQR"
+            android:label="@string/title_activity_display_qr" >
         </activity>
     </application>
 

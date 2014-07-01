@@ -10,6 +10,8 @@ import com.TrololoCompany.meetingdataexchange.SignUpActivity;
 import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
 import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
+import fileMaintenance.FileMaintenance;
+
 
 import serverCommunicator.CommunicationHelper;
 import serverCommunicator.GetPersonalDataHelper;
@@ -28,6 +30,7 @@ public class HttpGetPersonalData extends AsyncTask<String, Void, Void>
 	private String nick;
 	private String email;
 	private String sid;
+	private ServerEntity server;
 	
 	public HttpGetPersonalData(LogInActivity activity)
 	{
@@ -57,11 +60,10 @@ public class HttpGetPersonalData extends AsyncTask<String, Void, Void>
 			String [] result=helper.parseJSONRespondGetServerName(respond);
 			nick=result[0];
 			email=result[1];
-			ServerEntity entity=communication.
+			server=communication.
 					makeServerEntity
 					(address, name, login, nick, email, password, sid);
-			new DataBaseHelper(activity.getApplicationContext()).
-			insertServerEntity(entity);
+			
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,9 +84,16 @@ public class HttpGetPersonalData extends AsyncTask<String, Void, Void>
 	{
 		if(email!=null)
 		{
+			new DataBaseHelper(activity.getApplicationContext()).
+			insertServerEntity(server);
+			ServerEntity server_from_db=new DataBaseHelper(activity.getApplicationContext()).
+					getServer(server.getServerName(), server.getLogin());
+			Log.i("personal data",server.getServerName());
+			Log.i("personal data",server_from_db.getServerName());
+			new FileMaintenance().makeServerFile(server_from_db);
 			activity.
 			displayMessage("Personal data downloaded ,downloading meetings");
-			new HttpGetListMeetings(activity).execute(address,name,login,password,sid);
+			new HttpGetListMeetings(activity,server_from_db).execute(address,name,login,password,sid);
 		}
 		else
 		{

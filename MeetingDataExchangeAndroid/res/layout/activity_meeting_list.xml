@@ -5,19 +5,13 @@
     android:orientation="vertical">
 
     <ListView
-        android:id="@+id/serverList"
+        android:id="@+id/meetingList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.9"
      >
     </ListView>
 
-    <Button
-        android:id="@+id/add_user"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:text="@string/server_manage_button"
-        android:onClick="add_new_server" />
+  
 
 </LinearLayout>

@@ -53,7 +53,7 @@
         android:text="@string/log_in_text4" />
 
     <Button
-        android:id="@+id/sign_up_button1"
+        android:id="@+id/add_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

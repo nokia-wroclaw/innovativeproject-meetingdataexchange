@@ -73,7 +73,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     {
     	String createServerTable=
     	"CREATE TABLE "+SERVER_TABLE_NAME+" ( "+
-    	SERVER_ID+"INT AUTO_INCREMENT PRIMARY KEY , "+
+    	SERVER_ID+" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL, "+
     	SERVER_ADDRESS+" VARCHAR(255) , "+
     	SERVER_NAME+" VARCHAR(255) , "+
     	SERVER_LOGIN+" VARCHAR(255) , "+
@@ -85,7 +85,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     	
     	String createMeetingTable=
     	"CREATE TABLE "+MEETING_TABLE_NAME+" ( "+
-    	MEETING_ID+" INT AUTO_INCREMENT PRIMARY KEY, "+
+    	MEETING_ID+" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL, "+
     	MEETING_SERVERID+" INT ,"+
     	MEETING_SERVER_MEETING_ID+" INT ,"+
     	MEETING_TITLE+" VARCHAR(255) , "+
@@ -102,7 +102,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     	
     	String createFileTable=
     	"CREATE TABLE "+FILE_TABLE_NAME+" ( "+
-    	FILE_ID+" INT AUTO_INCREMENT PRIMARY KEY, "+
+    	FILE_ID+" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL, "+
     	FILE_METTING_ID+" INT ,"+
     	FILE_SERVER_FILE_ID+" INT,"+
     	FILE_FILE_NAME+" VARCHAR(255) , "+
@@ -115,7 +115,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     	
     	String createCommentTable=
     	"CREATE TABLE "+COMMENT_TABLE_NAME+" ( "+
-    	COMMENT_ID+" INT AUTO_INCREMENT PRIMARY KEY, "+
+    	COMMENT_ID+" INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL, "+
     	COMMENT_FILE_ID+" INT ,"+
     	COMMENT_SERVER_COMMENT_ID+" INT ,"+
     	COMMENT_AUTHOR_NAME+" VARCHAR(255) , "+
@@ -184,9 +184,23 @@ public class DataBaseHelper extends SQLiteOpenHelper
     	return result;
     	
     }
+    public ServerEntity getServer(String name,String login)
+    {
+    		ServerEntity result;
+    		SQLiteDatabase db =this.getReadableDatabase();
+    		String cond=SERVER_NAME+" = '"+name+"' AND "+SERVER_LOGIN+" = '"+login+"'";
+   			Cursor cursor= db.query(SERVER_TABLE_NAME,null,cond,
+   						null,null,null,null);
+   			
+   		 result=makeServerEntityList(cursor).get(0);
+    		
+    	db.close();
+    	return result;
+    	
+    }
     public ServerEntity getServer(long id)
     {
-    	long result=-1;
+    	
     		SQLiteDatabase db =this.getReadableDatabase();
     		String cond=SERVER_ID+" = '"+id+"'";
     		Cursor cursor= db.query(SERVER_TABLE_NAME,null,cond,
@@ -204,20 +218,47 @@ public class DataBaseHelper extends SQLiteOpenHelper
     		String cond=MEETING_ID+" = '"+id+"'";
     		Cursor cursor= db.query(MEETING_TABLE_NAME,null,cond,
    						null,null,null,null);
-    		db.close();
     		MeetingEntity result=makeMeetingEntityList(cursor).get(0);
+    		db.close();
    			return result;
     	
     }
+    
     public MeetingEntity getMeetingServerId(long id)
+    {
+    	
+    		Log.i("db","meeting_server_meeting_id"+id);
+    		SQLiteDatabase db =this.getReadableDatabase();
+    		String cond=MEETING_SERVER_MEETING_ID+" = '"+id+"'";
+    		Cursor cursor= db.query(MEETING_TABLE_NAME,null,cond,
+   						null,null,null,null);
+    		MeetingEntity  result=makeMeetingEntityList(cursor).get(0);
+    		db.close();
+   			return result;
+    	
+    }
+    public FileEntity getFileServerId(long id)
+    {
+    	
+    		SQLiteDatabase db =this.getReadableDatabase();
+    		String cond=FILE_SERVER_FILE_ID+" = '"+id+"'";
+    		Cursor cursor= db.query(FILE_TABLE_NAME,null,cond,
+   						null,null,null,null);
+    		FileEntity  result=makeFileEntityList(cursor).get(0);
+    		db.close();
+   			return result;
+    	
+    }
+    public ArrayList<MeetingEntity> getAllMeetingServerId(long id)
     {
     	
     		SQLiteDatabase db =this.getReadableDatabase();
     		String cond=MEETING_SERVERID+" = '"+id+"'";
     		Cursor cursor= db.query(MEETING_TABLE_NAME,null,cond,
    						null,null,null,null);
+    		ArrayList<MeetingEntity>  result=makeMeetingEntityList(cursor);
     		db.close();
-   			return makeMeetingEntityList(cursor).get(0);
+   			return result;
     	
     }
     public ArrayList<FileEntity> getFileAssociatedWithMeeting(long id)
@@ -227,8 +268,9 @@ public class DataBaseHelper extends SQLiteOpenHelper
 			String cond=FILE_METTING_ID+" = '"+id+"'";
 			Cursor cursor= db.query(FILE_TABLE_NAME,null,cond,
 						null,null,null,null);
+			ArrayList<FileEntity> result=makeFileEntityList(cursor);
 			db.close();
-		return makeFileEntityList(cursor);
+		return  result;
 	
     	
     }
@@ -243,7 +285,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     		while(cursor.moveToNext())
     		{
     			FileEntity entity=new FileEntity();
-    			entity.setID(cursor.getLong(0));
+    			entity.setID(cursor.getInt(0));
     			entity.setMeetingID(cursor.getLong(1));
     			entity.setServerFileId(cursor.getLong(2));
     			entity.setFileName(cursor.getString(3));
@@ -251,6 +293,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     			entity.setAddTime(cursor.getString(5));
     			entity.setHashMD5(cursor.getString(6));
     			result.add(entity);
+    			
     		}
     	}
     	return result;
@@ -264,7 +307,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
     	{
     		//Log.i(log, "cursor size "+cursor.getCount());
     		result=new ArrayList<MeetingEntity>();
-    		while(cursor.moveToNext())
+    		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext())
     		{
     			MeetingEntity entity=new MeetingEntity();
     			entity.setID(cursor.getLong(0));
@@ -331,6 +374,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
 		
 		db.insert(SERVER_TABLE_NAME, null, values);
 		Log.i(log, "ServerEntity added");
+		Log.i(log, "sid "+entity.getSid());
 		db.close();
 	}
     public int updateMeeting(MeetingEntity meeting)
@@ -376,23 +420,37 @@ public class DataBaseHelper extends SQLiteOpenHelper
 		Log.i(log, "Meeting added");
 		db.close();
 	}
-    public void insertFileEntity(MeetingEntity entity)
+    public void insertFileEntity(FileEntity entity)
    	{
    		SQLiteDatabase db = this.getWritableDatabase();
    		ContentValues values = new ContentValues();
-   		values.put(MEETING_SERVERID,entity.getServerId());
-   		values.put(MEETING_SERVER_MEETING_ID,entity.getServerMeetingID());
-   		values.put(MEETING_TITLE,entity.getTitle());
-   		values.put(MEETING_TOPIC,entity.getTopic());
-   		values.put(MEETING_HOST_NAME,entity.getHostName());
-   		values.put(MEETING_START_TIME,entity.getStartTime());
-   		values.put(MEETING_END_TIME,entity.getEndTime());
-   		values.put(MEETING_CODE,entity.getCode());
-   		values.put(MEETING_NUMBER_OF_MEMBERS,entity.getNumberOfMembers());
-   		values.put(MEETING_PERMISSION,entity.getPermission());
+   		values.put(FILE_METTING_ID,entity.getMeetingID());
+   		Log.i(log, "insert file meeting id "+entity.getID());
+   		values.put(FILE_SERVER_FILE_ID,entity.getServerFileId());
+   		values.put(FILE_FILE_NAME,entity.getFileName());
+   		values.put(FILE_AUTHOR_NAME,entity.getAuthorName());
+   		values.put(FILE_ADD_TIME,entity.getAddTime());
+   		values.put(FILE_HASHMD5,entity.getHashMD5());
    		
-   		db.insert(MEETING_TABLE_NAME, null, values);
-   		Log.i(log, "Meeting added");
+   		
+   		db.insert(FILE_TABLE_NAME, null, values);
+   		Log.i(log, "FILE added");
+   		db.close();
+   	}
+    public void insertCommentEntity(CommentEntity entity)
+   	{
+   		SQLiteDatabase db = this.getWritableDatabase();
+   		ContentValues values = new ContentValues();
+   		
+   		values.put(COMMENT_FILE_ID,entity.getFileID());
+   		values.put(COMMENT_SERVER_COMMENT_ID,entity.getServerCommentID());
+   		values.put(COMMENT_AUTHOR_NAME,entity.getAuthorName());
+   		values.put(COMMENT_ADD_TIME,entity.getAddTime());
+   		values.put(COMMENT_CONTENT,entity.getContent());
+   		
+   		
+   		db.insert(COMMENT_TABLE_NAME, null, values);
+   		Log.i(log, "comment added");
    		db.close();
    	}
     public void deleteAllFileAssociatedWithMeeting(MeetingEntity entity)

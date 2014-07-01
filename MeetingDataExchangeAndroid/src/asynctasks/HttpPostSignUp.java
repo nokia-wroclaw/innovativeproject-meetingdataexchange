@@ -19,6 +19,8 @@ import com.TrololoCompany.meetingdataexchange.SignUpActivity;
 import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
 import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
+import fileMaintenance.FileMaintenance;
+
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -59,6 +61,7 @@ public class HttpPostSignUp extends AsyncTask<String, Void, Void>{
 						arg0[3], arg0[4], arg0[5],null);
 				new DataBaseHelper(activity.getApplicationContext()).
 				insertServerEntity(entity);
+				new FileMaintenance().makeServerFile(entity);
 			}
 		}catch(Exception e)
 		{

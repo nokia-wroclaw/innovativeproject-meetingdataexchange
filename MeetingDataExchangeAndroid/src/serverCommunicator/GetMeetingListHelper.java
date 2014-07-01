@@ -44,6 +44,7 @@ public class GetMeetingListHelper
 			entity.setServerId(serverId);
 			entity.setServerMeetingID(json.getLong("meetingid"));
 			entity.setTitle(json.getString("title"));
+			entity.setTopic(json.getString("topic"));
 			entity.setHostName(json.getString("hostname"));
 			entity.setStartTime(json.getString("starttime"));
 			entity.setEndTime(json.getString("endtime"));

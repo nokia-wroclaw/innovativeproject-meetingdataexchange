@@ -9,11 +9,13 @@ import serverCommunicator.CommunicationHelper;
 import serverCommunicator.FileHelper;
 import serverCommunicator.MeetingHelper;
 
+import com.TrololoCompany.meetingdataexchange.MeetingDetails;
 import com.TrololoCompany.meetingdataexchangedataBase.DataBaseHelper;
 import com.TrololoCompany.meetingdataexchangedataBase.FileEntity;
 import com.TrololoCompany.meetingdataexchangedataBase.MeetingEntity;
 import com.TrololoCompany.meetingdataexchangedataBase.ServerEntity;
 
+import android.app.ActivityManager;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +33,10 @@ public class MeetingServerCommunication extends IntentService
 	private ServerEntity server;
 	private MeetingHelper meetinghelper;
 	private FileHelper filehelper;
+	private MeetingDetails activity;
+	private int flag;
+	private ServiceHandlers handler;
+	
 	public MeetingServerCommunication() 
 	{
 		
@@ -46,40 +52,58 @@ public class MeetingServerCommunication extends IntentService
 	@Override
 	protected void onHandleIntent(Intent intent) 
 	{
+		handler=ServiceHandlers.getInstance();
 		meetinghelper= new MeetingHelper();
-		filehelper=new FileHelper();
+		filehelper=new FileHelper(getApplicationContext());
 		this.server=(ServerEntity)
 				intent.getSerializableExtra
 				("com.TrololoCompany.meetingdataexchange.server");
 		this.meeting=(MeetingEntity)
 				intent.getSerializableExtra
 				("com.TrololoCompany.meetingdataexchange.meeting");
-		
-		for(int i=0;i<10;i++)
+		this.server=new DataBaseHelper(getApplicationContext()).
+				getServer(server.getServerName(), server.getLogin());
+		this.meeting=new DataBaseHelper(getApplicationContext()).
+				getMeetingServerId(meeting.getServerMeetingID());
+		while(handler.isCommunicationServerService())
 		{
-			try 
-			{		meeting=meetinghelper.getMeetingDetails(server, meeting);
-					new DataBaseHelper(getApplicationContext()).updateMeeting(meeting);
-					meeting=new DataBaseHelper(getApplicationContext()).
-							getMeetingServerId(meeting.getServerId());
-					cleanAllFileAndCommentsAssociatedWithMeeting(meeting);
-					
-					
-					Thread.sleep(2000);
-					Log.i("service", "test");
-			} 
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-				Log.i("service", "error");
-			}
+			refresh();
 		}
 		
 
 }
 
-	
-	private void cleanAllFileAndCommentsAssociatedWithMeeting(MeetingEntity entity)
+	private void refresh()
+	{	
+		
+		
+		synchronized (this) 
+		{
+			
+		try {
+			meeting=meetinghelper.getMeetingDetails(server, meeting);
+			
+			new DataBaseHelper(getApplicationContext()).updateMeeting(meeting);
+			cleanAllFileAndCommentsAssociatedWithMeeting(meeting);
+			filehelper.getFileWithCommentsList(server, meeting);
+			Thread.sleep(4000);
+			Log.i("service", "test");
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+	}
+	private  void cleanAllFileAndCommentsAssociatedWithMeeting(MeetingEntity entity)
 	{
 		
 		ArrayList<FileEntity> files=new DataBaseHelper(getApplicationContext()).
@@ -92,4 +116,5 @@ public class MeetingServerCommunication extends IntentService
 		new DataBaseHelper(getApplicationContext()).
 				deleteAllFileAssociatedWithMeeting(entity);
 	}
+	
 }
